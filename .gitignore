@@ -2,6 +2,7 @@
 target/
 dbt_modules/
 .user.yml
+dbt_packages
 
 # Virtual envs
 venv/
