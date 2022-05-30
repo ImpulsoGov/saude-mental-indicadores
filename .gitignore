@@ -12,7 +12,7 @@ env/
 
 
 # VS Code
-.vscode/
+#.vscode/settings.json
 
 # logs
 *.log
