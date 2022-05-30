@@ -1,0 +1,57 @@
+name: Seed, Run, Check, Test and Docs
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Main CI
+    runs-on: ubuntu-latest
+    env:
+      DBT_USER: ${{ secrets.DBT_PROD_USER }}
+      DBT_PASSWORD: ${{ secrets.DBT_PROD_PASSWORD }}
+      DBT_DATABASE: ${{ secrets.DBT_PROD_DATABASE }}
+      DBT_PROFILES_DIR: .config
+      DBT_REDSHIFT_ACCOUNT: ${{ secrets.DBT_REDSHIFT_ACCOUNT }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: seed
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt seed --full-refresh"
+
+      - name: dbt run
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt run"
+
+      - name: check
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt-coves check --no-fix"
+
+      - name: test
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt test"
+
+      - name: generate docs
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt docs generate"
+
+      - name: deploy docs 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: target

@@ -1,0 +1,17 @@
+{
+  "template": "https://github.com/datacoves/cookiecutter-dbt",
+  "commit": "25a34bd08ce3f23cc40080ccb8eba6ccade014a5",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "Impulso Saúde Mental | Engenharia de indicadores",
+      "project_slug": "saude-mental-indicadores",
+      "adapter": "redshift",
+      "target_schema": "saude_mental",
+      "run_git_init": "No",
+      "ci_tool": "GitHub",
+      "_template": "https://github.com/datacoves/cookiecutter-dbt"
+    }
+  },
+  "directory": null
+}

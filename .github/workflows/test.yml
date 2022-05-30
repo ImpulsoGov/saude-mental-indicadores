@@ -1,0 +1,46 @@
+name: Seed, Run, Check and Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+      - master
+  pull_request:
+    branches-ignore:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Main CI
+    runs-on: ubuntu-latest
+    env:
+      DBT_USER: ${{ secrets.DBT_TEST_USER }}
+      DBT_PASSWORD: ${{ secrets.DBT_TEST_PASSWORD }}
+      DBT_DATABASE: ${{ secrets.DBT_TEST_DATABASE }}
+      DBT_PROFILES_DIR: .config
+      DBT_REDSHIFT_ACCOUNT: ${{ secrets.DBT_REDSHIFT_ACCOUNT }}
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v2
+
+      - name: seed
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt seed --full-refresh"
+
+      - name: dbt run
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt run"
+
+      - name: lint
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt-coves check --no-fix"
+
+      - name: test
+        uses: datacoves/dbt-coves-action@v1
+        with:
+          command: "dbt test"
