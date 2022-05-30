@@ -1,7 +1,7 @@
-default:
-    target: saude_mental
+impulso-saude-mental:
+    target: analitico
     outputs:
-      saude_mental:
+      analitico:
         type: postgres
 
         # More information for the options in this file
@@ -12,22 +12,46 @@ default:
         # Find out more about Postgres config options here:
         # https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile
 
-        # Set the TEST_DATABASE in your CI
-        dbname: "{{ env_var('DBT_DATABASE') }}"
+        dbname: principal
         schema: saude_mental
 
         # Set variable DBT_USER in your CI
-        user: "{{ env_var('DBT_USER') }}"
+        user: "{{ env_var('BD_ANALITICO_USUARIO') }}"
 
         # Set variable DBT_PASSWORD in your CI
-        password: "{{ env_var('DBT_PASSWORD') }}"
+        password: "{{ env_var('BD_ANALITICO_SENHA') }}"
 
         # Set variable DBT_REDSHIFT_ACCOUNT in your CI
-        host: "{{ env_var('DBT_POSTGRES_HOST') }}"
+        host: "{{ env_var('BD_ANALITICO_SERVIDOR') }}"
 
         port: 5432
         keepalives_idle: 0 # default 0, indicating the system default
         connect_timeout: 10 # default 10 seconds
-        # search_path: [optional, override the default postgres search_path]
-        # role: [optional, set the role dbt assumes when executing queries]
-        # sslmode: [optional, set the sslmode used to connect to the database]
+        search_path: "$user, public, extensoes, postgis"
+
+      producao:
+        type: postgres
+
+        # More information for the options in this file
+        # can be found here: https://docs.getdbt.com/dbt-cli/configure-your-profile
+
+        threads: 8
+        # Additional Postgres options
+        # Find out more about Postgres config options here:
+        # https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile
+
+        dbname: postgres
+        schema: saude_mental
+
+        # Set variable DBT_USER in your CI
+        user: "{{ env_var('BD_PRODUCAO_USUARIO') }}"
+
+        # Set variable DBT_PASSWORD in your CI
+        password: "{{ env_var('BD_PRODUCAO_SENHA') }}"
+
+        # Set variable DBT_REDSHIFT_ACCOUNT in your CI
+        host: "{{ env_var('BD_PRODUCAO_SERVIDOR') }}"
+
+        port: 5432
+        keepalives_idle: 0 # default 0, indicating the system default
+        connect_timeout: 10 # default 10 seconds
