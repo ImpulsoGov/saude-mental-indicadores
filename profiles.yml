@@ -16,13 +16,13 @@ impulso-saude-mental:
         schema: saude_mental
 
         # Set variable DBT_USER in your CI
-        user: "{{ env_var('BD_ANALITICO_USUARIO') }}"
+        user: "{{ env_var('DBT_ENV_SECRET_ANALITICO_USUARIO') }}"
 
         # Set variable DBT_PASSWORD in your CI
-        password: "{{ env_var('BD_ANALITICO_SENHA') }}"
+        password: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SENHA') }}"
 
         # Set variable DBT_REDSHIFT_ACCOUNT in your CI
-        host: "{{ env_var('BD_ANALITICO_SERVIDOR') }}"
+        host: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SERVIDOR') }}"
 
         port: 5432
         keepalives_idle: 0 # default 0, indicating the system default
@@ -44,13 +44,13 @@ impulso-saude-mental:
         schema: saude_mental
 
         # Set variable DBT_USER in your CI
-        user: "{{ env_var('BD_PRODUCAO_USUARIO') }}"
+        user: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_USUARIO') }}"
 
         # Set variable DBT_PASSWORD in your CI
-        password: "{{ env_var('BD_PRODUCAO_SENHA') }}"
+        password: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SENHA') }}"
 
         # Set variable DBT_REDSHIFT_ACCOUNT in your CI
-        host: "{{ env_var('BD_PRODUCAO_SERVIDOR') }}"
+        host: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SERVIDOR') }}"
 
         port: 5432
         keepalives_idle: 0 # default 0, indicating the system default
