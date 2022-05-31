@@ -9,22 +9,22 @@ on:
   push:
     branches-ignore:
       - main
-      - master
   pull_request:
     branches-ignore:
       - main
-      - master
 
 jobs:
   build:
     name: Main CI
     runs-on: ubuntu-latest
     env:
-      DBT_USER: ${{ secrets.DBT_TEST_USER }}
-      DBT_PASSWORD: ${{ secrets.DBT_TEST_PASSWORD }}
-      DBT_DATABASE: ${{ secrets.DBT_TEST_DATABASE }}
-      DBT_PROFILES_DIR: .config
-      DBT_REDSHIFT_ACCOUNT: ${{ secrets.DBT_REDSHIFT_ACCOUNT }}
+      DBT_ENV_SECRET_ANALITICO_USUARIO: ${{ secrets.DBT_ENV_SECRET_ANALITICO_USUARIO }}
+      DBT_ENV_SECRET_ANALITICO_SENHA: ${{ secrets.DBT_ENV_SECRET_ANALITICO_SENHA }}
+      DBT_ENV_SECRET_ANALITICO_SERVIDOR: ${{ secrets.DBT_ENV_SECRET_ANALITICO_SERVIDOR }}
+      DBT_ENV_SECRET_PRODUCAO_USUARIO: ${{ secrets.DBT_ENV_SECRET_PRODUCAO_USUARIO }}
+      DBT_ENV_SECRET_PRODUCAO_SENHA: ${{ secrets.DBT_ENV_SECRET_PRODUCAO_SENHA }}
+      DBT_ENV_SECRET_PRODUCAO_SERVIDOR: ${{ secrets.DBT_ENV_SECRET_PRODUCAO_SERVIDOR }}
+      DBT_PROFILES_DIR: .
 
     steps:
       - name: Checkout branch
@@ -38,7 +38,7 @@ jobs:
       - name: dbt run
         uses: datacoves/dbt-coves-action@v1
         with:
-          command: "dbt run"
+          command: "dbt run -x"
 
       - name: lint
         uses: datacoves/dbt-coves-action@v1
