@@ -43,10 +43,12 @@ ENV PATH="/root/.local/bin:$PATH"
 
 # Instalar dependências e plugins
 FROM poetry as dependencias
-RUN poetry install --no-root --without dev-dependencies
+RUN poetry install --no-root --no-dev
 RUN poetry run dbt deps
 
 # Inicializar dbt
 FROM dependencias as dbt
 ENV DBT_PROFILES_DIR="/usr/app/dbt/"
-ENTRYPOINT ["poetry", "run", "dbt"]
+
+ENTRYPOINT ["poetry", "run"]
+CMD ["poetry", "run", "dbt", "run"]
