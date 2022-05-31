@@ -43,7 +43,7 @@ ENV PATH="/root/.local/bin:$PATH"
 
 # Instalar dependências e plugins
 FROM poetry as dependencias
-RUN poetry install --no-root
+RUN poetry install --no-root --without dev-dependencies
 RUN poetry run dbt deps
 
 # Inicializar dbt
