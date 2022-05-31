@@ -1,0 +1,12 @@
+*
+!pyproject.toml
+!poetry.lock
+!dbt_project.yml
+!packages.yml
+!profiles.yml
+!analysis/
+!macros/
+!models/
+!seeds/
+!snapshots/
+!tests/
