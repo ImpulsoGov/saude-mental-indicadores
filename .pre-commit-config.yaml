@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
 repos:
 - repo: https://github.com/offbi/pre-commit-dbt
   rev: v1.0.0
@@ -12,3 +17,10 @@ repos:
   - id: check-model-has-all-columns
   - id: check-model-has-description
     files: ^models/
+
+  # Checar se arquivos atendem às especificações REUSE para padronização de
+  # informações sobre licenças
+  - repo: https://github.com/fsfe/reuse-tool
+    rev: latest
+    hooks:
+      - id: reuse

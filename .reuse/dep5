@@ -1,0 +1,12 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: saude-mental-indicadores
+Upstream-Contact: Impulso Gov <contato@impulsogov.org>
+Source: https://github.com/Impulso Gov/saude-mental-indicadores
+
+Files: poetry.lock .env.exemplo requirements.txt */requirements.txt .vscode/*.json .cruft.json
+Copyright: 2022 Impulso Gov <contato@impulsogov.org>
+License: MIT
+
+Files: seeds/*.csv
+Copyright: 2022 Impulso Gov
+License: ODC-By-1.0

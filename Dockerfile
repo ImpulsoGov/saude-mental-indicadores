@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
 FROM python:3.8.8-slim-buster as base
 
 # Atualizar sistema
