@@ -20,6 +20,6 @@ jobs:
         DOCKER_SENHA: ${{secrets.DOCKER_SENHA}}
       run: docker login -u $DOCKER_USER -p $DOCKER_SENHA
     - name: Construir imagem do ImpulsoETL
-      run: docker build -t impulsogov/saude-mental-indicadores:latest
+      run: docker build -t impulsogov/saude-mental-indicadores:latest .
     - name: Enviar imagem do ImpulsoETL
       run: docker push impulsogov/saude-mental-indicadores
