@@ -33,7 +33,6 @@ jobs:
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
           DOCKER_SENHA: ${{secrets.DOCKER_SENHA}}
-          SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
         run: docker login -u $DOCKER_USER -p $DOCKER_SENHA
 
       - name: Receber imagem Docker
