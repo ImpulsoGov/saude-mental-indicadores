@@ -4,59 +4,66 @@
 
 
 impulso-saude-mental:
+
     target: analitico
+
     outputs:
+
       analitico:
+
+        # Opções gerais. Ver:
+        # https://docs.getdbt.com/dbt-cli/configure-your-profile
         type: postgres
-
-        # More information for the options in this file
-        # can be found here: https://docs.getdbt.com/dbt-cli/configure-your-profile
-
         threads: 8
-        # Additional Postgres options
-        # Find out more about Postgres config options here:
+
+        # Opções do Postgres. Ver:
         # https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile
 
         dbname: principal
         schema: saude_mental
 
-        # Set variable DBT_USER in your CI
+        # Defina a variável DBT_ENV_SECRET_ANALITICO_SERVIDOR no GitHub Actions
+        # e/ou no arquivo .env
+        host: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SERVIDOR') }}"
+        port: 5432
+
+        # Defina a variável DBT_ENV_SECRET_ANALITICO_USUARIO no GitHub Actions
+        # e/ou no arquivo .env
         user: "{{ env_var('DBT_ENV_SECRET_ANALITICO_USUARIO') }}"
 
-        # Set variable DBT_PASSWORD in your CI
+        # Defina DBT_ENV_SECRET_ANALITICO_SENHA no GitHub Actions
+        # e/ou no arquivo .env
         password: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SENHA') }}"
 
-        # Set variable DBT_REDSHIFT_ACCOUNT in your CI
-        host: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SERVIDOR') }}"
-
-        port: 5432
-        keepalives_idle: 0 # default 0, indicating the system default
-        connect_timeout: 10 # default 10 seconds
+        keepalives_idle: 0 # default
+        connect_timeout: 10 # default
         search_path: "$user, public, extensoes, postgis"
 
       producao:
+
+        # Opções gerais. Ver:
+        # https://docs.getdbt.com/dbt-cli/configure-your-profile
         type: postgres
-
-        # More information for the options in this file
-        # can be found here: https://docs.getdbt.com/dbt-cli/configure-your-profile
-
         threads: 8
-        # Additional Postgres options
-        # Find out more about Postgres config options here:
+
+        # Opções do Postgres. Ver:
         # https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile
 
         dbname: postgres
         schema: saude_mental
 
-        # Set variable DBT_USER in your CI
+        # Defina a variável DBT_ENV_SECRET_PRODUCAO_SERVIDOR no GitHub Actions
+        # e/ou no arquivo .env
+        host: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SERVIDOR') }}"
+        port: 5432
+
+        # Defina a variável DBT_ENV_SECRET_PRODUCAO_USUARIO no GitHub Actions
+        # e/ou no arquivo .env
         user: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_USUARIO') }}"
 
-        # Set variable DBT_PASSWORD in your CI
+        # Defina DBT_ENV_SECRET_PRODUCAO_SENHA no GitHub Actions
+        # e/ou no arquivo .env
         password: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SENHA') }}"
 
-        # Set variable DBT_REDSHIFT_ACCOUNT in your CI
-        host: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SERVIDOR') }}"
-
-        port: 5432
         keepalives_idle: 0 # default 0, indicating the system default
         connect_timeout: 10 # default 10 seconds
