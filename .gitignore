@@ -4,10 +4,16 @@
 
 
 # dbt
-target/
+target/*
 dbt_modules/
 .user.yml
 dbt_packages
+!target/.gitkeep
+
+# logs
+*.log
+logs/*
+!logs/.gitkeep
 
 # Virtual envs
 venv/
@@ -15,13 +21,8 @@ venv/
 .venv
 env/
 
-
 # VS Code
 #.vscode/settings.json
-
-# logs
-*.log
-logs/
 
 # Python cache
 __pycache__

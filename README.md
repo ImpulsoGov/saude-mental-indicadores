@@ -71,13 +71,15 @@ $ docker build -t impulsogov/saude-mental-indicadores:latest .
 ## Utilização
 
 A imagem fornecida suporta os comandos [`dbt seed`][], [`dbt run`][] e
-[`dbt test`][]. Com a imagem docker construída localmente, basta invocá-los com
-o comando `docker run`:
+[`dbt test`][]. _Com a imagem docker construída localmente_, basta invocá-los
+com o comando `docker run`:
 
 ```sh
 $ docker run \
-> --env-file=".env" \ # se estiver desenvolvendo localmente
-> dbt run
+> --env-file=".env" \
+> --mount type=bind,source="$(pwd)/logs",destination="/usr/app/dbt/logs" \
+> --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target" \
+> dbt run -t analitico
 ```
 
 No caso da utilização com GitHub Actions, a execução desses comandos é
