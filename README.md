@@ -75,14 +75,15 @@ A imagem fornecida suporta os comandos [`dbt seed`][], [`dbt run`][] e
 o comando `docker run`:
 
 ```sh
-$ docker run dbt run \
-  --env-file=".env"  # se estiver desenvolvendo localmente
+$ docker run \
+> --env-file=".env" \ # se estiver desenvolvendo localmente
+> dbt run
 ```
-
-[`dbt seed`]: https://docs.getdbt.com/reference/commands/seed
-[`dbt run`]: https://docs.getdbt.com/reference/commands/run
-[`dbt test`]: https://docs.getdbt.com/reference/commands/test
 
 No caso da utilização com GitHub Actions, a execução desses comandos é
 automatizada com os fluxos de trabalho existentes, mas você também pode
 iniciá-los manualmente na aba `Actions` do seu *fork*.
+
+[`dbt seed`]: https://docs.getdbt.com/reference/commands/seed
+[`dbt run`]: https://docs.getdbt.com/reference/commands/run
+[`dbt test`]: https://docs.getdbt.com/reference/commands/test
