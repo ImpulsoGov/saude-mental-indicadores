@@ -35,20 +35,28 @@ RUN python -m pip install --upgrade setuptools wheel --no-cache-dir
 WORKDIR /usr/app/dbt/
 VOLUME /usr/app/dbt/target
 VOLUME /usr/app/dbt/logs
-COPY . .
 
 # Instalar poetry
 FROM base as poetry
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
-# Instalar dependências e plugins
-FROM poetry as dependencias
+# Instalar dependências
+FROM poetry as dependencias-python
+COPY ./pyproject.toml ./pyproject.toml
+COPY ./poetry.lock ./poetry.lock
 RUN poetry install --no-root --no-dev
+
+# Instalar pacotes dbt
+FROM dependencias-python as dependencias-dbt
+ENV DBT_PROFILES_DIR="/usr/app/dbt/"
+COPY ./dbt_project.yml ./dbt_project.yml
+COPY ./packages.yml ./packages.yml
 RUN poetry run dbt deps
 
-# Inicializar dbt
-FROM dependencias as dbt
-ENV DBT_PROFILES_DIR="/usr/app/dbt/"
+# Copiar definições de modelos, macros, seeds etc.
+FROM dependencias-dbt as final
+COPY . .
 
+# Usar `poetry run` em todos os comandos. 
 ENTRYPOINT ["poetry", "run"]
