@@ -33,7 +33,8 @@ RUN python -m pip install --upgrade setuptools wheel --no-cache-dir
 
 # Criar diretório de trabalho
 WORKDIR /usr/app/dbt/
-VOLUME /usr/app
+VOLUME /usr/app/dbt/target
+VOLUME /usr/app/dbt/logs
 COPY . .
 
 # Instalar poetry
@@ -51,4 +52,3 @@ FROM dependencias as dbt
 ENV DBT_PROFILES_DIR="/usr/app/dbt/"
 
 ENTRYPOINT ["poetry", "run"]
-CMD ["poetry", "run", "dbt", "run"]
