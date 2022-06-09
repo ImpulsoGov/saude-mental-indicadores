@@ -13,7 +13,6 @@ repos:
   - id: check-script-has-no-table-name
   - id: check-script-ref-and-source
   - id: check-model-has-properties-file
-  - id: check-model-has-all-columns
   - id: check-model-has-description
     files: ^models/
   # Checar se arquivos atendem às especificações REUSE para padronização de
