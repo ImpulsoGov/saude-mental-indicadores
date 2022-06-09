@@ -5,5 +5,8 @@
     },
     "dbt.runModelCommandAdditionalParams": [
         "--profiles-dir ."
+    ],
+    "conventionalCommits.scopes": [
+        "referencias"
     ]
 }
