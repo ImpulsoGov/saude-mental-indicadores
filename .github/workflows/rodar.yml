@@ -40,52 +40,48 @@ jobs:
 
       - name: seed
         run: >
-          docker run dbt seed --full-refresh
+          docker run
           -e DBT_ENV_SECRET_ANALITICO_USUARIO
           -e DBT_ENV_SECRET_ANALITICO_SENHA
           -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
           -e DBT_ENV_SECRET_PRODUCAO_USUARIO
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest
+          impulsogov/saude-mental-indicadores:latest dbt seed --full-refresh
 
       - name: dbt run
         run: >
-          docker run dbt run
+          docker run
           -e DBT_ENV_SECRET_ANALITICO_USUARIO
           -e DBT_ENV_SECRET_ANALITICO_SENHA
           -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
           -e DBT_ENV_SECRET_PRODUCAO_USUARIO
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest
-
-      - name: check
-        uses: datacoves/dbt-coves-action@v1
-        with:
-          command: "dbt-coves check --no-fix"
+          impulsogov/saude-mental-indicadores:latest dbt run
 
       - name: test
         run: >
-          docker run dbt test
+          docker run
           -e DBT_ENV_SECRET_ANALITICO_USUARIO
           -e DBT_ENV_SECRET_ANALITICO_SENHA
           -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
           -e DBT_ENV_SECRET_PRODUCAO_USUARIO
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest
+          impulsogov/saude-mental-indicadores:latest dbt test
 
       - name: generate docs
         run: >
-          docker run dbt docs generate
+          docker run
           -e DBT_ENV_SECRET_ANALITICO_USUARIO
           -e DBT_ENV_SECRET_ANALITICO_SENHA
           -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
           -e DBT_ENV_SECRET_PRODUCAO_USUARIO
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest
+          --mount type=bind,source="$(pwd)/docs",destination="/usr/app/dbt/docs"
+          impulsogov/saude-mental-indicadores:latest dbt docs generate
 
       - name: deploy docs 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
