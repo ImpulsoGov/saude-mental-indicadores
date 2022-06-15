@@ -1,9 +1,0 @@
-{
-    "files.associations":{  
-       "*.sql": "jinja-sql",
-       "**/target/**": ""
-    },
-    "dbt.runModelCommandAdditionalParams": [
-        "--profiles-dir ."
-    ]
-}

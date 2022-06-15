@@ -1,8 +1,0 @@
-# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
-#
-# SPDX-License-Identifier: MIT
-
-
-packages:
-  - package: calogica/dbt_expectations
-    version: [">=0.5.0", "<=0.6.0"]
