@@ -81,7 +81,7 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
           --mount type=bind,source="$(pwd)/docs",destination="/usr/app/dbt/docs"
-          impulsogov/saude-mental-indicadores:latest dbt docs generate
+          impulsogov/saude-mental-indicadores:latest sh docs-gen.sh
 
       - name: deploy docs 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.4
