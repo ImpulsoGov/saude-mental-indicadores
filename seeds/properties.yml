@@ -1,0 +1,90 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+seeds:
+
+  - name: cids
+    description: >
+      Lista de condições de saúde definidas na Classificação Internacional de
+      Doenças e Problemas Relacionados à Saúde, 10ª edição (CID-10). No caso
+      das condições de interesse para questões de saúde mental, inclui
+      descrições longa e curta por agrupamentos de transtornos.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        cid_id: "varchar(4)"
+        cid_descricao: "text"
+        cid_grupo_descricao_longa: "text"
+        cid_grupo_descricao_curta: "text"
+    columns:
+      - name: cid_id
+        description: Código alfanumérico da condição de saúde na CID-10.
+      - name: cid_descricao
+        description: Descrição da condição de saúde de acordo com a CID-10.
+      - name: cid_grupo_descricao_longa
+        description: Descrição do agrupamento para questões de saúde mental.
+      - name: cid_grupo_descricao_longa
+        description: >
+          Descrição resumida do agrupamento para questões de saúde mental.
+
+  - name: condicoes_saude_mental
+    description: >
+      Lista de grupos da Classificação Internacional de Doenças e Problemas
+      Relacionados à Saúde, 10ª edição (CID-10), que são relacionados a
+      questões de saúde mental. São utilizados apenas os primeiros caracteres
+      do código alfanumérico de cada condição de saúde, implicando que
+      classificações mais detalhadas (com código com mais números à direita)
+      também estão contemplados.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        id_cid10: "varchar(4)"
+        classificacao: "text"
+        observacao: "text"
+    columns:
+      - name: id_cid10
+        description: >
+          Parte inicial do código alfanumérico correspondente ao transtorno ou
+          condição de saúde na CID-10.
+      - name: classificacao
+        description: >
+          Classificação da condição de saúde como relacionada às categorias
+          `Transtornos`, `Álcool e outras drogas` ou `Conduta autolesiva`.
+      - name: observacao
+        description: >
+          Descrição livre do tipo de transtorno ou condição de saúde
+          contemplados pelo padrão do código alfanumérico.
+
+  - name: estabelecimentos_referencia_ambulatorial
+    description: >
+      Relação de estabelecimentos onde é prestado cuidado em nível ambulatorial
+      de referência em saúde mental (psicologia e psiquiatria) em municípios 
+      selecionados.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        estabelecimento_id_cnes: "bpchar(7)"
+    columns:
+      - name: estabelecimento_id_cnes
+        description: >
+          Código do estabelecimento com atendimento de referência ambulatorial
+          em saúde mental, segundo o SCNES.

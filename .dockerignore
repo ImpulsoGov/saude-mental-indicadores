@@ -9,9 +9,12 @@
 !dbt_project.yml
 !packages.yml
 !profiles.yml
+!docs-gen.sh
 !analysis/
+!docs/
 !macros/
 !models/
 !seeds/
 !snapshots/
+!tasks/
 !tests/

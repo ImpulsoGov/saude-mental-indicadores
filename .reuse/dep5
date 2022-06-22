@@ -10,3 +10,7 @@ License: MIT
 Files: seeds/*.csv
 Copyright: 2022 Impulso Gov
 License: ODC-By-1.0
+
+Files: docs/*.html
+Copyright: 2022 Impulso Gov
+License: CC-BY-4.0
