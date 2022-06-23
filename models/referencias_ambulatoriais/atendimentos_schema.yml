@@ -16,7 +16,7 @@ models:
     config:
       alias: referencias_atendimentos
       enabled: true
-      index:
+      indexes:
         - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
