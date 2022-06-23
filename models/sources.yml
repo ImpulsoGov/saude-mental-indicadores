@@ -12,7 +12,6 @@ sources:
       database: false
       schema: false
       identifier: false
-    loader: stitch
     tables:
       - name: bpa_i_disseminacao
         identifier: siasus_bpa_i_disseminacao
@@ -20,3 +19,29 @@ sources:
           Arquivo de disseminação dos Boletins de Produção Ambulatorial 
           individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
           SUS (SIASUS).
+  - name: codigos
+    schema: listas_de_codigos
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: sexos
+        identifier: sexos
+        description: >
+          Lista de classificações para o sexo biológico de uma pessoa.
+      - name: condicoes_saude
+        identifier: condicoes_saude
+        description: >
+          Lista doenças, condições e demandas que justificam a busca por
+          serviços de saúde.
+
+          Fontes:
+
+          * MINISTÉRIO DA SAÙDE. _Arquivo CID10.DBF_. 01 out. 2007. Disponível
+          em: <http://www2.datasus.gov.br/cid10/V2008/descrcsv.htm> (acesso em
+          22 jun. 2022).
+          * MINISTÉRIO DA SAÚDE.  _Integração e-SUS APS PEC versão 4.1.2:
+          Relação entre CIAP2 e CID10_. 29 jan. 2021. Disponível em:
+          <https://integracao.esusab.ufsc.br/v412/ledi/documentacao/referencias/relacao_ciap_cid.html>
+          (acesso em 22 jun. 2022).
