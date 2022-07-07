@@ -23,7 +23,8 @@ models:
         - columns:
           - "realizacao_periodo_data_inicio"
         - columns:
-          - "usuario_faixa_etaria"
+          - "faixa_etaria_id"
+          - "faixa_etaria_ordem"
         - columns:
           - "profissional_cns"
       materialized: incremental

@@ -13,19 +13,28 @@ models:
       conforme registrado em Boletins de Produção Ambulatorial individualizados
       (BPA-i) enviados ao Sistema de Informações Ambulatoriais do SUS (SIASUS).
     config:
-      alias: referencias_atendimentos
+      alias: referencias_usuarios_perfil
       enabled: true
       indexes:
         - columns:
+          - "id"
+        - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
+        - columns:
           - "periodo_id"
           - "competencia"
+        - columns:
           - "usuario_faixa_etaria"
+        - columns:
           - "usuario_sexo"
+        - columns:
           - "cid_grupo_descricao_curta"
-        - unique: true
+          unique: true
+        - columns:
+          - "atualizacao_data"
       materialized: incremental
+      on_schema_change: "append_new_columns"
       persist_docs:
         relation: true
       tags:
@@ -33,3 +42,4 @@ models:
         - "referencias"
         - "bpa_i"
         - "incremental"
+      unique_key: "id"
