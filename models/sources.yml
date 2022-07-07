@@ -19,6 +19,22 @@ sources:
           Arquivo de disseminação dos Boletins de Produção Ambulatorial 
           individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
           SUS (SIASUS).
+
+  - name: scnes
+    schema: dados_publicos
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: vinculos_profissionais
+        identifier: cnes_vinculos_disseminacao
+        description: >
+          Arquivo de disseminação com dados de vínculos entre
+          profissionais/prestadores de serviços e estabelecimentos de saúde
+          registrados no Sistema do Cadastro Nacional de Estabelecimentos de
+          Saúde (SCNES).
+
   - name: codigos
     schema: listas_de_codigos
     quoting:
@@ -26,10 +42,7 @@ sources:
       schema: false
       identifier: false
     tables:
-      - name: sexos
-        identifier: sexos
-        description: >
-          Lista de classificações para o sexo biológico de uma pessoa.
+
       - name: condicoes_saude
         identifier: condicoes_saude
         description: >
@@ -45,3 +58,39 @@ sources:
           Relação entre CIAP2 e CID10_. 29 jan. 2021. Disponível em:
           <https://integracao.esusab.ufsc.br/v412/ledi/documentacao/referencias/relacao_ciap_cid.html>
           (acesso em 22 jun. 2022).
+
+      - name: estabelecimentos
+        identifier: estabelecimentos
+        description: >
+          Lista de estabelecimentos de saúde, baseada no Cadastro Nacional de
+          Estabelecimentos de Saúde. (WIP)
+
+      - name: faixas_etarias
+        identifier: faixas_etarias
+        description: >
+          Lista de faixas etárias definidas por um intervalo mínimo e máximo de
+          idades.
+
+      - name: ocupacoes
+        identifier: ocupacoes
+        description: >
+          Lista as ocupações profissionais reconhecidas em classificações
+          estatísticas brasileiras. Atualmente, baseia-se apenas na
+          Classificação Brasileira de Ocupações de 2002 (CBO-2002).
+
+          Fontes:
+
+          * MINISTÉRIO DO TRABALHO E DO EMPREGO. **CBO - Downloads**.
+          Disponível em: <http://www.mtecbo.gov.br/cbosite/pages/downloads.jsf>
+          (acesso em 27 jul. 2022).
+
+      - name: periodos
+        identifier: periodos
+        description: >
+          Lista de intervalos temporais que identificam os meses, quadrimestres
+          e outros intervalos úteis para fins de agregação de dados.
+
+      - name: sexos
+        identifier: sexos
+        description: >
+          Lista de classificações para o sexo biológico de uma pessoa.
