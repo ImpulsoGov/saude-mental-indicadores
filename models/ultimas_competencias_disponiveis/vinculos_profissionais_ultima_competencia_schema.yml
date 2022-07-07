@@ -1,0 +1,25 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: vinculos_profissionais_ultima_competencia
+    description: >
+      Lista as últimas competências para as quais houve disponibilização dos
+      arquivos de disseminação de vínculos profissionais do Sistema do Cadastro
+      Nacional de Estabelecimentos de Saúde (SCNES), para cada município.
+    config:
+      alias: _vinculos_profissionais_ultima_competencia
+      enabled: true
+      indexes:
+        - columns:
+            - "unidade_geografica_id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "vinculos_profissionais"
