@@ -6,34 +6,6 @@
 version: 2
 
 sources:
-  - name: siasus
-    schema: dados_publicos
-    quoting:
-      database: false
-      schema: false
-      identifier: false
-    tables:
-      - name: bpa_i_disseminacao
-        identifier: siasus_bpa_i_disseminacao
-        description: >
-          Arquivo de disseminação dos Boletins de Produção Ambulatorial 
-          individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
-          SUS (SIASUS).
-
-  - name: scnes
-    schema: dados_publicos
-    quoting:
-      database: false
-      schema: false
-      identifier: false
-    tables:
-      - name: vinculos_profissionais
-        identifier: cnes_vinculos_disseminacao
-        description: >
-          Arquivo de disseminação com dados de vínculos entre
-          profissionais/prestadores de serviços e estabelecimentos de saúde
-          registrados no Sistema do Cadastro Nacional de Estabelecimentos de
-          Saúde (SCNES).
 
   - name: codigos
     schema: listas_de_codigos
@@ -41,6 +13,7 @@ sources:
       database: false
       schema: false
       identifier: false
+
     tables:
 
       - name: condicoes_saude

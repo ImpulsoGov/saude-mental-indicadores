@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+sources:
+
+  - name: scnes
+    schema: dados_publicos
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+    tables:
+      - name: vinculos_profissionais
+        identifier: cnes_vinculos_disseminacao
+        description: >
+          Arquivo de disseminação com dados de vínculos entre
+          profissionais/prestadores de serviços e estabelecimentos de saúde
+          registrados no Sistema do Cadastro Nacional de Estabelecimentos de
+          Saúde (SCNES).
