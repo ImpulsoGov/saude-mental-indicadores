@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: disponibilidade_por_profissional
+    description: >
+      Número de horas de disponibilidade **não-hosipitalar** (carga
+      ambulatorial e "outras") dos vínculos com o SUS, por profissional.
+    config:
+      enabled: true
+      materialized: ephemeral
+      persist_docs:
+        relation: true
+      tags:
+        - "bpa_i"
+        - "vinculos_profissionais"
