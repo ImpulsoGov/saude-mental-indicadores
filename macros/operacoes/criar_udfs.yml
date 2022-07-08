@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: criar_udfs
+    description: >
+      Envia funções do usuário ([UDFs][UDF]) definidas como macros do dbt para
+      o banco de dados, recriando-as como funções ou procedimentos que passam
+      a estar disponíveis para uso nos scripts SQL.
+
+      [UDF]: https://en.wikipedia.org/wiki/User-defined_function
+    docs:
+      show: true
+    tags:
+      - operation
