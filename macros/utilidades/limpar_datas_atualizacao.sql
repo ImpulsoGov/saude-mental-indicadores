@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
     ["criacao_data", "atualizacao_data"]
 ) -%}
 {%- for coluna in colunas_sem_datas_atualizacao %}
-{{ ("." + prefixo_colunas) if prefixo_colunas is not none -}}
+{{ (prefixo_colunas + ".") if prefixo_colunas is not none -}}
 {{- coluna.name }}{{ "," if not loop.last }}
 {% endfor -%}
 {%- endmacro -%}
