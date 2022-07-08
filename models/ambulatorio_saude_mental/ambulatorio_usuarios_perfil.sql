@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 procedimento AS (
-    SELECT * FROM {{ ref('atendimentos') }}
+    SELECT * FROM {{ ref('ambulatorio_atendimentos') }}
 ),
 sexo AS (
     SELECT * FROM {{ source('codigos', 'sexos') }}

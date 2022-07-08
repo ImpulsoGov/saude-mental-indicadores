@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: usuarios_perfil
+  - name: ambulatorio_usuarios_perfil
     description: >
       Perfil dos usuários atendidos por profissionais de referência em saúde
       mental (psicólogos e psiquiatras) em estabelecimentos selecionados,

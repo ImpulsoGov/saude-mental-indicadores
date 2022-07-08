@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: atendimentos_resumo
+  - name: ambulatorio_atendimentos_resumo
     description: >
       Dados consolidados de atendimentos de profissionais de referência em
       saúde mental (psicólogos e psiquiatras) em estabelecimentos selecionados,

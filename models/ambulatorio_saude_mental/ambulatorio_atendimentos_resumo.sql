@@ -16,7 +16,7 @@ ocupacoes AS (
     SELECT * FROM {{ source("codigos", "ocupacoes") }}
 ),
 referencias_atendimentos AS (
-    SELECT * FROM {{ ref("atendimentos") }}
+    SELECT * FROM {{ ref("ambulatorio_atendimentos") }}
 ),
 atendimentos_por_ocupacao_por_estabelecimento AS (
 	SELECT

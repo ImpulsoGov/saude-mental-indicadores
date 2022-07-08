@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: atendimentos
+  - name: ambulatorio_atendimentos
     description: >
       Atendimentos de profissionais de referência em saúde mental (psicólogos e
       psiquiatras) em estabelecimentos selecionados, conforme registrado em
