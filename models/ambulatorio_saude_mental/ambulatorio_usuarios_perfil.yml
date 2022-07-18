@@ -18,6 +18,7 @@ models:
       indexes:
         - columns:
           - "id"
+          unique: true
         - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
@@ -30,7 +31,6 @@ models:
           - "usuario_sexo"
         - columns:
           - "cid_grupo_descricao_curta"
-          unique: true
         - columns:
           - "atualizacao_data"
       materialized: incremental
