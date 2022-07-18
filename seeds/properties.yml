@@ -7,35 +7,6 @@ version: 2
 
 seeds:
 
-  - name: cids
-    description: >
-      Lista de condições de saúde definidas na Classificação Internacional de
-      Doenças e Problemas Relacionados à Saúde, 10ª edição (CID-10). No caso
-      das condições de interesse para questões de saúde mental, inclui
-      descrições longa e curta por agrupamentos de transtornos.
-    docs:
-      show: true
-    persist_docs:
-      relation: true
-      columns: true
-    config:
-      quote_columns: true
-      column_types:
-        cid_id: "varchar(4)"
-        cid_descricao: "text"
-        cid_grupo_descricao_longa: "text"
-        cid_grupo_descricao_curta: "text"
-    columns:
-      - name: cid_id
-        description: Código alfanumérico da condição de saúde na CID-10.
-      - name: cid_descricao
-        description: Descrição da condição de saúde de acordo com a CID-10.
-      - name: cid_grupo_descricao_longa
-        description: Descrição do agrupamento para questões de saúde mental.
-      - name: cid_grupo_descricao_longa
-        description: >
-          Descrição resumida do agrupamento para questões de saúde mental.
-
   - name: condicoes_saude_mental
     description: >
       Lista de grupos da Classificação Internacional de Doenças e Problemas

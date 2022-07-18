@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: renomear_colunas
+    description: >
+      Lista as colunas de uma relação (tabela ou view), substituindo parte dos
+      nomes por novos.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation
+        description: >
+          Objeto [Relation][] cujas colunas se quer listar e filtrar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+      - name: colunas_a_renomear
+        type: dict[str, str]
+        description: >
+          Dicionário de com pares no formato `"nome_original": "novo_nome"`
+          indicando as substituições a serem feitas nos nomes de colunas da
+          relação original.
+      - name: prefixo_colunas
+        type: str | none
+        description: >
+          Nome opcional a ser utilizado como prefixo ao listar as colunas da
+          relação. Permite utilizar o macro no contexto de uma consulta na qual
+          a relação de origem esteja sendo referenciada por um apelido
+          ([*alias*][]).
+
+          [*alias*]: https://www.postgresqltutorial.com/postgresql-tutorial/postgresql-alias/

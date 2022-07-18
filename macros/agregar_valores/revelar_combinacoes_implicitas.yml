@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: revelar_combinacoes_implicitas
+    description: >
+      Retorna uma versão da tabela de entrada incluindo combinações de
+      categorias para as quais não houve valores registrados.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto [Relation][] ou nome de uma [CTE][] que representa a tabela ou
+          consulta na qual se pretende calcular os subtotais.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: agrupar_por
+        type: list[str]
+        description: >
+          Uma lista de colunas cujas categorias não serão combinadas, e que
+          servirão para associar as diferentes combinações. Na maioria dos
+          casos, o valor desejado será
+          `['unidade_geografica_id', 'unidade_geografica_id_sus']`.
+      - name: colunas_a_completar
+        type: list[list[str]]
+        description: >
+          Uma lista em que cada elemento é outra lista, contendo nomes de
+          colunas cujos combinações de valores se deseja garantir que estejam
+          na tabela final, mesmo que estejam implicitas. Quando um elemento inclui
+          mais de uma coluna, todas elas são tratadas como uma só para efeitos
+          das combinações.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression

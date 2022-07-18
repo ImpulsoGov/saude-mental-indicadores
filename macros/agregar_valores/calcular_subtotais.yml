@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: calcular_subtotais
+    description: >
+      Retorna uma versão da tabela de entrada com valores totalizados para
+      duas ou mais colunas.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation
+        description: >
+          Objeto [Relation][] ou nome de uma [CTE][] que representa a tabela ou
+          consulta na qual se pretende calcular os subtotais.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: agrupar_por
+        type: list[str]
+        description: >
+          Uma lista de colunas cujas combinações definem os grupos dentro dos
+          quais os subtotais serão calculados.
+      - name: colunas_a_totalizar
+        type: list[str]
+        description: >
+          Nome das colunas cujas categorias serão substituídos por indicativos
+          de que o registro corresponde ao valor totalizado (ver argumento 
+          `nome_categoria_com_totais`)
+      - name: nomes_categorias_com_totais
+        type: list[str]
+        description: >
+          Uma lista com os valores a serem inseridos nas colunas que forem
+          totalizadas (ex.: `Todos`, `Subtotal` etc.).
+          
+          A lista deve ter o mesmo comprimento da lista passada para o
+          argumento `colunas_a_totalizar`, já que valores serão atribuídos a
+          cada uma das colunas totalizadas na ordem em que aparecem em ambas as
+          listas.
+      - name: agregacoes_valores
+        type: dict[str, str]
+        description: >
+          Um dicionário com pares `"nome_da_coluna": "tipo_de_agregacao"`
+          definindo a operação a ser utilizada para cada uma das colunas cujos
+          valores devem ser totalizados. As operações devem ser nomes de
+          funções disponíveis no PostgreSQL, como `sum`, `max`, `avg` etc.
+      - name: manter_original
+        type: bool
+        description: >
+          Indica se apenas a tabela com os resultados dos subtotais deve ser
+          retornada (`manter_original=false`), ou se esses devem ser apensados
+          à tabela com os valores originais, não totalizados
+          (`manter_original=true`, *default*). 
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+

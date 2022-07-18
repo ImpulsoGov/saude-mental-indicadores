@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: diferenca_dias_uteis
+    description: >
+      Função do usuário ([UDF][]) que calcula a diferença entre um par de datas
+      como o número de dias úteis no intervalo.
+      
+      Atualmente, considera como dias úteis todos os dias de segunda a 
+      sexta-feira (feriados ainda não são levados em conta).
+
+      [UDF]: https://en.wikipedia.org/wiki/User-defined_function
+    docs:
+      show: true
+    tags:
+      - udf

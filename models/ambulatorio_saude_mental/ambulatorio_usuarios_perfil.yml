@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: ambulatorio_usuarios_perfil
+    description: >
+      Perfil dos usuários atendidos por profissionais de referência em saúde
+      mental (psicólogos e psiquiatras) em estabelecimentos selecionados,
+      conforme registrado em Boletins de Produção Ambulatorial individualizados
+      (BPA-i) enviados ao Sistema de Informações Ambulatoriais do SUS (SIASUS).
+    config:
+      alias: referencias_usuarios_perfil
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+        - columns:
+          - "periodo_id"
+          - "competencia"
+        - columns:
+          - "usuario_faixa_etaria"
+        - columns:
+          - "usuario_sexo"
+        - columns:
+          - "cid_grupo_descricao_curta"
+        - columns:
+          - "atualizacao_data"
+      materialized: incremental
+      on_schema_change: "append_new_columns"
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "referencias"
+        - "bpa_i"
+        - "incremental"
+      unique_key: "id"

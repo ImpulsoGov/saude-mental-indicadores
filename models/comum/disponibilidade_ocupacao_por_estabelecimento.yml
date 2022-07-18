@@ -1,0 +1,21 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: disponibilidade_ocupacao_por_estabelecimento
+    description: >
+      Número de horas de disponibilidade **não-hosipitalar** (carga
+      ambulatorial e "outras") dos profissionais com vínculo com o SUS,
+      por categoria profissional (CBO) e por estabelecimento de saúde (CNES).
+    config:
+      enabled: true
+      materialized: ephemeral
+      persist_docs:
+        relation: true
+      tags:
+        - "bpa_i"
+        - "vinculos_profissionais"

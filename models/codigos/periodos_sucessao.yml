@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: periodos_sucessao
+    description: >
+      Relaciona os intervalos de tempo com os períodos anterior e
+      posterior de mesma resolução temporal (por exemplo, um mês com o mês
+      anterior e o mês seguinte).
+    config:
+      alias: _periodos_sucessao
+      enabled: true
+      indexes:
+        - columns:
+            - "periodo_id"
+          unique: true
+        - columns:
+            - "periodo_data_inicio"
+        - columns:
+            - "ultimo_periodo_id"
+        - columns:
+            - "ultimo_periodo_data_inicio"
+        - columns:
+            - "proximo_periodo_id"
+        - columns:
+            - "proximo_periodo_data_inicio"
+      materialized: table
+      persist_docs:
+        relation: true
+      schema: listas_de_codigos

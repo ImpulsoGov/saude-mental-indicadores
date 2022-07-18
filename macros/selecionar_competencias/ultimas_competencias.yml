@@ -1,0 +1,60 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: ultimas_competencias
+    description: >
+      Seleciona apenas as competências correspondentes a um intervalo de tempo
+      definido em função do último período para o qual houve o carregamento de
+      dados dos documentos de origem via DataSUS.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] cujas competências se deseja
+          filtrar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: fontes
+        type: list[str]
+        description: >
+          Lista com os nomes das tabelas de origem que devem ser consideradas
+          para a definição da data da última competência. Atualmente, são
+          aceitos os valores `bpa_i` e/ou `vinculos_profissionais`.
+
+          Caso a lista contenha mais de uma fonte de dados, será considerada
+          como última competência o período mais recente para a qual houve
+          atualização *em ambas as fontes* (isto é, atualizações posteriores
+          em só uma ou algumas das fontes serão desconsideradas).
+      - name: meses_antes_ultima_competencia
+        type: tuple[int | None, int | None]
+        description: >
+          Tupla de valores indicando o número mínimo (primeiro valor) e máximo
+          (segundo valor) de meses antes da última competência a serem
+          considerados para a seleção. Ambas as extremidades do intervalo são
+          fechadas (incluídas no resultado).
+
+          Por exemplo, uma tupla `(0, 12)` implica selecionar os últimos 12
+          meses para os quais há dados carregados em todas as fontes
+          informadas. Já o valor `none` pode ser usado para informar um
+          intervalo infinito em algum dos dois lados; por exemplo, o intervalo
+          `(0, none)` (*default*) seleciona todos os valores até a última
+          competência - o que útil para remover competências futuras geradas
+          por cruzamentos como a do macro [`juntar_periodos_consecutivos()`][].
+
+          [`juntar_periodos_consecutivos()`]: #!/macro/macro.impulso_saude_mental.juntar_periodos_consecutivos
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression

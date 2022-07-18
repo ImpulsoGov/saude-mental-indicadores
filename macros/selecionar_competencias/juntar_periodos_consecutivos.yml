@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: juntar_periodos_consecutivos
+    description: >
+      Gera uma [*Common Table Expression* (CTE)][CTE] contendo os valores
+      dos campos especificados tanto nos períodos de referência da tabela
+      original quanto no período imediatamente anterior.
+
+      [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation
+        description: >
+          Objeto [Relation][] ou nome de uma CTE anterior que contém os dados
+          aos quais se pretende adicionar colunas com os valores da
+          competência imediatamente anterior.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+      - name: agrupar_por
+        type: list[str]
+        description: >
+          Uma lista de colunas que devem ser iguais entre as duas competências.
+          Por exemplo, é possível utilizar esse campo para comparar duas
+          competências para um mesmo estabelecimento de saúde 
+          (`agrupar_por=["estabelecimento_id_scnes"]`), etc.
+      - name: colunas_valores
+        type: list[str]
+        description: >
+          Nomes das colunas cujos valores para a competência de referência e
+          para a competência imediatamente anterior estarão nos resultados.
+      - name: periodo_tipo
+        type: str
+        description: >
+          Tipo da agregação temporal a que se refere o período. Atualmente, são
+          aceitos apenas os valores `Mensal` e `Quadrimestral`.
+      - name: coluna_periodo
+        type: str
+        description: >
+          Nome da coluna a ser utilizado para identificar o período de
+          referência. Por padrão, utiliza a coluna `periodo_id`.
+      - name: colunas_adicionais_periodo
+        type: list[str]
+        description: >
+          Lista de colunas que também identificam o período de referência, além
+          daquela informada por meio do argumento `coluna_periodo`. Por padrão,
+          inclui a coluna `periodo_data_inicio`. Para não utilizar nenhuma
+          coluna adicional de data, passe uma lista vazia (`[]`).
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression

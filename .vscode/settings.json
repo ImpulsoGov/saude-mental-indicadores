@@ -7,6 +7,7 @@
         "--profiles-dir ."
     ],
     "conventionalCommits.scopes": [
+        "referencias",
         "docs"
     ]
 }

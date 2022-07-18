@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+sources:
+
+  - name: siasus
+    schema: dados_publicos
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: bpa_i_disseminacao
+        identifier: siasus_bpa_i_disseminacao
+        description: >
+          Arquivo de disseminação dos Boletins de Produção Ambulatorial 
+          individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
+          SUS (SIASUS).
+
+      - name: procedimentos_disseminacao
+        identifier: siasus_procedimentos_ambulatoriais
+        description: >
+          Arquivo de disseminação dos procedimentos do Sistema de Informações
+          Ambulatoriais do SUS (SIASUS), incluindo informações resumidas de
+          diversos documentos (BPA-i, BPA-c, RAAS-PS, RAAS-AD, APAC-P, APAC-S).

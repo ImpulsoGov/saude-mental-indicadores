@@ -38,6 +38,18 @@ jobs:
       - name: Receber imagem Docker
         run: docker pull impulsogov/saude-mental-indicadores:latest
 
+      - name: create UDFs
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt run-operation
+          criar_udfs
+
       - name: seed
         run: >
           docker run
