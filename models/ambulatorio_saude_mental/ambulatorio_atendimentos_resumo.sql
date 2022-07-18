@@ -74,6 +74,19 @@ procedimentos_x_disponibilidade AS (
     manter_original=true,
     cte_resultado="procedimentos_x_disponibilidade_com_totais"
 ) }},
+{{  revelar_combinacoes_implicitas(
+    relacao="procedimentos_x_disponibilidade_com_totais",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus"
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["estabelecimento_id_cnes"],
+        ["ocupacao_id_cbo"]
+    ],
+    cte_resultado="com_combinacoes_vazias"
+) }},
 com_procedimentos_por_hora AS (
     SELECT
         *,
@@ -82,7 +95,7 @@ com_procedimentos_por_hora AS (
 			/ nullif(disponibilidade_mensal, 0)::numeric,
 			2
 		) AS procedimentos_por_hora
-    FROM procedimentos_x_disponibilidade_com_totais
+    FROM com_combinacoes_vazias
     {%- if is_incremental() %}
     WHERE atualizacao_data > (
         SELECT max(atualizacao_data) FROM {{ this }}

@@ -16,15 +16,15 @@ models:
     config:
       alias: referencias_atendimentos_resumo
       enabled: true
-      indexes:
-        - columns:
-          - "unidade_geografica_id"
-          - "unidade_geografica_id_sus"
-          - "periodo_id"
-          - "competencia"
-          - "estabelecimento"
-          - "ocupacao"
-          unique: true
+      # indexes:
+        # - columns:
+        #   - "unidade_geografica_id"
+        #   - "unidade_geografica_id_sus"
+        #   - "periodo_id"
+        #   - "competencia"
+        #   - "estabelecimento"
+        #   - "ocupacao"
+        #   unique: true
       materialized: incremental
       persist_docs:
         relation: true
