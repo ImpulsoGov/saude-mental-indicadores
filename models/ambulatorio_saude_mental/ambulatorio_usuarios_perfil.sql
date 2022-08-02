@@ -38,7 +38,7 @@ final AS (
             ELSE condicao_saude.grupo_descricao_curta_cid10
             END
         ) AS cid_grupo_descricao_curta,
-        count(DISTINCT usuario_cns_criptografado) FILTER (
+        count(DISTINCT usuario_id_cns_criptografado) FILTER (
             WHERE quantidade_apresentada > 0
         ) AS usuarios_unicos_mes,
         now() AS atualizacao_data

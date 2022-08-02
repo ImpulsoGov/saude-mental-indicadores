@@ -15,7 +15,7 @@ sources:
       identifier: false
     tables:
       - name: vinculos_profissionais
-        identifier: cnes_vinculos_disseminacao
+        identifier: scnes_vinculos_disseminacao
         description: >
           Arquivo de disseminação com dados de vínculos entre
           profissionais/prestadores de serviços e estabelecimentos de saúde

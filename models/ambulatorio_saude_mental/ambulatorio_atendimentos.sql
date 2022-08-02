@@ -24,15 +24,15 @@ bpa_i_referencias_ambulatoriais AS (
         now() AS atualizacao_data
     FROM bpa_i
     INNER JOIN estabelecimentos_referencia
-    USING (estabelecimento_id_cnes)
-    WHERE bpa_i.profissional_ocupacao_id_cbo IN (
+    USING (estabelecimento_id_scnes)
+    WHERE bpa_i.profissional_vinculo_ocupacao_id_cbo2002 IN (
         '251510',  -- psicólogos
         '225133'  -- psiquiatras
     )
 ),
 {{ classificar_faixa_etaria(
     relacao="bpa_i_referencias_ambulatoriais",
-    coluna_data_nascimento="usuario_data_nascimento",
+    coluna_nascimento_data="usuario_nascimento_data",
     coluna_data_referencia="realizacao_periodo_data_inicio",
     cte_resultado="final"
 )}}

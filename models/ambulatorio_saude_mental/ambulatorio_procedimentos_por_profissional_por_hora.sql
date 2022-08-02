@@ -24,21 +24,21 @@ atendimentos_por_profissional AS (
 		unidade_geografica_id_sus,
 		periodo_id,
         realizacao_periodo_data_inicio as periodo_data_inicio,
-		estabelecimento_id_cnes,
-		profissional_ocupacao_id_cbo AS ocupacao_id_cbo,
-        profissional_cns AS profissional_id_cns,  -- TODO: atualizar na fonte
+		estabelecimento_id_scnes,
+		profissional_vinculo_ocupacao_id_cbo2002 AS ocupacao_id_cbo2002,
+        profissional_id_cns,
 		sum(quantidade_apresentada) AS procedimentos_realizados,
         max(atualizacao_data) AS atualizacao_data
 	FROM referencias_atendimentos
-    WHERE profissional_cns IS NOT NULL
+    WHERE profissional_id_cns IS NOT NULL
 	GROUP BY 
 		unidade_geografica_id,
 		unidade_geografica_id_sus,
 		periodo_id,
         realizacao_periodo_data_inicio,
-		estabelecimento_id_cnes,
-		profissional_ocupacao_id_cbo,
-        profissional_cns
+		estabelecimento_id_scnes,
+		profissional_vinculo_ocupacao_id_cbo2002,
+        profissional_id_cns
 ),
 procedimentos_x_disponibilidade AS (
     SELECT
@@ -52,9 +52,9 @@ procedimentos_x_disponibilidade AS (
         procedimento.unidade_geografica_id
         = disponibilidade.unidade_geografica_id
     AND procedimento.periodo_id = disponibilidade.periodo_id
-    AND procedimento.estabelecimento_id_cnes
-        = disponibilidade.estabelecimento_id_cnes
-    AND procedimento.ocupacao_id_cbo = disponibilidade.ocupacao_id_cbo
+    AND procedimento.estabelecimento_id_scnes
+        = disponibilidade.estabelecimento_id_scnes
+    AND procedimento.ocupacao_id_cbo2002 = disponibilidade.ocupacao_id_cbo2002
     AND procedimento.profissional_id_cns = ANY(
         disponibilidade.profissional_ids_cns
     )
@@ -76,8 +76,8 @@ procedimentos_x_disponibilidade AS (
         "profissional_nome"
     ],
     colunas_a_totalizar=[
-        "estabelecimento_id_cnes",
-        "ocupacao_id_cbo",
+        "estabelecimento_id_scnes",
+        "ocupacao_id_cbo2002",
     ],
     nomes_categorias_com_totais=[
         "0000000",
@@ -107,8 +107,8 @@ final AS (
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "periodo_id",
-            "estabelecimento_id_cnes",
-            "ocupacao_id_cbo",
+            "estabelecimento_id_scnes",
+            "ocupacao_id_cbo2002",
             "profissional_id_cpf_criptografado",
             "profissional_nome"
         ]) }} AS id,
@@ -129,8 +129,8 @@ final AS (
         now() AS atualizacao_data
     FROM com_procedimentos_por_hora pph
     LEFT JOIN ocupacoes ocupacao
-    ON pph.ocupacao_id_cbo = ocupacao.id_cbo2002
+    ON pph.ocupacao_id_cbo2002 = ocupacao.id_cbo2002
     LEFT JOIN estabelecimentos estabelecimento
-    ON pph.estabelecimento_id_cnes = estabelecimento.id_scnes
+    ON pph.estabelecimento_id_scnes = estabelecimento.id_scnes
 )
 SELECT * FROM final

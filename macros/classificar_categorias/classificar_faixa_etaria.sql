@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 {%- macro 
     classificar_faixa_etaria(
         relacao,
-        coluna_data_nascimento,
+        coluna_nascimento_data,
         coluna_data_referencia,
         idade_tipo="Anos",
         colunas_faixa_etaria=["id", "descricao", "ordem"],
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     )
 -%}
 {%- set idade -%}
-AGE(t.{{ coluna_data_referencia }}, t.{{ coluna_data_nascimento }})
+AGE(t.{{ coluna_data_referencia }}, t.{{ coluna_nascimento_data }})
 {%- endset -%}
 {%- set
     partes_data = {
