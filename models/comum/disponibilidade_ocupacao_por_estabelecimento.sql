@@ -20,8 +20,8 @@ disponibilidade_por_dia_util AS (
     SELECT
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo,
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002,
         sum(
             atendimento_carga_ambulatorial
             + atendimento_carga_outras
@@ -31,15 +31,15 @@ disponibilidade_por_dia_util AS (
     GROUP BY 
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002
 ),
 final AS (
     SELECT
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo,
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002,
         (
             horas_disponibilidade_diaria
             * {{ schema }}.diferenca_dias_uteis(

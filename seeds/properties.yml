@@ -53,9 +53,9 @@ seeds:
     config:
       quote_columns: true
       column_types:
-        estabelecimento_id_cnes: "bpchar(7)"
+        estabelecimento_id_scnes: "bpchar(7)"
     columns:
-      - name: estabelecimento_id_cnes
+      - name: estabelecimento_id_scnes
         description: >
           Código do estabelecimento com atendimento de referência ambulatorial
           em saúde mental, segundo o SCNES.
