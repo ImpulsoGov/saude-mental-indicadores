@@ -17,8 +17,8 @@ disponibilidade_por_dia_util AS (
     SELECT
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo,
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002,
 		profissional_id_cpf_criptografado,
 		array_agg(profissional_id_cns) as profissional_ids_cns,
         profissional_nome,
@@ -31,8 +31,8 @@ disponibilidade_por_dia_util AS (
     GROUP BY 
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo,
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002,
 		profissional_id_cpf_criptografado,
         profissional_nome
 ),
@@ -40,8 +40,8 @@ final AS (
     SELECT
         unidade_geografica_id,
         periodo_id,
-        estabelecimento_id_cnes,
-        ocupacao_id_cbo,
+        estabelecimento_id_scnes,
+        ocupacao_id_cbo2002,
 		profissional_id_cpf_criptografado,
 		profissional_ids_cns,
         profissional_nome,

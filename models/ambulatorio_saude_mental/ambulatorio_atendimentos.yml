@@ -26,7 +26,7 @@ models:
           - "faixa_etaria_id"
           - "faixa_etaria_ordem"
         - columns:
-          - "profissional_cns"
+          - "profissional_id_cns"
       materialized: incremental
       persist_docs:
         relation: true

@@ -10,7 +10,7 @@ models:
     description: >
       Número de horas de disponibilidade **não-hosipitalar** (carga
       ambulatorial e "outras") dos profissionais com vínculo com o SUS,
-      por categoria profissional (CBO) e por estabelecimento de saúde (CNES).
+      por categoria profissional (CBO) e por estabelecimento de saúde (SCNES).
     config:
       enabled: true
       materialized: ephemeral
