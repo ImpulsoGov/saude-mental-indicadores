@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_tempo_servico
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com uma
+      data de referência e uma data de início do contato de uma
+      pessoa com um estabelecimento, devolve uma CTE que contém os campos
+      `tempo_servico_id`, `tempo_servico_descricao` e `tempo_servico_ordem`
+      referentes a categoria correspondente à duração do vínculo segundo a
+      tabela 
+      [`intervalos_tempo_servico`](https://impulsogov.github.io/saude-mental-indicadores/#!/seed/seed.impulso_saude_mental.intervalos_tempo_servico)
+      .
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] que contém os dados dos
+          vínculos que se deseja classificar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: coluna_primeiro_procedimento
+        type: str
+        description: >
+          Nome da coluna com a data do primeiro contato com o estabelecimento.
+      - name: coluna_data_referencia
+        type: str
+        description: >
+          Nome da coluna com a data de referência final para a contagem da
+          duração do vínculo com o estabelecimento.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.
