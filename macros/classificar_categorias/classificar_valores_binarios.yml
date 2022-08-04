@@ -16,8 +16,10 @@ macros:
       ```sql
       SELECT
         -- ...,
+        {% raw %}
         {{ classificar_valores_binarios("nome_coluna_booleanos") }}
           AS nome_coluna_transformada
+        {% endraw %}
       -- ...
       ```
     docs:
