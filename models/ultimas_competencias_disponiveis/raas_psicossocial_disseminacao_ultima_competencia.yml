@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: raas_psicossocial_disseminacao_ultima_competencia
+    description: >
+      Lista as últimas competências para as quais houve disponibilização dos
+      arquivos de disseminação dos Registros de Ações Ambulatorias em Saúde
+      (RAAS) do Sistema de Informações Ambulatoriais do SUS (SIASUS), para cada
+      município.
+    config:
+      alias: _raas_psicossocial_disseminacao_ultima_competencia
+      enabled: true
+      indexes:
+        - columns:
+            - "unidade_geografica_id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "raas"
