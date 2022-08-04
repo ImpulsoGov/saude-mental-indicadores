@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_usuarios_ativos_por_estabelecimento_resumo
+    description: >
+      Relaciona números gerais da composição do público dos CAPS, incluindo o
+      total de usuários que tiveram o prontuário movimentado no período de
+      referência; aqueles que tiveram movimentação do prontuário em alguma das
+      três competências até a atual ("usuários ativos"); os que estão
+      completando na competência de referência quatro meses sem movimentação no
+      prontuário (prontuário "tornando-se inativo"); o sexo predominante e a
+      idade média dos usuários ativos.
+      
+      Os valores são somados para cada estabelecimento de saúde (apenas CAPS) e
+      período de referência, incluindo uma categoria que agrupa todos os
+      estabelecimentos de saúde de cada município.
+      
+      Os valores tem como base os dados enviados mensalmente ao Sistema
+      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
+      Departamento de Informática do SUS (DATASUS) em seu FTP público.
+    config:
+      alias: caps_usuarios_ativos_por_estabelecimento_resumo
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "usuarios_ativos"
