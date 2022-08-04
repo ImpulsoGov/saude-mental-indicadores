@@ -28,7 +28,8 @@ macros:
         description: >
           Lista com os nomes das tabelas de origem que devem ser consideradas
           para a definição da data da última competência. Atualmente, são
-          aceitos os valores `bpa_i` e/ou `vinculos_profissionais`.
+          aceitos os valores `bpa_i_disseminacao`,
+          `raas_psicossocial_disseminacao` e/ou `vinculos_profissionais`.
 
           Caso a lista contenha mais de uma fonte de dados, será considerada
           como última competência o período mais recente para a qual houve
