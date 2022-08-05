@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 {{ cte_resultado }} AS (
 SELECT
     t.*,
-    {% if valor_todos is not none -%}
+    {% if todos_estabelecimentos_id is not none -%}
     (
         CASE
             WHEN
@@ -25,12 +25,11 @@ SELECT
         ELSE
 {%- endif %}    coalesce(
                 estabelecimento.estabelecimento_nome_curto,
-                estabelecimento.estabelecimento_nome,
-                'Todos'
+                estabelecimento.estabelecimento_nome
             )
-    {%- if valor_todos is not none -%}
+    {%- if todos_sexos_id is not none -%}
         END
-    ){%- endif -%} AS {{ coluna_estabelecimento_nome}}
+    ){%- endif %} AS {{ coluna_estabelecimento_nome}}
 FROM {{ relacao }} t
 LEFT JOIN (
     SELECT 
