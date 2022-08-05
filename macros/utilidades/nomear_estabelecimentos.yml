@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: nomear_estabelecimentos
+    description: >
+      Retorna uma versão da tabela de entrada em que uma ou mais colunas têm os
+      valores nulos substituídos pela última entrada válida.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém registros por estabelecimento de saúde, cujo nome se pretende
+          apensar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: 
+      - name: coluna_estabelecimento_nome
+        type: str
+        description: >
+          Identificação da coluna contendo o nome do estabelecimento na CTE
+          devolvida como resultado. Por padrão, assume o valor
+          `'estabelecimento_nome'`.
+      - name: coluna_estabelecimento_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único do estabelecimento
+          de saúde, que deve estar presente também na tabela
+          [`listas_de_codigos.estabelecimentos`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.estabelecimentos)
+          . Por padrão, assume o valor `estabelecimento_id_scnes`, mas o valor
+          `estabelecimento_id` (para o identificador nativo do banco da Impulso
+          Gov) também é suportado.
+      - name: todos_estabelecimentos_id
+        type: str | None
+        description: >
+          Um valor opcional que deve ser considerado como sinônimo de
+          "todos os estabelecimentos" para uma determinada unidade geográfica
+          ou outra unidade de agregação. Por padrão, assume o valor
+          `'0000000'`. Se o valor passado for `none`, considera-se que não há
+          agregação de estabelecimentos na tabela de origem.
+      - name: todos_estabelecimentos_valor
+        type: str
+        description: >
+          Um valor para identificar uma agregação de todos os estabelecimentos
+          para uma unidade geográfica ou outra unidade de agregação. Por
+          padrão, assume o valor `'Todos'`. Se o valor passado para o argumento
+          `todos_estabelecimentos_id` for `none`, este argumento é ignorado.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
