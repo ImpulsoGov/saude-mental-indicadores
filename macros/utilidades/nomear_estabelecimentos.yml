@@ -8,8 +8,11 @@ version: 2
 macros:
   - name: nomear_estabelecimentos
     description: >
-      Retorna uma versão da tabela de entrada em que uma ou mais colunas têm os
-      valores nulos substituídos pela última entrada válida.
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com
+      identificadores de estabelecimentos de saúde, gera a definição de uma
+      nova CTE com todos os campos de origem e mais um campo com o nome desses
+      estabelecimentos. 
     docs:
       show: true
     arguments:
