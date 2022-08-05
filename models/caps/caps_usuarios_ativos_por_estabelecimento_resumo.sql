@@ -102,7 +102,7 @@ idade_media AS (
 		periodo_data_inicio,
 		estabelecimento_id_scnes
 ),
-final AS (
+resumo AS (
     SELECT
 		{{ dbt_utils.surrogate_key([
 			"unidade_geografica_id",
@@ -125,7 +125,7 @@ final AS (
 		(
 			tornandose_inativos - tornandose_inativos_anterior
 		) AS dif_tornandose_inativos_anterior,
-        sexo_predominante.sexo_predominante_id_sigtap,
+        sexo_predominante.sexo_predominante_id_sigtap AS sexo_id_sigtap,
         sexo_predominante.sexo_predominante_quantidade,
         idade_media.usuarios_idade_media,
 		now() AS atualizacao_data
@@ -146,5 +146,20 @@ final AS (
 		periodo_data_inicio,
 		estabelecimento_id_scnes
 	)
-)
+),
+{{ nomear_sexos(
+    relacao="resumo",
+	coluna_sexo_nome="sexo",
+	todos_sexos_id=none,
+    cte_resultado="com_nomes_sexos"
+) }},
+{{ classificar_caps_linha(
+    relacao="com_nomes_sexos",
+    cte_resultado="com_linhas_cuidado"
+) }},
+{{ nomear_estabelecimentos(
+    relacao="com_linhas_cuidado",
+	coluna_estabelecimento_nome="estabelecimento",
+    cte_resultado="final"
+) }}
 SELECT * FROM final
