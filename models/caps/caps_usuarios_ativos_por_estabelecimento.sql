@@ -67,7 +67,9 @@ por_estabelecimento_com_total_municipio AS (
 		"estabelecimento_id_scnes"
 	],
 	colunas_valores=[
+        "ativos_mes",
 		"ativos_3meses",
+        "tornandose_inativos"
 	],
 	periodo_tipo="Mensal",
 	coluna_periodo="periodo_id",

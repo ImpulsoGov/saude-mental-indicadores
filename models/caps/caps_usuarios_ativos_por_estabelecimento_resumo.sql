@@ -105,35 +105,46 @@ idade_media AS (
 final AS (
     SELECT
 		{{ dbt_utils.surrogate_key([
-			"usuarios_ativos_por_estabelecimento.periodo_id",
-			"usuarios_ativos_por_estabelecimento.estabelecimento_id_scnes"
+			"unidade_geografica_id",
+			"estabelecimento_id_scnes",
+			"periodo_id"
 		]) }} AS id,
-        usuarios_ativos_por_estabelecimento.*,
+        unidade_geografica_id,
+		unidade_geografica_id_sus,
+		periodo_id,
+		periodo_data_inicio,
+		estabelecimento_id_scnes,
+		ativos_mes,
+		ativos_3meses,
+		tornandose_inativos,
+		ativos_mes_anterior,
+		ativos_3meses_anterior,
+		tornandose_inativos_anterior,
+		(ativos_mes - ativos_mes_anterior) AS dif_ativos_mes_anterior,
+		(ativos_3meses - ativos_3meses_anterior) AS dif_ativos_3meses_anterior,
+		(
+			tornandose_inativos - tornandose_inativos_anterior
+		) AS dif_tornandose_inativos_anterior,
         sexo_predominante.sexo_predominante_id_sigtap,
         sexo_predominante.sexo_predominante_quantidade,
-        idade_media.usuarios_idade_media
+        idade_media.usuarios_idade_media,
+		now() AS atualizacao_data
     FROM usuarios_ativos_por_estabelecimento
     FULL JOIN sexo_predominante
-    ON 
-        usuarios_ativos_por_estabelecimento.unidade_geografica_id
-        = sexo_predominante.unidade_geografica_id
-    AND usuarios_ativos_por_estabelecimento.unidade_geografica_id_sus
-        = sexo_predominante.unidade_geografica_id_sus
-    AND usuarios_ativos_por_estabelecimento.periodo_id
-		= sexo_predominante.periodo_id
-    AND usuarios_ativos_por_estabelecimento.periodo_data_inicio
-        = sexo_predominante.periodo_data_inicio
-    AND usuarios_ativos_por_estabelecimento.estabelecimento_id_scnes
-        = sexo_predominante.estabelecimento_id_scnes
+    USING (
+        unidade_geografica_id,
+		unidade_geografica_id_sus,
+		periodo_id,
+		periodo_data_inicio,
+		estabelecimento_id_scnes
+	)
     FULL JOIN idade_media
-    ON 
-        sexo_predominante.unidade_geografica_id
-		= idade_media.unidade_geografica_id
-    AND sexo_predominante.unidade_geografica_id_sus
-        = idade_media.unidade_geografica_id_sus
-    AND sexo_predominante.periodo_id = idade_media.periodo_id
-    AND sexo_predominante.periodo_data_inicio = idade_media.periodo_data_inicio
-    AND sexo_predominante.estabelecimento_id_scnes
-		= idade_media.estabelecimento_id_scnes
+    USING ( 
+        unidade_geografica_id,
+		unidade_geografica_id_sus,
+		periodo_id,
+		periodo_data_inicio,
+		estabelecimento_id_scnes
+	)
 )
 SELECT * FROM final

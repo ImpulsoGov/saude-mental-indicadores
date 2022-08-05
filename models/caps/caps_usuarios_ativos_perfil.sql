@@ -102,6 +102,7 @@ por_estabelecimentos AS (
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id",
             "estabelecimento_id_scnes",
             "periodo_id",
             "usuario_tempo_servico_id",
