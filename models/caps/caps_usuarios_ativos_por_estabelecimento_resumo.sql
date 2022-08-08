@@ -160,6 +160,10 @@ resumo AS (
 {{ nomear_estabelecimentos(
     relacao="com_linhas_cuidado",
 	coluna_estabelecimento_nome="estabelecimento",
-    cte_resultado="final"
+    cte_resultado="com_nomes_estabelecimentos"
+) }},
+{{ adicionar_datas_legiveis(
+	relacao="com_nomes_estabelecimentos",
+	cte_resultado="final"
 ) }}
 SELECT * FROM final
