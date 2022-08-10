@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: preparar_uso_externo
+    description: >
+      Retorna uma versão da tabela de entrada em que uma ou mais colunas têm os
+      valores nulos substituídos pela última entrada válida.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str
+        description: >
+          Nome de um modelo do dbt que representa uma tabela ou view no banco
+          de dados.
+      - name: remover_ids
+        type: bool
+        description: >
+          Indica se as colunas com identificadores devem ser removidas da
+          tabela final. As colunas são identificadas pela existência do sufixo
+          `_id` ou de um trecho `_id_` no nome. Por padrão, o valor é `true`. 
+      - name: remover_ids_exceto
+        type: list[str]
+        description: >
+          Uma lista com nomes de colunas que determina exceções no processo de
+          exclusão de colunas de identificadores, quando o valor do argumento
+          `remover_ids` é `true` (se o valor for `false`, este argumento é
+          ignorado). Por padrão, não são removidas as colunas 
+          `['unidade_geografica_id', 'unidade_geografica_id_sus',
+          'periodo_id']`.
+      - name: sufixos_a_eliminar
+        type: list[str]
+        description: >
+          Um lista com padrões de sufixos que devem ser removidos dos nomes de
+          colunas sempre que forem identificados na `relacao` de origem. Por
+          padrão, são removidos os sufixos `['_nome', '_descricao']`.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta. Por padrão, o nome da CTE é `'final'`.
