@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+
+  - name: adicionar_datas_legiveis
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) *com
+      um campo `periodo_data_inicio` que identifique o início da competência de
+      referência e um campo `unidade_geografica_id` que identifique o muncípio
+      de referência*, devolve uma CTE com so campos originais e mais os campos:
+
+      - `periodo`, com uma representação da competência de referência no
+      formato `'Mes/AA'`, em que `Mes` é a abreviação de três letras do mês e
+      `AA`; *EXCETO* se a competência for a última com dados disponíveis para o
+      município, já que nesse caso o valor será sempre `'Último periodo'`;
+      - `nome_mes`, com o nome do mês da competência de referência por extenso
+      (indiferente a ser ou não a última competência);
+      - e `periodo_ordem`, com um valor numérico que permite ordenar as
+      competências em ordem crescente ou decrescente.
+
+    docs:
+      show: true
+
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto
+          [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) ou
+          nome de uma
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém registros com os campos necessários (`periodo_data_inicio` e
+          `unidade_geografica_id`), além de quaisquer outros campos adicionais.
+
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.

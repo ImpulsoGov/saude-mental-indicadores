@@ -1,0 +1,65 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: nomear_sexos
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com
+      identificadores de sexo biológico, gera a definição de uma nova CTE com
+      todos os campos de origem e mais um campo com a descrição legível das
+      categorias de sexo.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém registros por sexo, cujo nome se pretende
+          apensar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: 
+      - name: coluna_sexo_nome
+        type: str
+        description: >
+          Identificação da coluna contendo o nome da categoria de sexo na CTE
+          devolvida como resultado. Por padrão, assume o valor
+          `'sexo_nome'`.
+      - name: coluna_sexo_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único da categoria do
+          sexo, que deve estar presente também na tabela
+          [`listas_de_codigos.sexos`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.sexos)
+          . Por padrão, assume o valor `sexo_id_sigtap`, mas o valor `sexo_id`
+          (para o identificador nativo do banco da Impulso Gov) também é
+          suportado.
+      - name: todos_sexos_id
+        type: str | None
+        description: >
+          Um valor opcional que deve ser considerado como sinônimo de
+          "todos os sexos" para uma determinada unidade geográfica
+          ou outra unidade de agregação. Por padrão, assume o valor
+          `'0'`. Se o valor passado for `none`, considera-se que não há
+          agregação de sexos na tabela de origem.
+      - name: todos_sexos_valor
+        type: str
+        description: >
+          Um valor para identificar uma agregação de todos os sexos
+          para uma unidade geográfica ou outra unidade de agregação. Por
+          padrão, assume o valor `'Todos'`. Se o valor passado para o argumento
+          `todos_sexos_id` for `none`, este argumento é ignorado.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression

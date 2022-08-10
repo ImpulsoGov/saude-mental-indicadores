@@ -1,0 +1,6 @@
+"id","minimo","maximo","descricao","ordem"
+"062ec07c-b7d2-7a0f-b2d2-823aa93a9527","0 mon","7 mon","Até 6 meses",0.5
+"062ec087-0280-7171-b5ea-3b49dc7cf061","7 mon","1 year","6 meses a 1 ano",1.0
+"062ec087-80b4-7ea9-8dd9-3536e4ee27c5","1 year","2 year","1 a 2 anos",2.0
+"062ec088-08e8-7f08-b406-c5f1b92ce4c3","2 year","5 year","2 a 5 anos",5.0
+"062ec088-903b-7774-a5f0-d7530a2842c1","5 year","99 year","5 anos ou mais",99.9

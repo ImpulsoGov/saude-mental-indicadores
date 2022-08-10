@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_procedimentos_individualizaveis
+    description: >
+      Atendimentos em Centros de Atenção Psicossocial (CAPS) nos quais há
+      informação do usuário de maneira individualizada\*. Utiliza dados dos  
+      Boletins de Produção Ambulatorial individualizados (BPA-i) e dos
+      Registros de Ações Ambulatoriais em Saúde (RAAS), ambos enviados
+      mensalmente ao Sistema de Informações Ambulatoriais do SUS (SIASUS) e
+      disponibilizado pelo Departamento de Informática do SUS (DATASUS) em seu
+      FTP público.
+    config:
+      alias: _caps_procedimentos_individualizaveis
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
+        - columns:
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "procedimento_id_sigtap"
+      materialized: incremental
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "incremental"

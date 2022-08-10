@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_faixa_etaria
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com uma
+      data de referência e uma data de início do contato de uma
+      pessoa com um estabelecimento, devolve uma CTE que contém os campos
+      `faixa_etaria_id`, `faixa_etaria_descricao` e `faixa_etaria_ordem`
+      referentes a categoria correspondente à faixa etária do usuários,
+      conforme a tabela `listas_de_codigos.faixas_etarias`.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] que contém os dados dos
+          usuários cujas idades se deseja classificar em faixas etárias.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: coluna_nascimento_data
+        type: str
+        description: >
+          Nome da coluna com a data de nascimento do usuário.
+      - name: coluna_data_referencia
+        type: str
+        description: >
+          Nome da coluna com a data de referência final para a contagem da
+          idade do usuário.
+      - name: idade_tipo
+        type: str
+        description: >
+          Unidade de medida das idades. Atualmente, apenas o valor `Anos` é
+          aceito, e esse é o padrão caso nenhum valor seja informado.
+      - name: colunas_faixa_etaria
+        type: list[str]
+        description: >
+          Lista das colunas da tabela `listas_de_codigos.faixas_etarias` que
+          devem aparecer no resultado (além das colunas da tabela ou CTE
+          original). Por padrão, inclui as colunas
+          `["id", "descricao", "ordem"]`.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.

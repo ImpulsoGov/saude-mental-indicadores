@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_valores_binarios
+    description: >
+      Transforma os valores de uma coluna de booleanos em categorias com
+      descrições legíveis ("Sim", "Não", "Sem informação"...).
+
+      Deve ser aplicado no lugar da coluna em cláusulas `SELECT`:
+
+      ```sql
+      SELECT
+        -- ...,
+        {% raw %}
+        {{ classificar_valores_binarios("nome_coluna_booleanos") }}
+          AS nome_coluna_transformada
+        {% endraw %}
+      -- ...
+      ```
+    docs:
+      show: true
+    arguments:
+      - name: coluna_valores
+        type: str
+        description: >
+          Nome da coluna com tipo `boolean`, cujos valores serão renomeados
+          para categorias com descrições legíveis.
+      - name: valor_verdadeiro
+        type: str
+        description: >
+          Descrição da categoria a ser aplicada a valores verdadeiros. Por
+          padrão, o valor é `'Sim'`.
+      - name: valor_falso
+        type: str
+        description: >
+          Descrição da categoria a ser aplicada a valores falsos. Por padrão, o
+          valor é `'Não'`.
+      - name: valor_nulo
+        type: str
+        description: >
+          Descrição da categoria a ser aplicada a valores nulos. Por padrão, o
+          valor é `'Sem informação'`.

@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: preencher_ultimo_nao_nulo
+    description: >
+      Retorna uma versão da tabela de entrada em que uma ou mais colunas têm os
+      valores nulos substituídos pela última entrada válida.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto [Relation][] ou nome de uma [CTE][] que representa a tabela ou
+          consulta na qual se pretende calcular os subtotais.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: agrupar_por
+        type: list[str]
+        description: >
+          Uma lista de nomes de colunas que delimita combinações de registros
+          dentro dos quais o último valor não nulo para as colunas do argumento
+          `colunas_a_preencher` será buscado e carregado adiante até o próximo
+          valor não nulo.
+      - name: ordenar_por
+        type: list[str]
+        description: >
+          Uma lista de nomes de colunas que definem a ordem em que os registros
+          serão dispostos ao realizar o preenchimento. Esse valor pode ser uma
+          data (por exemplo, `periodo_data_inicio`), de modo que os valores da
+          última competência com dados válidos para os campos indicados no
+          argumento `colunas_a_preencher` serão carregados até o próximo mês em
+          que haja um valor não nulo.
+      - name: colunas_a_preencher
+        type: list[str]
+        description: >
+          Uma lista de nomes de colunas cujos valores serão preenchidos na
+          tabela final, utilizando o último valor não nulo disponível.
+      - name: colunas_manter
+        type: list[str]
+        description: >
+          Uma lista opcional de colunas a serem reproduzidas sem alterações no
+          resultado. Por padrão, é uma lista vazia - isto é, todas as colunas
+          não referenciadas nos argumentos `agrupar_por`, `ordenar_por` ou
+          `colunas_a_preencher` são excluídas do resultado final.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression

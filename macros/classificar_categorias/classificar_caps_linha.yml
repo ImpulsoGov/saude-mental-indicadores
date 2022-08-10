@@ -1,0 +1,77 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_caps_linha
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com o nome
+      de um Centro de Atenção Psicossocial, estima a qual linha de cuidados por
+      perfil atendido (álcool e outras drogas ou Transtornos) e idade
+      (adulto ou infantil/infanto-juvenil) o estabelecimento se dedica.
+
+      *ATENÇÃO*: Os parâmetros e o funcionamento deste macro têm previsão de
+      mudanças em breve.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] que contém os dados do
+          estabelecimento cuja linha se deseja classificar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+      - name: coluna_linha_perfil
+        type: str
+        description: >
+          Identificação da coluna contendo o nome da linha de cuidados
+          correspondente ao perfil de demandas em que o CAPS se especializa
+          (`'Álcool e outras drogas'` ou `'Transtornos'`). Por padrão, assume
+          o valor `estabelecimento_linha_perfil`.
+      - name: coluna_linha_idade
+        type: str
+        description: >
+          Identificação da coluna contendo o nome da linha de cuidados
+          correspondente ao à idade do público em que o CAPS se especializa
+          (`'Adulto'` ou `'Infantil/Infanto-Juvenil'`). Por padrão, assume
+          o valor `estabelecimento_linha_idade`.
+      - name: coluna_estabelecimento_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único do estabelecimento
+          de saúde, que deve estar presente também na tabela
+          [`listas_de_codigos.estabelecimentos`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.estabelecimentos)
+          . Por padrão, assume o valor `estabelecimento_id_scnes`, mas o valor
+          `estabelecimento_id` (para o identificador nativo do banco da Impulso
+          Gov) também é suportado.
+      - name: todos_estabelecimentos_id
+        type: str | None
+        description: >
+          Um valor opcional que deve ser considerado como sinônimo de
+          "todos os estabelecimentos" para uma determinada unidade geográfica
+          ou outra unidade de agregação. Por padrão, assume o valor
+          `'0000000'`. Se o valor passado for `none`, considera-se que não há
+          agregação de estabelecimentos na tabela de origem.
+      - name: todas_linhas_valor
+        type: str
+        description: >
+          Um valor para identificar uma agregação de todos os estabelecimentos
+          de todas as linhas para uma unidade geográfica ou outra unidade de
+          agregação. Por padrão, assume o valor `'Todas'`. Se o valor passado
+          para o argumento `todos_estabelecimentos_id` for `none`, este
+          argumento é ignorado.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta. Por padrão, assume o valor 
+          `'com_linhas_cuidado'`.

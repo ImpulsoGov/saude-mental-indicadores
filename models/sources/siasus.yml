@@ -29,3 +29,10 @@ sources:
           Arquivo de disseminação dos procedimentos do Sistema de Informações
           Ambulatoriais do SUS (SIASUS), incluindo informações resumidas de
           diversos documentos (BPA-i, BPA-c, RAAS-PS, RAAS-AD, APAC-P, APAC-S).
+
+      - name: raas_psicossocial_disseminacao
+        identifier: _siasus_raas_psicossocial_disseminacao
+        description: >
+          Arquivo de disseminação dos Registros das Ações Ambulatorias de Saúde
+          - Psicossociais (RAAS-PS) do Sistema de Informações Ambulatoriais do
+          SUS (SIASUS).
