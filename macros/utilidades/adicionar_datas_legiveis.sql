@@ -26,7 +26,7 @@ ultimas_competencias AS (
 ),
 {{ cte_resultado }} AS (
     SELECT
-        *,
+        t.*,
         (
             CASE
                 WHEN periodo_data_inicio = ultima_competencia
@@ -64,11 +64,11 @@ ultimas_competencias AS (
                 WHEN {{ mes }} = 12 THEN 'Dezembro'
             END
         ) AS nome_mes,
-        (
-            to_char(periodo_data_inicio, 'YY')::int + {{ mes }}/100)::numeric,
+        round(
+            (to_char(periodo_data_inicio, 'YY')::int + {{ mes }}/100)::numeric,
             2
         ) AS periodo_ordem
-    FROM {{ relacao }}
+    FROM {{ relacao }} t
     LEFT JOIN ultimas_competencias
     USING (unidade_geografica_id)
 )
