@@ -79,7 +79,7 @@ $ docker run \
 > --env-file=".env" \
 > --mount type=bind,source="$(pwd)/logs",destination="/usr/app/dbt/logs" \
 > --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target" \
-> dbt run -t analitico
+> impulsogov/saude-mental-indicadores:latest dbt run -t analitico
 ```
 
 No caso da utilização com GitHub Actions, a execução desses comandos é
