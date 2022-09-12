@@ -102,7 +102,7 @@ idade_media AS (
 		periodo_data_inicio,
 		estabelecimento_id_scnes
 ),
-final AS (
+resumo AS (
     SELECT
 		{{ dbt_utils.surrogate_key([
 			"unidade_geografica_id",
@@ -146,5 +146,14 @@ final AS (
 		periodo_data_inicio,
 		estabelecimento_id_scnes
 	)
-)
+),
+{{ ultimas_competencias(
+    relacao="final",
+    fontes=[
+		"raas_psicossocial_disseminacao",
+		"bpa_i_disseminacao"
+	],
+    meses_antes_ultima_competencia=(0, none),
+    cte_resultado="final"
+) }}
 SELECT * FROM final
