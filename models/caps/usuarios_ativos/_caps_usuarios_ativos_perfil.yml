@@ -6,8 +6,12 @@
 version: 2
 
 models:
-  - name: caps_usuarios_ativos_perfil
+  - name: _caps_usuarios_ativos_perfil
     description: >
+      *Modelo para uso interno no dbt**. Ver modelo 
+      [`caps_usuarios_ativos_perifl`](https://impulsogov.github.io/saude-mental-indicadores/#!/model/model.impulso_saude_mental.caps_usuarios_ativos_perfil)
+      para a versão final.
+
       Número de usuários que tiveram movimentação do prontuário na competência
       de referência (usuários que "frequentaram no mês"); dos que tiveram
       movimentação do prontuário em alguma das três competências até a atual
@@ -23,20 +27,9 @@ models:
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
       Departamento de Informática do SUS (DATASUS) em seu FTP público.
     config:
-      alias: caps_usuarios_ativos_perfil
+      alias: _caps_usuarios_ativos_perfil
       enabled: true
-      indexes:
-        - columns:
-          - "id"
-          unique: true
-        - columns:
-          - "competencia"
-          - "periodo_id"
-        - columns:
-          - "unidade_geografica_id_sus"
-          - "unidade_geografica_id"
-          - "estabelecimento"
-      materialized: table
+      materialized: view
       persist_docs:
         relation: true
       tags:
