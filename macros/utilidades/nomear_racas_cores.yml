@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: nomear_racas_cores
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com
+      identificadores de categorias de raça/cor, gera a definição de uma nova
+      CTE com todos os campos de origem e mais um campo com a descrição
+      legível de raça/cor.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: str | Relation
+        description: >
+          Objeto
+          [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) ou
+          nome de uma
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém registros por raça/cor, cujo nome se pretende apensar.
+      - name: coluna_raca_cor_nome
+        type: str
+        description: >
+          Identificação da coluna contendo o nome da categoria de raça/cor na CTE
+          devolvida como resultado. Por padrão, assume o valor
+          `'raca_cor_nome'`.
+      - name: coluna_raca_cor_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único da categoria de
+          raça/cor, que deve estar presente também na tabela
+          [`listas_de_codigos.racas_cores`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.racas_cores)
+          . Por padrão, assume o valor `raca_cor_id_sigtap`, mas o valor
+          `raca_cor_id` (para o identificador nativo do banco da Impulso Gov)
+          também é suportado.
+      - name: todos_racas_cores_id
+        type: str | None
+        description: >
+          Um valor opcional que deve ser considerado como sinônimo de
+          "todas as raças/cores" para uma determinada unidade geográfica ou
+          outra unidade de agregação. Por padrão, assume o valor `'0'`. Se o
+          valor passado for `none`, considera-se que não há agregação de
+          raças/cores na tabela de origem.
+      - name: todos_racas_cores_valor
+        type: str
+        description: >
+          Um valor para identificar uma agregação de todas as raças/cores para
+          uma unidade geográfica ou outra unidade de agregação. Por padrão,
+          assume o valor `'Todos'`. Se o valor passado para o argumento
+          `todos_racas_cores_id` for `none`, este argumento é ignorado.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.

@@ -36,6 +36,15 @@ SPDX-License-Identifier: MIT
 ) }},
 {%- set ultima_cte = "com_nomes_sexos" -%}
 {%- endif %}
+{%- if "raca_cor_id_sigtap" in colunas %}
+{{ nomear_racas_cores(
+    relacao=ultima_cte,
+	coluna_raca_cor_nome="raca_cor",
+	todos_racas_cores_id=none,
+    cte_resultado="com_nomes_racas_cores"
+) }},
+{%- set ultima_cte = "com_nomes_racas_cores" -%}
+{%- endif %}
 {%- if "estabelecimento_id_scnes" in colunas %}
 {{ classificar_caps_linha(
     relacao=ultima_cte,
