@@ -39,7 +39,7 @@ macros:
           . Por padrão, assume o valor `raca_cor_id_sigtap`, mas o valor
           `raca_cor_id` (para o identificador nativo do banco da Impulso Gov)
           também é suportado.
-      - name: todos_racas_cores_id
+      - name: todas_racas_cores_id
         type: str | None
         description: >
           Um valor opcional que deve ser considerado como sinônimo de
@@ -47,13 +47,13 @@ macros:
           outra unidade de agregação. Por padrão, assume o valor `'0'`. Se o
           valor passado for `none`, considera-se que não há agregação de
           raças/cores na tabela de origem.
-      - name: todos_racas_cores_valor
+      - name: todas_racas_cores_valor
         type: str
         description: >
           Um valor para identificar uma agregação de todas as raças/cores para
           uma unidade geográfica ou outra unidade de agregação. Por padrão,
           assume o valor `'Todos'`. Se o valor passado para o argumento
-          `todos_racas_cores_id` for `none`, este argumento é ignorado.
+          `todas_racas_cores_id` for `none`, este argumento é ignorado.
       - name: cte_resultado
         type: str
         description: >
