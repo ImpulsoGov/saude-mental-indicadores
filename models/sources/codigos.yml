@@ -63,6 +63,11 @@ sources:
           Lista de intervalos temporais que identificam os meses, quadrimestres
           e outros intervalos úteis para fins de agregação de dados.
 
+      - name: racas_cores
+        identifier: racas_cores
+        description: >
+          Lista de classificações para o sexo biológico de uma pessoa.
+
       - name: sexos
         identifier: sexos
         description: >
