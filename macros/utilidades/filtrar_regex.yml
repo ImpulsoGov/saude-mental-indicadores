@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+
+  - name: filtrar_regex
+    description: >
+      A partir de um iterável e um padrão de expressão regular, retorna uma
+      lista apenas com os elementos que correspondem ao padrão.
+
+    docs:
+      show: true
+
+    arguments:
+      - name: iteravel
+        type: Iterable[str]
+        description: >
+          Lista ou outro iterável cujos elementos sejam todos textos a serem
+          comparados com um padrão de expressão regular. 
+
+      - name: expressao_regular
+        type: str
+        description: >
+          Texto com padrão de
+          [expressão regular](https://docs.python.org/3/library/re.html)
+          nativo do Python, que será comparado com os elementos do iterável de
+          entrada e filtrar os que devem aparecer na lista de saída.
