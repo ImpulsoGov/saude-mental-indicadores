@@ -125,7 +125,7 @@ resumo AS (
 		(
 			tornandose_inativos - tornandose_inativos_anterior
 		) AS dif_tornandose_inativos_anterior,
-        sexo_predominante.sexo_predominante_id_sigtap AS sexo_id_sigtap,
+        sexo_predominante.sexo_predominante_id_sigtap,
         sexo_predominante.sexo_predominante_quantidade,
         idade_media.usuarios_idade_media,
 		now() AS atualizacao_data
@@ -148,7 +148,7 @@ resumo AS (
 	)
 ),
 {{ ultimas_competencias(
-    relacao="final",
+    relacao="resumo",
     fontes=[
 		"raas_psicossocial_disseminacao",
 		"bpa_i_disseminacao"

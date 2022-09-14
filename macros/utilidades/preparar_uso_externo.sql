@@ -21,64 +21,92 @@ SPDX-License-Identifier: MIT
     ],
     cte_resultado="final"
 ) %}
-{% set re = modules.re %}
+{%- set re = modules.re -%}
 {%- set colunas = [] -%}
 {%- for coluna in adapter.get_columns_in_relation(ref(relacao)) -%}
     {%- set _ = colunas.append(coluna.name) -%}
 {%- endfor -%}
-{%- set ultima_cte = ref(relacao) -%}
-{%- if "sexo_id_sigtap" in colunas %}
+{%- set ctes = [ref(relacao)] -%}
+{#- Trocar códigos de categorias de sexo por nomes legíveis -#}
+{%- set colunas_sexo_ids = filtrar_regex(colunas, ".*sexo.*_id.*") -%}
+{%- for coluna_sexo_id in colunas_sexo_ids %}
+{%- set coluna_sexo_nome=(
+    re.match("(.*sexo.*)_id.*", coluna_sexo_id).groups(1)[0]
+) -%}
+{%- set cte = "com_nomes_sexos_" + loop.index|string -%}
 {{ nomear_sexos(
-    relacao=ultima_cte,
-	coluna_sexo_nome="sexo",
+    relacao=ctes|last,
+	coluna_sexo_nome=coluna_sexo_nome,
+    coluna_sexo_id=coluna_sexo_id,
 	todos_sexos_id=none,
-    cte_resultado="com_nomes_sexos"
+    cte_resultado=cte
 ) }},
-{%- set ultima_cte = "com_nomes_sexos" -%}
-{%- endif %}
-{%- if "raca_cor_id_sigtap" in colunas %}
+{%- set _ = colunas.append(coluna_sexo_nome) -%}
+{%- set _ = ctes.append(cte) -%}
+{%- endfor %}
+{#- Trocar códigos de categorias de raça/cor por nomes legíveis -#}
+{%- set colunas_raca_cor_ids = filtrar_regex(colunas, ".*raca_cor.*_id.*") -%}
+{%- for coluna_raca_cor_id in colunas_raca_cor_ids %}
+{%- set coluna_raca_cor_nome=(
+    re.match("(.*raca_cor.*)_id.*", coluna_raca_cor_id).groups(1)[0]
+) -%}
+{%- set cte = "com_nomes_racas_cores_" + loop.index|string -%}
 {{ nomear_racas_cores(
-    relacao=ultima_cte,
-	coluna_raca_cor_nome="raca_cor",
-	todos_racas_cores_id=none,
-    cte_resultado="com_nomes_racas_cores"
+    relacao=ctes|last,
+	coluna_raca_cor_nome=coluna_raca_cor_nome,
+    coluna_raca_cor_id=coluna_raca_cor_id,
+	todas_racas_cores_id=none,
+    cte_resultado=cte
 ) }},
-{%- set ultima_cte = "com_nomes_racas_cores" -%}
-{%- endif %}
-{%- if "estabelecimento_id_scnes" in colunas %}
+{%- set _ = colunas.append(coluna_raca_cor_nome) -%}
+{%- set _ = ctes.append(cte) -%}
+{%- endfor %}
+{#- Trocar códigos de estabelecimentos por nomes legíveis -#}
+{%- set colunas_estabelecimento_ids = filtrar_regex(
+    colunas,
+    ".*estabelecimento.*_id.*",
+) -%}
+{%- for coluna_estabelecimento_id in colunas_estabelecimento_ids -%}
+{%- set coluna_estabelecimento_nome=(
+    re.match("(.*estabelecimento.*)_id.*", coluna_estabelecimento_id)
+    .groups(1)[0]
+) -%}
+{%- set cte = "com_linhas_estabelecimentos_" + loop.index|string -%}
 {{ classificar_caps_linha(
-    relacao=ultima_cte,
+    relacao=ctes|last,
+    coluna_estabelecimento_id=coluna_estabelecimento_id,
     coluna_linha_perfil="estabelecimento_linha_perfil",
     coluna_linha_idade="estabelecimento_linha_idade",
-    cte_resultado="com_linhas_cuidado"
+    cte_resultado=cte
 ) }},
+{%- set _ = ctes.append(cte) -%}
 {%- set _ = colunas.append("estabelecimento_linha_perfil") -%}
 {%- set _ = colunas.append("estabelecimento_linha_idade") -%}
-{%- set ultima_cte = "com_linhas_cuidado" -%}
-{%- endif %}
-{%- if "estabelecimento_id_scnes" in colunas %}
+{%- set cte = "com_nomes_estabelecimentos_" + loop.index|string -%}
 {{ nomear_estabelecimentos(
-    relacao=ultima_cte,
-	coluna_estabelecimento_nome="estabelecimento",
-    cte_resultado="com_nomes_estabelecimentos"
+    relacao=ctes|last,
+    coluna_estabelecimento_id=coluna_estabelecimento_id,
+	coluna_estabelecimento_nome=coluna_estabelecimento_nome,
+    cte_resultado=cte
 ) }},
 {%- set _ = colunas.append("estabelecimento") -%}
-{%- set ultima_cte = "com_nomes_estabelecimentos" -%}
-{%- endif %}
+{%- set _ = ctes.append(cte) -%}
+{%- endfor %}
 {%- if (
         "periodo_data_inicio" in colunas
     ) and (
         "unidade_geografica_id" in colunas
     )
 %}
+{%- set cte = "com_datas_legiveis" -%}
 {{ adicionar_datas_legiveis(
-	relacao=ultima_cte,
-	cte_resultado="com_datas_legiveis"
+	relacao=ctes|last,
+	cte_resultado=cte
 ) }},
 {%- set _ = colunas.append("periodo") -%}
 {%- set _ = colunas.append("nome_mes") -%}
 {%- set _ = colunas.append("periodo_ordem") -%}
-{%- set ultima_cte = "com_datas_legiveis" -%}
+{%- set _ = ctes.append(cte) -%}
 {%- endif %}
 {{ cte_resultado }} AS (
     SELECT
@@ -99,6 +127,6 @@ SPDX-License-Identifier: MIT
     {%- endif %}
     {%- endif %}
     {%- endfor %}
-    FROM {{ ultima_cte }}
+    FROM {{ ctes|last }}
 )
 {%- endmacro -%}
