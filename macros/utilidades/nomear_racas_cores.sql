@@ -9,8 +9,8 @@ SPDX-License-Identifier: MIT
     relacao,
     coluna_raca_cor_nome="raca_cor_nome",
     coluna_raca_cor_id="raca_cor_id_sigtap",
-    todos_raca_cor_id="0",
-    todos_raca_cor_valor="Todos",
+    todas_racas_cores_id="0",
+    todas_racas_cores_valor="Todas",
     cte_resultado="com_nomes_racas_cores"
 ) %}
 {%- set re = modules.re -%}
@@ -24,7 +24,7 @@ SPDX-License-Identifier: MIT
 {{ cte_resultado }} AS (
 SELECT
     t.*,
-    {% if todos_racas_cores_id is not none -%}
+    {% if todas_racas_cores_id is not none -%}
     (
         CASE
             WHEN
@@ -32,7 +32,7 @@ SELECT
             THEN '{{ todas_racas_cores_valor }}'
         ELSE
 {%- endif %}    raca_cor.raca_cor_nome
-    {%- if todos_racas_cores_id is not none -%}
+    {%- if todas_racas_cores_id is not none -%}
         END
     ){%- endif %} AS {{ coluna_raca_cor_nome }}
 FROM {{ relacao }} t
