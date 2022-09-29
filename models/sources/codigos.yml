@@ -68,6 +68,11 @@ sources:
         description: >
           Lista de classificações para o sexo biológico de uma pessoa.
 
+      - name: unidades_geograficas
+        identifier: unidades_geograficas
+        description: >
+          Reúne todas as unidades geográficas e administrativas definidas no banco de dados em uma tabela única. Alimentada por meio de gatilhos.
+
       - name: sexos
         identifier: sexos
         description: >
