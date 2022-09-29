@@ -13,6 +13,8 @@ models:
       individualizados (BPA-i) do Sistema de Informações Ambulatoriais do SUS
       (SIASUS), para cada município.
     config:
+      grants:
+        select: ['saude_mental_analistas']
       alias: _bpa_i_disseminacao_ultima_competencia
       enabled: true
       indexes:

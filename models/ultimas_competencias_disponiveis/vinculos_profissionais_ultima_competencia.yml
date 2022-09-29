@@ -12,6 +12,8 @@ models:
       arquivos de disseminação de vínculos profissionais do Sistema do Cadastro
       Nacional de Estabelecimentos de Saúde (SCNES), para cada município.
     config:
+      grants:
+        select: ['saude_mental_analistas']
       alias: _vinculos_profissionais_ultima_competencia
       enabled: true
       indexes:

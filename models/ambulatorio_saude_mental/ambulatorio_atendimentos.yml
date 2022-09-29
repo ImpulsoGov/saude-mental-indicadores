@@ -14,6 +14,8 @@ models:
       Sistema de Informações Ambulatoriais do SUS (SIASUS) e disponibilizado
       pelo Departamento de Informática do SUS (DATASUS) em seu FTP público.
     config:
+      grants:
+        select: ['saude_mental_analistas']
       alias: referencias_atendimentos
       enabled: true
       indexes:

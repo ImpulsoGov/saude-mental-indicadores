@@ -24,6 +24,8 @@ models:
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
       Departamento de Informática do SUS (DATASUS) em seu FTP público.
     config:
+      grants:
+        select: ['saude_mental_analistas']
       alias: caps_usuarios_ativos_por_estabelecimento
       enabled: true
       materialized: view
