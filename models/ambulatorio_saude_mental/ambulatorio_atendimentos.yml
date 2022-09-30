@@ -15,7 +15,7 @@ models:
       pelo Departamento de Informática do SUS (DATASUS) em seu FTP público.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: referencias_atendimentos
       enabled: true
       indexes:

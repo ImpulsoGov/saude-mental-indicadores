@@ -13,7 +13,7 @@ models:
       Nacional de Estabelecimentos de Saúde (SCNES), para cada município.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _vinculos_profissionais_ultima_competencia
       enabled: true
       indexes:

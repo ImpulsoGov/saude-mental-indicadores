@@ -14,7 +14,7 @@ models:
       município.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _raas_psicossocial_disseminacao_ultima_competencia
       enabled: true
       indexes:

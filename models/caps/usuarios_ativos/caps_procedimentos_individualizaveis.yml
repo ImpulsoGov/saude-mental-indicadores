@@ -17,7 +17,7 @@ models:
       FTP público.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _caps_procedimentos_individualizaveis
       enabled: true
       indexes:

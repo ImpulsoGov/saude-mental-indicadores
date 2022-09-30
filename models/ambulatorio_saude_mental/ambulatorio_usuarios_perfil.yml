@@ -14,7 +14,7 @@ models:
       (BPA-i) enviados ao Sistema de Informações Ambulatoriais do SUS (SIASUS).
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: referencias_usuarios_perfil
       enabled: true
       indexes:

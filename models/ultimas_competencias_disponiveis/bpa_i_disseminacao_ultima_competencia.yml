@@ -14,7 +14,7 @@ models:
       (SIASUS), para cada município.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _bpa_i_disseminacao_ultima_competencia
       enabled: true
       indexes:
