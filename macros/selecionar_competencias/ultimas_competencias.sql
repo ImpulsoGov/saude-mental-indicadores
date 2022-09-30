@@ -33,7 +33,7 @@ WHERE
         {%- endfor %}
         )
         {%- if meses_antes_ultima_competencia[0] > 0 %}
-        - "{{ meses_antes_ultima_competencia[0] }} months"::interval
+        - '{{ meses_antes_ultima_competencia[0] }} months'::interval
         {%- endif %}
     )
 {%- endif %}
@@ -53,7 +53,7 @@ AND
         {%- endfor %}
         )
         {%- if meses_antes_ultima_competencia[1] > 0 %}
-        - "{{ meses_antes_ultima_competencia[0] }} months"::interval
+        - '{{ meses_antes_ultima_competencia[1] }} months'::interval
         {%- endif %}
     )
 {%- endif %}

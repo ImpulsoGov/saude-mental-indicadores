@@ -15,6 +15,8 @@ models:
       Sistema de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados
       pelo Departamento de Informática do SUS (DATASUS).
     config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: referencias_atendimentos_resumo_ultimo_mes
       enabled: true
       indexes:
