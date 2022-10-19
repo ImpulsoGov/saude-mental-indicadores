@@ -14,13 +14,13 @@ models:
       (SIASUS), para cada município.
     config:
       grants:
-        select: ['saude_mental_analistas']
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _sisab_producao_municipios_equipe_producao_ultima_competencia
       enabled: true
       indexes:
         - columns:
             - "unidade_geografica_id"
-          unique: false
+          unique: true
       materialized: table
       persist_docs:
         relation: true
