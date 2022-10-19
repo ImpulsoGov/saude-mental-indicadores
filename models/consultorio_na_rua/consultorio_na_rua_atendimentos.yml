@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: consultorio_na_rua_atendimentos
+    description: >
+      Quantidade de atendimentos individuais realizadas por equipes do Consultório na Rua de cada município por mês.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao'] 
+      alias: consultorio_na_rua_atendimentos
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+        - columns:
+          - "periodo_id"
+          - "competencia"
+          - "nome_mes"
+        - columns:
+          - "tipo_equipe"
+          - "tipo_producao"
+        - columns:
+          - "quantidade_registrada"
+          - "quantidade_registrada_anterior"
+          - "dif_quantidade_registrada"
+        - columns:
+          - "periodo"
+          - "periodo_ordem"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "sisab"
+        - "consultorio_na_rua"
+      unique_key: "id"
