@@ -16,11 +16,12 @@ macros:
       - name: relacao
         type: Relation
         description: >
-          Objeto [Relation][] ou nome de uma [CTE][] que representa a tabela ou
-          consulta na qual se pretende calcular os subtotais.
-
-          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
-          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
+          Objeto
+          [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) ou
+          nome de uma
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          representa a tabela ou consulta na qual se pretende calcular os
+          subtotais.
       - name: agrupar_por
         type: list[str]
         description: >
@@ -52,15 +53,11 @@ macros:
       - name: manter_original
         type: bool
         description: >
-          Indica se apenas a tabela com os resultados dos subtotais deve ser
-          retornada (`manter_original=false`), ou se esses devem ser apensados
-          à tabela com os valores originais, não totalizados
-          (`manter_original=true`, *default*). 
+          **DESCONTINUADO**. Este argumento não é mais utilizado, e será removido em uma versão posterior.
       - name: cte_resultado
         type: str
         description: >
-          Nome a ser dado à [CTE][] que contém os resultados, para ser
-          referenciada em passos posteriores da definição de uma consulta.
-
-          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
-
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.
