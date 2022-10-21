@@ -32,18 +32,6 @@ models:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _caps_usuarios_ativos_por_estabelecimento_resumo
       enabled: true
-      # indexes:
-      #   - columns:
-      #     - "id"
-      #     unique: true
-      #   - columns:
-      #     - "unidade_geografica_id_sus"
-      #     - "unidade_geografica_id"
-      #     - "estabelecimento_id_scnes"
-      #   - columns:
-      #     - "periodo_data_inicio"
-      #     - "periodo_id"
-      # materialized: table
       materialized: view
       persist_docs:
         relation: true

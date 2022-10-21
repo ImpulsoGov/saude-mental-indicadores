@@ -64,24 +64,37 @@ SPDX-License-Identifier: MIT
 {#- Trocar códigos de estabelecimentos por nomes legíveis -#}
 {%- set colunas_estabelecimento_ids = filtrar_regex(
     colunas,
-    ".*estabelecimento.*_id.*",
+    ".*estabelecimento.*_id(?:_.+)*$",
 ) -%}
 {%- for coluna_estabelecimento_id in colunas_estabelecimento_ids -%}
 {%- set coluna_estabelecimento_nome=(
-    re.match("(.*estabelecimento.*)_id.*", coluna_estabelecimento_id)
+    re.match("(.*estabelecimento.*)_id(?:_.+)*$", coluna_estabelecimento_id)
     .groups(1)[0]
 ) -%}
+{%- set coluna_estabelecimento_linha_perfil = (
+    coluna_estabelecimento_nome + "_linha_perfil"
+) -%}
+{%- set coluna_estabelecimento_linha_idade = (
+    coluna_estabelecimento_nome + "_linha_idade"
+) %}
+{%- if (
+        not coluna_estabelecimento_linha_perfil in colunas
+    ) and (
+        not coluna_estabelecimento_linha_idade in colunas
+    )
+%}
 {%- set cte = "com_linhas_estabelecimentos_" + loop.index|string -%}
 {{ classificar_caps_linha(
     relacao=ctes|last,
     coluna_estabelecimento_id=coluna_estabelecimento_id,
-    coluna_linha_perfil="estabelecimento_linha_perfil",
-    coluna_linha_idade="estabelecimento_linha_idade",
+    coluna_linha_perfil=coluna_estabelecimento_linha_perfil,
+    coluna_linha_idade=coluna_estabelecimento_linha_idade,
     cte_resultado=cte
 ) }},
 {%- set _ = ctes.append(cte) -%}
-{%- set _ = colunas.append("estabelecimento_linha_perfil") -%}
-{%- set _ = colunas.append("estabelecimento_linha_idade") -%}
+{%- set _ = colunas.append(coluna_estabelecimento_linha_perfil) -%}
+{%- set _ = colunas.append(coluna_estabelecimento_linha_idade) -%}
+{%- endif %}
 {%- set cte = "com_nomes_estabelecimentos_" + loop.index|string -%}
 {{ nomear_estabelecimentos(
     relacao=ctes|last,
@@ -89,7 +102,7 @@ SPDX-License-Identifier: MIT
 	coluna_estabelecimento_nome=coluna_estabelecimento_nome,
     cte_resultado=cte
 ) }},
-{%- set _ = colunas.append("estabelecimento") -%}
+{%- set _ = colunas.append(coluna_estabelecimento_nome) -%}
 {%- set _ = ctes.append(cte) -%}
 {%- endfor %}
 {%- if (

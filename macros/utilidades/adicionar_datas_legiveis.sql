@@ -64,9 +64,8 @@ ultimas_competencias AS (
                 WHEN {{ mes }} = 12 THEN 'Dezembro'
             END
         ) AS nome_mes,
-        round(
-            (to_char(periodo_data_inicio, 'YY')::int + {{ mes }}/100)::numeric,
-            2
+        (
+            to_char(periodo_data_inicio, 'YY')::numeric + {{ mes }}/100
         ) AS periodo_ordem
     FROM {{ relacao }} t
     LEFT JOIN ultimas_competencias

@@ -68,8 +68,17 @@ por_estabelecimentos AS (
         usuario_situacao_rua,
         usuario_abuso_substancias
 ),
-{{ calcular_subtotais(
+{{ classificar_caps_linha(
     relacao="por_estabelecimentos",
+    coluna_linha_perfil="estabelecimento_linha_perfil",
+    coluna_linha_idade="estabelecimento_linha_idade",
+    coluna_estabelecimento_id="estabelecimento_id_scnes",
+    todos_estabelecimentos_id=none,
+    todas_linhas_valor=none,
+    cte_resultado="por_estabelecimento_com_linhas_cuidado"
+) }},
+{{ calcular_subtotais(
+    relacao="por_estabelecimento_com_linhas_cuidado",
     agrupar_por=[
         "unidade_geografica_id",
         "unidade_geografica_id_sus",
@@ -88,7 +97,11 @@ por_estabelecimentos AS (
         "usuario_situacao_rua",
         "usuario_abuso_substancias"
     ],
-    colunas_a_totalizar=["estabelecimento_id_scnes"],
+    colunas_a_totalizar=[
+		"estabelecimento_linha_perfil",
+    	"estabelecimento_linha_idade",
+		"estabelecimento_id_scnes"
+    ],
     nomes_categorias_com_totais=["0000000"],
     agregacoes_valores={
         "ativos_mes": "sum",
@@ -103,6 +116,8 @@ final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
+		    "estabelecimento_linha_perfil",
+    	    "estabelecimento_linha_idade",
             "estabelecimento_id_scnes",
             "periodo_id",
             "usuario_tempo_servico_id",
@@ -117,6 +132,8 @@ final AS (
         unidade_geografica_id_sus,
         periodo_id,
         periodo_data_inicio,
+		estabelecimento_linha_perfil,
+		estabelecimento_linha_idade,
         estabelecimento_id_scnes,
         usuario_tempo_servico_descricao AS usuario_tempo_servico,
         usuario_tempo_servico_ordem,

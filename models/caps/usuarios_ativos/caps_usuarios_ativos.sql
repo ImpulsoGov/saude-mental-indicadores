@@ -144,6 +144,7 @@ a_partir_primeiro_procedimento AS (
     coluna_nascimento_data="usuario_nascimento_data",
     coluna_data_referencia="periodo_data_inicio",
     idade_tipo="Anos",
+    faixa_etaria_agrupamento="10 em 10 anos",
     colunas_faixa_etaria=["id", "descricao", "ordem"],
     cte_resultado="com_faixa_etaria"
 ) }},

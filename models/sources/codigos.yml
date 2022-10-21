@@ -43,6 +43,11 @@ sources:
         description: >
           Lista de faixas etárias definidas por um intervalo mínimo e máximo de
           idades.
+      
+      - name: faixas_etarias_agrupamentos
+        identifier: faixas_etarias_agrupamentos
+        description: >
+          Descreve possíveis formas de agrupar idades em faixas etárias.
 
       - name: ocupacoes
         identifier: ocupacoes
