@@ -34,33 +34,8 @@ por_estabelecimentos AS (
 		periodo_data_inicio,
 		estabelecimento_id_scnes
 ),
-todos_estabelecimentos_por_municipio AS (
-    SELECT 
-        unidade_geografica_id,
-        unidade_geografica_id_sus,
-        periodo_id,
-        periodo_data_inicio,
-        '0000000' AS estabelecimento_id_scnes,
-        sum(ativos_mes) AS ativos_mes,
-        sum(ativos_3meses) AS ativos_3meses,
-        sum(tornandose_inativos) AS tornandose_inativos,
-        max(atualizacao_data) AS atualizacao_data
-    FROM por_estabelecimentos
-    GROUP BY 
-        unidade_geografica_id,
-        unidade_geografica_id_sus,
-        periodo_id,
-        periodo_data_inicio
-),
-por_estabelecimento_com_total_municipio AS (
-    SELECT *
-    FROM por_estabelecimentos
-    UNION
-    SELECT *
-    FROM todos_estabelecimentos_por_municipio
-),
 {{ juntar_periodos_consecutivos(
-	relacao="por_estabelecimento_com_total_municipio",
+	relacao="por_estabelecimentos",
 	agrupar_por=[
 		"unidade_geografica_id",
 		"unidade_geografica_id_sus",
@@ -83,6 +58,16 @@ por_estabelecimento_com_total_municipio AS (
 		"bpa_i_disseminacao"
 	],
     meses_antes_ultima_competencia=(0, none),
-    cte_resultado="final"
-) }}
+    cte_resultado="ate_ultima_competencia"
+) }},
+final AS (
+    SELECT
+        *,
+        (ativos_mes - ativos_mes_anterior) AS dif_ativos_mes_anterior,
+        (ativos_3meses - ativos_3meses_anterior) AS dif_ativos_3meses_anterior,
+        (
+            tornandose_inativos - tornandose_inativos_anterior
+        ) AS dif_tornandose_inativos_anterior
+    FROM ate_ultima_competencia
+)
 SELECT * FROM final
