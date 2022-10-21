@@ -79,7 +79,7 @@ usuarios_ativos_por_estabelecimento AS (
     manter_original=true,
     cte_resultado="contagem_usuarios"
 ) }},
-{# resumo #}final AS (
+final AS (
     SELECT
 		{{ dbt_utils.surrogate_key([
 			"unidade_geografica_id",
