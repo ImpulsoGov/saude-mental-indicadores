@@ -41,6 +41,15 @@ macros:
         description: >
           Unidade de medida das idades. Atualmente, apenas o valor `Anos` é
           aceito, e esse é o padrão caso nenhum valor seja informado.
+      - name: faixa_etaria_agrupamento
+        type: str
+        description: >
+          Descrição do agrupamento de idades utilizado para definir a faixa
+          etária, conforme definido tabela 
+          [`listas_de_codigos.faixa_etaria_agrupamentos`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.faixas_etarias_agrupamentos).
+          
+          Atualmente, são aceitos os valores `'De 10 em 10 anos'` (padrão) ou
+          `'De 5 em 5 anos'`.
       - name: colunas_faixa_etaria
         type: list[str]
         description: >
