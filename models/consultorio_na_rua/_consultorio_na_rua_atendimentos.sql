@@ -71,6 +71,25 @@ atendimentos_com_joins AS (
     meses_antes_ultima_competencia=(0, none),
     cte_resultado="ate_ultima_competencia"
 ) }},
+{{ calcular_subtotais(
+    relacao="ate_ultima_competencia",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "periodo_id",
+        "periodo_data_inicio",
+    ],
+    colunas_a_totalizar=[
+		"tipo_producao"
+	],
+    nomes_categorias_com_totais=["Todos"],
+    agregacoes_valores={
+        "quantidade_registrada": "sum",
+        "quantidade_registrada_anterior": "sum"
+    },
+    manter_original=true,
+    cte_resultado="ate_ultima_competencia_com_substotais"
+) }},
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -82,13 +101,13 @@ final AS (
         periodo_data_inicio,
         periodo_id,
         tipo_producao,
-        ate_ultima_competencia.quantidade_registrada,
-        ate_ultima_competencia.quantidade_registrada_anterior,
+        ate_ultima_competencia_com_substotais.quantidade_registrada,
+        ate_ultima_competencia_com_substotais.quantidade_registrada_anterior,
         (
-            coalesce(ate_ultima_competencia.quantidade_registrada, 0)
-            - coalesce(ate_ultima_competencia.quantidade_registrada_anterior, 0)
+            coalesce(ate_ultima_competencia_com_substotais.quantidade_registrada, 0)
+            - coalesce(ate_ultima_competencia_com_substotais.quantidade_registrada_anterior, 0)
         ) AS dif_quantidade_registrada_anterior,
         now() AS atualizacao_data   
-    FROM ate_ultima_competencia
+    FROM ate_ultima_competencia_com_substotais
 )  
 SELECT * FROM final
