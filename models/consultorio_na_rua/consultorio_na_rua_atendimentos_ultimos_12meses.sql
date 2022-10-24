@@ -71,11 +71,49 @@ atendimentos_com_joins AS (
     meses_antes_ultima_competencia=(0, 11),
     cte_resultado="cnr_12meses"
 ) }},
+{{ calcular_subtotais(
+    relacao="cnr_12meses",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "periodo_id",
+        "periodo_data_inicio"
+    ],
+    colunas_a_totalizar=[
+		"tipo_producao"
+	],
+    nomes_categorias_com_totais=["Todos"],
+    agregacoes_valores={
+        "quantidade_registrada": "sum",
+        "quantidade_registrada_anterior": "sum"
+    },
+    manter_original=true,
+    cte_resultado="cnr_12meses_subtotais"
+) }},
 {{ ultimas_competencias(
     relacao="com_periodo_anterior",
     fontes=["sisab_producao_municipios_equipe_producao"],
     meses_antes_ultima_competencia=(12, 23),
     cte_resultado="cnr_12a24meses"
+) }},
+{{ calcular_subtotais(
+    relacao="cnr_12a24meses",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "periodo_id",
+        "periodo_data_inicio"
+    ],
+    colunas_a_totalizar=[
+		"tipo_producao"
+	],
+    nomes_categorias_com_totais=["Todos"],
+    agregacoes_valores={
+        "quantidade_registrada": "sum",
+        "quantidade_registrada_anterior": "sum"
+    },
+    manter_original=true,
+    cte_resultado="cnr_12a24meses_subtotais"
 ) }},
 cnr_12meses_agrupado AS (
     SELECT
@@ -85,7 +123,7 @@ cnr_12meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada
-    FROM cnr_12meses
+    FROM cnr_12meses_subtotais
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -99,7 +137,7 @@ cnr_12a24meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada_anterior
-    FROM cnr_12a24meses
+    FROM cnr_12a24meses_subtotais
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -112,6 +150,14 @@ cnr_12meses_agrupado_comperiodoanterior AS (
         cnr_12meses_agrupado.tipo_producao,
         cnr_12meses_agrupado.a_partir_de,
         cnr_12meses_agrupado.ate,
+        EXTRACT(
+            YEAR FROM cnr_12meses_agrupado.a_partir_de
+        )::text AS a_partir_do_ano,
+        EXTRACT(
+            YEAR FROM cnr_12meses_agrupado.ate
+        )::text AS ate_ano,
+        listas_de_codigos.nome_mes(cnr_12meses_agrupado.a_partir_de::date) AS a_partir_do_mes,
+        listas_de_codigos.nome_mes(cnr_12meses_agrupado.ate::date) AS ate_mes,
         cnr_12meses_agrupado.quantidade_registrada,
         cnr_12a24meses_agrupado.quantidade_registrada_anterior,
         (

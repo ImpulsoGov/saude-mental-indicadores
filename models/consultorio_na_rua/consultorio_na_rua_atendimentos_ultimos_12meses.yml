@@ -24,6 +24,10 @@ models:
         - columns:
           - "a_partir_de"
           - "ate"
+          - "a_partir_do_mes"
+          - "ate_mes"
+          - "a_partir_do_ano"
+          - "ate_ano"
         - columns:
           - "tipo_producao"
         - columns:
