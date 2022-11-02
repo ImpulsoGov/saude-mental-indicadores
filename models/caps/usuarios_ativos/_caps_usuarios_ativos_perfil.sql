@@ -102,7 +102,7 @@ por_estabelecimentos AS (
     	"estabelecimento_linha_idade",
 		"estabelecimento_id_scnes"
     ],
-    nomes_categorias_com_totais=["0000000"],
+    nomes_categorias_com_totais=["Todos", "Todos", "Todos"],
     agregacoes_valores={
         "ativos_mes": "sum",
         "ativos_3meses": "sum",
