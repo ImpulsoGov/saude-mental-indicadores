@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 WITH
 usuarios_ativos AS (
     SELECT * FROM {{ ref('caps_usuarios_ativos') }}
+	WHERE usuario_primeiro_procedimento_periodo_data_inicio IS NOT NULL
 ),
 por_estabelecimentos AS (
 	SELECT 

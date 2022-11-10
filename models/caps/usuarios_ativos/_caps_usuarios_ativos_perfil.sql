@@ -9,6 +9,7 @@ WITH
 usuarios_ativos AS (
     SELECT *
     FROM {{ ref("caps_usuarios_ativos") }}
+	WHERE usuario_primeiro_procedimento_periodo_data_inicio IS NOT NULL
 ),
 condicoes_saude AS (
     SELECT 
@@ -102,7 +103,7 @@ por_estabelecimentos AS (
     	"estabelecimento_linha_idade",
 		"estabelecimento_id_scnes"
     ],
-    nomes_categorias_com_totais=["Todos", "Todos", "Todos"],
+    nomes_categorias_com_totais=["Todos", "Todos", "0000000"],
     agregacoes_valores={
         "ativos_mes": "sum",
         "ativos_3meses": "sum",
