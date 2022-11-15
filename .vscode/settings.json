@@ -9,6 +9,7 @@
     "conventionalCommits.scopes": [
         "caps",
         "referencias",
-        "docs"
+        "docs",
+        "internacoes"
     ]
 }
