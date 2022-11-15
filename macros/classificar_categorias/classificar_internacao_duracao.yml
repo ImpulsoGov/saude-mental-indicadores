@@ -1,0 +1,58 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_internacao_duracao
+    description: >
+      A partir de tabela (ou
+      [CTE](https://pt.wikipedia.org/wiki/Common_table_expression)) com uma
+      coluna com a data de entrada e outra da data do desfecho de uma
+      internação hospitalar ou passagem por outro estabelecimento de alta
+      complexidade (ex.: sala de estabilização de UPA), devolve uma CTE que
+      contém os campos
+      `internacao_duracao_id`, `internacao_duracao_descricao` e
+      `internacao_duracao_ordem`
+      referentes a categoria correspondente à duração do vínculo segundo a
+      tabela
+      [`internacoes_duracoes`](https://impulsogov.github.io/saude-mental-indicadores/#!/seed/seed.impulso_saude_mental.internacoes_duracoes)
+      .
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto
+          [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) ou
+          nome de uma
+          [*Common Table Expression* (CTE)](https://pt.wikipedia.org/wiki/Common_table_expression)
+          que contém os dados das internações cujas durações se pretende
+          classificar.
+      - name: coluna_entrada_data
+        type: str
+        description: >
+          Nome da coluna com a data do início da internação.
+      - name: coluna_desfecho_data
+        type: str
+        description: >
+          Nome da coluna com a data do desfecho (alta, transferência, óbito,
+          encerramento administrativo etc.).
+      - name: colunas_internacao_duracao
+        type: list[str]
+        description: >
+          Lista das colunas da tabela tabela
+          [`internacoes_duracoes`](https://impulsogov.github.io/saude-mental-indicadores/#!/seed/seed.impulso_saude_mental.internacoes_duracoes)
+          devem aparecer no resultado (além das colunas da tabela ou CTE
+          original). Por padrão, inclui as colunas
+          `["id", "descricao", "ordem"]`.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.

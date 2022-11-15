@@ -99,3 +99,41 @@ seeds:
         Valor sem significado intrínseco, mas que pode ser utilizado para
         ordenar as categorias de duração do vínculo, levando em conta os
         intervalos mínimo e máximo que as definem.
+
+  - name: internacoes_duracoes
+    description: >
+      Lista categorias para classificar a duração de internações ou estadias em
+      salas de estabilização.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        id: "uuid"
+        minimo: "interval"
+        maximo: "interval"
+        descricao: "text"
+        ordem: "numeric"
+    columns:
+    - name: "id"
+      description: >
+        Identificador único da categoria de duração da internação.
+    - name: "minimo"
+      description: >
+        Duração mínima da internação considerada para enquadramento dentro da
+        categoria (*intervalo fechado*).
+    - name: "maximo"
+      description: >
+        Duração a partir da qual a internação deixa de ser enquadrado dentro
+        da categoria (*intervalo aberto*).
+    - name: "descricao"
+      description: >
+        Descrição legível da categoria de duração da internação.
+    - name: "ordem"
+      description: >
+        Valor sem significado intrínseco, mas que pode ser utilizado para
+        ordenar as categorias de duração da internação, levando em conta os
+        intervalos mínimo e máximo que as definem.
