@@ -12,6 +12,7 @@ T40,Álcool e outras drogas,Intoxicação por narcóticos e psicodislépticos (a
 R78,Álcool e outras drogas,Presença de drogas e de outras substâncias normalmente não encontradas no sangue
 Y90,Álcool e outras drogas,Evidência de Alcoolismo Determinada Por Taxas de Alcoolemia
 Y91,Álcool e outras drogas,Evidência de Alcoolismo Determinada Pelo Nível da Intoxicação
+F0,Transtornos,Orgânicos
 F2,Transtornos,Esquizofrenia e transtornos esquizotípicos e delirantes
 F3,Transtornos,Transtornos do humor
 F4,Transtornos,"Transtornos neuróticos, relacionados com o stress e somatoformes"
