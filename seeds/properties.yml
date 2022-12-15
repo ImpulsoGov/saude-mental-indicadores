@@ -137,3 +137,23 @@ seeds:
         Valor sem significado intrínseco, mas que pode ser utilizado para
         ordenar as categorias de duração da internação, levando em conta os
         intervalos mínimo e máximo que as definem.
+
+
+  - name: procedimentos_urgencia
+    description: >
+      Lista os procedimentos de saúde que devem ser considerados como
+      atendimentos de urgência.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        procedimento_id_sigtap: "bpchar(10)"
+    columns:
+    - name: "procedimento_id_sigtap"
+      description: >
+        Identificador do procedimento no Sistema de Gerenciamento da Tabela de
+        Procedimentos, Medicamentos e OPM do SUS.
