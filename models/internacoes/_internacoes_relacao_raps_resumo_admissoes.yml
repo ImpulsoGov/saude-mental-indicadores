@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _internacoes_relacao_raps_resumo_admissoes
+    description: >
+      Apresenta o número de pessoas admitidas em hospitais e salas de 
+      estabilização de UPAs que tinham passagens nos dispositivos
+      de saúde mental (CAPS e ambulatórios) do município de residência do
+      nos seis meses anteriores à admissão.
+      
+      Basea-se nas informações de disseminação das Autorizações de Internação
+      Hospitalar - reduzidas (AIH-RD) enviadas mensalmente pelos
+      estabelecimentos de alta complexidade vinculados ao SUS por meio do
+      Sistema de Informações Hospitalares do SUS (SIHSUS) e disponibilizados
+      pelo Departamento de Informática do SUS (DATASUS) em seu FTP público.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _internacoes_relacao_raps_resumo_admissoes
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+      materialized: incremental
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "internacoes"
+        - "aih_rd"
+        - "incremental"
+      unique_key: "id"
