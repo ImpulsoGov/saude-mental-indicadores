@@ -8,8 +8,8 @@ SPDX-License-Identifier: MIT
 {%- macro 
     classificar_internacao_duracao(
         relacao,
-        coluna_entrada_data,
-        coluna_desfecho_data,
+        coluna_entrada_data="aih_data_inicio",
+        coluna_desfecho_data="aih_data_fim",
         colunas_internacao_duracao=["id", "descricao", "ordem"],
         cte_resultado="com_duracao_internacao"
     )
