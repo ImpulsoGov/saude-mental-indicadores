@@ -60,6 +60,30 @@ seeds:
           Código do estabelecimento com atendimento de referência ambulatorial
           em saúde mental, segundo o SCNES.
 
+
+  - name: internacoes_desfechos_grupos
+    description: >
+      Lista agrupamentos de desfechos para internações hospitalares.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        desfecho_id_sihsus: "bpchar(2)"
+        desfecho_id_sihsus: "text"
+    columns:
+    - name: "desfecho_id_sihsus"
+      description: >
+        Identificador do desfecho no SIHSUS.
+    - name: "desfecho_grupo_descricao"
+      description: >
+        Descrição do grupo de desfechos. Assume um dos valores `'Permanencia'`, `'Transferência'`, `'Alta'`,
+        `'Encerramento administrativo'` ou `'Óbito'`. 
+
+
   - name: intervalos_tempo_servico
     description: >
       Lista categorias para classificar a duração do vínculo entre uma pessoa e
