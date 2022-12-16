@@ -82,3 +82,9 @@ sources:
         identifier: sexos
         description: >
           Lista de classificações para o sexo biológico de uma pessoa.
+
+      - name: ceps
+        identifier: ceps
+        description: >
+          Informações de endereços associadas aos Códigos de Endereçamento
+          Postal dos Correios.

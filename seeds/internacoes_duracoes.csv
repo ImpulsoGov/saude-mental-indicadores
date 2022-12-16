@@ -1,0 +1,6 @@
+"id","minimo","maximo","descricao","ordem"
+"0636eb21-7ac1-7a15-91d1-0615e9fe91e9","0 days","2 days","Até 1 dia",1.0
+"0636eb22-1c6d-7fa4-8b90-386798aa6f68","2 days","4 days","2 a 3 dias",2.5
+"0636eb22-94be-761d-a1ac-794adb05dbd7","4 days","15 days","4 a 14 dias",9.0
+"0636eb23-2a69-7f7b-883f-bcf75f706a7f","15 days","31 days","15 a 30 dias",22.5
+"0636eb23-c703-797a-9ba7-7ec20873cbab","31 days","99 year","Mais de 30 dias",99.9

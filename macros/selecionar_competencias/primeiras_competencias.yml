@@ -1,0 +1,57 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: primeiras_competencias
+    description: >
+      Seleciona apenas as competências correspondentes a um intervalo de tempo
+      definido em função do primeiro período para o qual houve o carregamento
+      de dados dos documentos de origem via DataSUS.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto
+          [Relation](https://docs.getdbt.com/reference/dbt-classes#relation) ou
+          nome de uma
+          [*Common Table Expression* (CTE)](https://pt.wikipedia.org/wiki/Common_table_expression)
+          cujas competências se deseja filtrar.
+      - name: fontes
+        type: list[str]
+        description: >
+          Lista com os nomes das tabelas de origem que devem ser consideradas
+          para a definição da data da primeira competência. Atualmente, são
+          aceitos os valores `bpa_i_disseminacao`,`raas_psicossocial_disseminacao` e/ou `aih_rd_disseminacao`.
+
+          Caso a lista contenha mais de uma fonte de dados, será considerada
+          como primeira competência o período mais recente para a qual houve
+          atualização *em ambas as fontes* (isto é, atualizações anteriores
+          em só uma ou algumas das fontes serão desconsideradas).
+      - name: meses_apos_primeira_competencia
+        type: tuple[int | None, int | None]
+        description: >
+          Tupla de valores indicando o número mínimo (primeiro valor) e máximo
+          (segundo valor) de meses antes da primeira competência a serem
+          considerados para a seleção. Ambas as extremidades do intervalo são
+          fechadas (incluídas no resultado).
+
+          Por exemplo, uma tupla `(0, 12)` implica selecionar os primeiros 12
+          meses para os quais há dados carregados em todas as fontes
+          informadas. Já o valor `none` pode ser usado para informar um
+          intervalo infinito em algum dos dois lados; por exemplo, o intervalo
+          `(0, none)` (*default*) seleciona todos os valores a partir da 
+          primeira competência - o que útil para remover competências 
+          anteriores geradas por cruzamentos de dados.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à
+          [CTE](https://pt.wikipedia.org/wiki/Common_table_expression) que
+          contém os resultados, para ser referenciada em passos posteriores da
+          definição de uma consulta.

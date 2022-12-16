@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _ceps_por_bairro
+    description: >
+      Agrupa os Códigos de Endereçamento Postais existentes no banco de dados
+      por denominação do bairro segundo os Correios.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _ceps_por_bairro
+      enabled: true
+      indexes:
+        - columns:
+            - "municipio_id_sus"
+            - "unidade_geografica_id"
+            - "bairro_nome"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "cep"

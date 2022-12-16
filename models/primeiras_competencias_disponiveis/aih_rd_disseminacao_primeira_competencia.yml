@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: aih_rd_dissiminacao_primeira_competencia
+    description: >
+      Lista as últimas competências para as quais houve disponibilização dos
+      arquivos de disseminação dos Boletins de Produção Ambulatorial
+      individualizados (BPA-i) do Sistema de Informações Ambulatoriais do SUS
+      (SIASUS), para cada município.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _aih_rd_disseminacao_primeira_competencia
+      enabled: true
+      indexes:
+        - columns:
+            - "unidade_geografica_id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "sihsus"

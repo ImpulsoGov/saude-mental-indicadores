@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+sources:
+
+  - name: sihsus
+    schema: dados_publicos
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: aih_rd_disseminacao
+        identifier: _sihsus_aih_reduzida_disseminacao
+        description: >
+          Arquivos de disseminação das Autorizações de Internação Hospitalar
+          Reduzidas (AIH-RD), conforme disponibilizadas no FTP público do
+          DataSUS. Não inclui campos zerados.
