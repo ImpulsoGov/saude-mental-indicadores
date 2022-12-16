@@ -17,20 +17,20 @@ SPDX-License-Identifier: MIT
 {%- set duracao -%}
 AGE(t.{{ coluna_desfecho_data }}, t.{{ coluna_entrada_data }})
 {%- endset -%}
-duracoes_internacoes AS (
+internacoes_duracao AS (
     SELECT * FROM {{ ref("internacoes_duracoes") }}
 ),
 {{ cte_resultado }} AS (
     SELECT 
         t.*,
-        {% for coluna in colunas_duracao_internacao -%}
-        duracao_internacao.{{- coluna }} AS duracao_internacao_{{- coluna -}}
+        {% for coluna in colunas_internacao_duracao -%}
+        internacao_duracao.{{- coluna }} AS internacao_duracao_{{- coluna -}}
         {{- "," if not loop.last }}
         {%- endfor %}
     FROM {{ relacao }} t
-    LEFT JOIN duracoes_internacoes duracao_internacao
+    LEFT JOIN internacoes_duracao internacao_duracao
     ON
-        {{ duracao }} >= duracao_internacao.minimo
-    AND {{ duracao }} < duracao_internacao.maximo
+        {{ duracao }} >= internacao_duracao.minimo
+    AND {{ duracao }} < internacao_duracao.maximo
 )
 {%- endmacro -%}
