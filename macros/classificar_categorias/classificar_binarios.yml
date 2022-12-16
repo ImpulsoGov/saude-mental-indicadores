@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: classificar_coluna_binaria
+    description: >
+      Condição a ser aplicada em colunas binárias, atribuindo o valor de uma
+      classe para casos verdadeiros, outro valor para casos falsos, e outro
+      valor para casos nulos.
+    docs:
+      show: true
+    arguments:
+      - name: coluna
+        type: str
+        description: >
+          Nome da coluna a ser transformada de binária para categórica.
+      - name: classe_verdadeiro
+        type: str
+        description: >
+          Valor a ser atribuído para casos verdadeiros na coluna de origem. Por
+          padrão, assume o valor `'Sim'`.
+      - name: classe_falso
+        type: str
+        description: >
+          Valor a ser atribuído para casos falsos na coluna de origem. Por
+          padrão, assume o valor `'Não'`.
+      - name: classe_nulo
+        type: str
+        description: >
+          Valor a ser atribuído para casos falsos na coluna de origem. Por
+          padrão, assume o valor `'Sem informação'`.
