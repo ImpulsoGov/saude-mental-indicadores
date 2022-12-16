@@ -42,10 +42,19 @@ contagem_antes_apos AS (
         ) AS altas_atendimento_raps_antes_nao_apos_sim,
 		max(atualizacao_data) AS atualizacao_data
 	FROM internacoes internacao
-	-- Apenas as internações que tiveram alta (reconhecidas porque as 
-	-- internações que não tiveram alta não tem valor definido para o campo
-	-- calculado `atendimento_raps_1m_apos`)
-	WHERE atendimento_raps_1m_apos IS NOT NULL
+	-- Apenas as internações que tiveram alta
+	WHERE internacao.desfecho_motivo_id_sihsus IN (
+        '11',  -- Alta curado
+        '12',  -- Alta melhorado
+        '14',  -- Alta a pedido
+        '15',  -- Alta com previsão de retorno p/acomp do paciente
+        '16',  -- Alta por evasão
+        '18',  -- Alta por outros motivos
+        '19',  -- Alta de paciente agudo em psiquiatria
+        '29',  -- Transferência para internação domiciliar
+        '32',  -- Transferência para internação domiciliar
+        '51'   -- Encerramento administrativo
+    )
 	GROUP BY
 		internacao.unidade_geografica_id,
 		internacao.unidade_geografica_id_sus,
