@@ -35,6 +35,24 @@ jobs:
       - name: Receber imagem Docker
         run: docker pull impulsogov/saude-mental-indicadores:latest
 
+      - name: generate docs
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          --mount type=bind,source="$(pwd)/docs",destination="/usr/app/dbt/docs"
+          impulsogov/saude-mental-indicadores:latest sh docs-gen.sh
+
+      - name: deploy docs 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: docs
+
       - name: create UDFs
         run: >
           docker run
@@ -79,21 +97,3 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
           impulsogov/saude-mental-indicadores:latest dbt test
-
-      - name: generate docs
-        run: >
-          docker run
-          -e DBT_ENV_SECRET_ANALITICO_USUARIO
-          -e DBT_ENV_SECRET_ANALITICO_SENHA
-          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-          -e DBT_ENV_SECRET_PRODUCAO_SENHA
-          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          --mount type=bind,source="$(pwd)/docs",destination="/usr/app/dbt/docs"
-          impulsogov/saude-mental-indicadores:latest sh docs-gen.sh
-
-      - name: deploy docs 🚀
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: docs
