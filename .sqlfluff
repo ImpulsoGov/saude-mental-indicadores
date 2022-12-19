@@ -6,14 +6,14 @@
 [sqlfluff]
 verbose = 0
 nocolor = False
-dialect = snowflake
-templater = dbt
+dialect = postgres
+templater = jinja
 rules = None
 
 recurse = 0
-output_line_length = 80
+output_line_length = 79
 runaway_limit = 10
-ignore_templated_areas = True
+ignore_templated_areas = False
 
 # Comma separated list of file extensions to lint.
 # NB: This config will only apply in the root folder.
@@ -24,12 +24,14 @@ sql_file_exts = .sql,.sql.j2,.dml,.ddl
 # Some rules can be configured directly from the config common to other rules.
 [sqlfluff:rules]
 tab_space_size = 4
-max_line_length = 80
+max_line_length = 79
 indent_unit = space
-comma_style = trailing
 allow_scalar = True
 single_table_references = unqualified
 unquoted_identifiers_policy = all
+
+[sqlfluff:layout:type:comma]
+line_position = trailing
 
 [sqlfluff:indentation]
 indented_joins = False
@@ -41,12 +43,8 @@ unwrap_wrapped_queries = True
 # Excluding this rule will allow USING
 exclude_rules = L032,L034
 
-# Some rules have their own specific config.
-[sqlfluff:rules:L003]
-lint_templated_tokens = True
-
 [sqlfluff:rules:L010]  # Keywords
-capitalisation_policy = lower
+capitalisation_policy = upper
 
 [sqlfluff:rules:L014]  # Unquoted identifiers
 extended_capitalisation_policy = lower
@@ -55,7 +53,7 @@ extended_capitalisation_policy = lower
 ignore_comment_lines = False
 
 [sqlfluff:rules:L029]  # Keyword identifiers
-unquoted_identifiers_policy = none
+unquoted_identifiers_policy = all
 
 [sqlfluff:rules:L030]  # Function names
 capitalisation_policy = lower
@@ -72,3 +70,6 @@ forbid_subquery_in = join
 
 [sqlfluff:rules:L047]  # Consistent syntax to count all rows
 prefer_count_1 = False
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
