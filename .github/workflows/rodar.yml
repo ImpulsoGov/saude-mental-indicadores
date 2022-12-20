@@ -30,7 +30,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: manifest
-          path: ./target/manifest.json
+          path: ./target/backup_manifest.json
 
       - name: Docker login
         env:
@@ -71,6 +71,11 @@ jobs:
           impulsogov/saude-mental-indicadores:latest dbt run-operation
           criar_udfs
 
+      - name: Restituir arquivo manifest (1)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
       - name: seed
         run: >
           docker run
@@ -80,7 +85,30 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_USUARIO
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest dbt seed --full-refresh
+          impulsogov/saude-mental-indicadores:latest dbt seed
+          --select state:modified+ --full-refresh
+
+      - name: Restituir arquivo manifest (2)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
+      - name: dbt compile
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt compile
+          --select state:modified+
+
+      - name: Restituir arquivo manifest (3)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
 
       - name: dbt run
         run: >
@@ -92,6 +120,12 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
           impulsogov/saude-mental-indicadores:latest dbt run
+          --select state:modified+ --full-refresh
+
+      - name: Restituir arquivo manifest (4)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
 
       - name: test
         run: >
@@ -103,6 +137,7 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
           impulsogov/saude-mental-indicadores:latest dbt test
+          --select state:modified+
 
       - name: Gravar arquivo manifest da execução bem-sucedida
         uses: actions/upload-artifact@v3
