@@ -26,11 +26,11 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
-     - name: Baixar arquivo manifest do último disparo bem-sucedido
-       uses: actions/download-artifact@v3
-       with:
-         name: manifest
-         path: ./target/backup_manifest.json
+      - name: Baixar arquivo manifest do último disparo bem-sucedido
+        uses: actions/download-artifact@v3
+        with:
+          name: manifest
+          path: ./target/backup_manifest.json
 
       - name: Docker login
         env:
@@ -71,22 +71,22 @@ jobs:
           impulsogov/saude-mental-indicadores:latest dbt run-operation
           criar_udfs
 
-     - name: Restituir arquivo manifest
-       shell: bash
-       run: |
-         cp ./target/backup_manifest.json ./target/manifest.json
+      - name: Restituir arquivo manifest
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
 
-     - name: dbt build
-       run: >
-         docker run
-         -e DBT_ENV_SECRET_ANALITICO_USUARIO
-         -e DBT_ENV_SECRET_ANALITICO_SENHA
-         -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-         -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-         -e DBT_ENV_SECRET_PRODUCAO_SENHA
-         -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-         impulsogov/saude-mental-indicadores:latest dbt build
-         --select state:modified+ --full-refresh
+      - name: dbt build
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt build
+          --select state:modified+ --full-refresh
 
       - name: Gravar arquivo manifest da execução bem-sucedida
         uses: actions/upload-artifact@v3
