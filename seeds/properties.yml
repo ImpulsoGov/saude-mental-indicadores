@@ -163,6 +163,27 @@ seeds:
         intervalos mínimo e máximo que as definem.
 
 
+  - name: procedimentos_individuais
+    description: >
+      Lista os procedimentos comuns nas Redes de Atenção Psicossociais e, em
+      especial, nos CAPS, que são indicadores de atendimentos de natureza
+      predominantemente individual/ambulatorial.
+    docs:
+      show: true
+    persist_docs:
+      relation: true
+      columns: true
+    config:
+      quote_columns: true
+      column_types:
+        procedimento_id_sigtap: "bpchar(10)"
+    columns:
+    - name: "procedimento_id_sigtap"
+      description: >
+        Identificador do procedimento no Sistema de Gerenciamento da Tabela de
+        Procedimentos, Medicamentos e OPM do SUS.
+
+
   - name: procedimentos_urgencia
     description: >
       Lista os procedimentos de saúde que devem ser considerados como
