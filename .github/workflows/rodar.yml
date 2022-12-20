@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 
-name: Seed, Run, Check, Test and Docs
+name: Documenta e constroi modelos alterados
 
 on:
   workflow_run:
@@ -25,12 +25,6 @@ jobs:
     steps:
       - name: Checkout branch
         uses: actions/checkout@v2
-
-      - name: Baixar arquivo manifest do último disparo bem-sucedido
-        uses: actions/download-artifact@v3
-        with:
-          name: manifest
-          path: ./target/backup_manifest.json
 
       - name: Docker login
         env:
@@ -71,14 +65,17 @@ jobs:
           impulsogov/saude-mental-indicadores:latest dbt run-operation
           criar_udfs
 
-      - name: Restituir arquivo manifest
-        shell: bash
-        run: |
-          cp ./target/backup_manifest.json ./target/manifest.json
+      - name: Baixar arquivo manifest do último disparo bem-sucedido
+        uses: actions/download-artifact@v3
+        continue-on-error: true
+        with:
+          name: manifest
+          path: ./target/manifest.json
 
       - name: dbt build
         run: >
           docker run
+          --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target"
           -e DBT_ENV_SECRET_ANALITICO_USUARIO
           -e DBT_ENV_SECRET_ANALITICO_SENHA
           -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
