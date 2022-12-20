@@ -26,6 +26,12 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
+      - name: Baixar arquivo manifest do último disparo bem-sucedido
+        uses: actions/download-artifact@v3
+        with:
+          name: manifest
+          path: ./target/backup_manifest.json
+
       - name: Docker login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
@@ -34,51 +40,6 @@ jobs:
 
       - name: Receber imagem Docker
         run: docker pull impulsogov/saude-mental-indicadores:latest
-
-      - name: create UDFs
-        run: >
-          docker run
-          -e DBT_ENV_SECRET_ANALITICO_USUARIO
-          -e DBT_ENV_SECRET_ANALITICO_SENHA
-          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-          -e DBT_ENV_SECRET_PRODUCAO_SENHA
-          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest dbt run-operation
-          criar_udfs
-
-      - name: seed
-        run: >
-          docker run
-          -e DBT_ENV_SECRET_ANALITICO_USUARIO
-          -e DBT_ENV_SECRET_ANALITICO_SENHA
-          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-          -e DBT_ENV_SECRET_PRODUCAO_SENHA
-          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest dbt seed --full-refresh
-
-      - name: dbt run
-        run: >
-          docker run
-          -e DBT_ENV_SECRET_ANALITICO_USUARIO
-          -e DBT_ENV_SECRET_ANALITICO_SENHA
-          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-          -e DBT_ENV_SECRET_PRODUCAO_SENHA
-          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest dbt run
-
-      - name: test
-        run: >
-          docker run
-          -e DBT_ENV_SECRET_ANALITICO_USUARIO
-          -e DBT_ENV_SECRET_ANALITICO_SENHA
-          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
-          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
-          -e DBT_ENV_SECRET_PRODUCAO_SENHA
-          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
-          impulsogov/saude-mental-indicadores:latest dbt test
 
       - name: generate docs
         run: >
@@ -97,3 +58,89 @@ jobs:
         with:
           branch: gh-pages
           folder: docs
+
+      - name: create UDFs
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt run-operation
+          criar_udfs
+
+      - name: Restituir arquivo manifest (1)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
+      - name: seed
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt seed
+          --select state:modified+ --full-refresh
+
+      - name: Restituir arquivo manifest (2)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
+      - name: dbt compile
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt compile
+          --select state:modified+
+
+      - name: Restituir arquivo manifest (3)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
+      - name: dbt run
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt run
+          --select state:modified+ --full-refresh
+
+      - name: Restituir arquivo manifest (4)
+        shell: bash
+        run: |
+          cp ./target/backup_manifest.json ./target/manifest.json
+
+      - name: test
+        run: >
+          docker run
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt test
+          --select state:modified+
+
+      - name: Gravar arquivo manifest da execução bem-sucedida
+        uses: actions/upload-artifact@v3
+        with:
+          name: manifest
+          path: ./target/manifest.json
