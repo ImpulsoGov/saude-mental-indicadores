@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 
-name: Documenta e constroi modelos alterados
+name: Seed, Run, Check, Test and Docs
 
 on:
   workflow_run:
