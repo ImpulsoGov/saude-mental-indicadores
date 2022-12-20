@@ -65,14 +65,29 @@ jobs:
           impulsogov/saude-mental-indicadores:latest dbt run-operation
           criar_udfs
 
-      - name: Baixar arquivo manifest do último disparo bem-sucedido
+      - id: manifest-download
+        name: Baixar arquivo manifest do último disparo bem-sucedido
         uses: actions/download-artifact@v3
         continue-on-error: true
         with:
           name: manifest
           path: ./target/manifest.json
 
-      - name: dbt build
+      - name: dbt build - todos
+        if: steps.manifest-download.outcome == 'failure'
+        run: >
+          docker run
+          --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target"
+          -e DBT_ENV_SECRET_ANALITICO_USUARIO
+          -e DBT_ENV_SECRET_ANALITICO_SENHA
+          -e DBT_ENV_SECRET_ANALITICO_SERVIDOR
+          -e DBT_ENV_SECRET_PRODUCAO_USUARIO
+          -e DBT_ENV_SECRET_PRODUCAO_SENHA
+          -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
+          impulsogov/saude-mental-indicadores:latest dbt build --full-refresh
+
+      - name: dbt build - modificados
+        if: steps.manifest-download.outcome == 'success'
         run: >
           docker run
           --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target"
@@ -85,7 +100,8 @@ jobs:
           impulsogov/saude-mental-indicadores:latest dbt build
           --select state:modified+ --full-refresh
 
-      - name: Gravar arquivo manifest da execução bem-sucedida
+      - name: Gravar arquivo manifest da última execução
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: manifest
