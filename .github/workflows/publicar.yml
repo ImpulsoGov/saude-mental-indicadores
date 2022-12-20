@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 
-name: Cria imagem Docker - ImpulsoETL
+name: Cria imagem Docker - saude-mental-indicadores
 
 on:
   push:
