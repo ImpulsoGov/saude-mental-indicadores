@@ -26,6 +26,12 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
 
+      - name: Baixar arquivo manifest do último disparo bem-sucedido
+        uses: actions/download-artifact@v3
+        with:
+          name: manifest
+          path: ./target/manifest.json
+
       - name: Docker login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USER}}
@@ -97,3 +103,9 @@ jobs:
           -e DBT_ENV_SECRET_PRODUCAO_SENHA
           -e DBT_ENV_SECRET_PRODUCAO_SERVIDOR
           impulsogov/saude-mental-indicadores:latest dbt test
+
+      - name: Gravar arquivo manifest da execução bem-sucedida
+        uses: actions/upload-artifact@v3
+        with:
+          name: manifest
+          path: ./target/manifest.json
