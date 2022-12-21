@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _caps_adesao_usuarios_evadiram
+    description: >
+      Lista, para cada combinação de Cartão Nacional de Saúde e Centro de
+      Atenção Psicossocial, se o usuário evadiu o serviço nos três primeiros
+      meses após a realização do primeiro procedimento (*exceto acolhimento
+      inicial*). 
+      
+      Os valores tem como base os dados enviados mensalmente ao Sistema
+      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
+      Departamento de Informática do SUS (DATASUS) em seu FTP público.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _caps_adesao_usuarios_evadiram
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "usuario_id_cns_criptografado"
+      materialized: incremental
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "incremental"
+        - "adesao"
+      unique_key: "id"
