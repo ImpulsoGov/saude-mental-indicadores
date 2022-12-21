@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _ambulatorio_usuarios_meses_frequentaram
+    description: >
+      Lista o estatus da movimentação mensal de prontuários de usuários de 
+      ambulatórios de saúde mental, conforme as informações enviadas ao Sistema
+      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizado pelo
+      Departamento de Informática do SUS (DATASUS) em seu FTP público.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _ambulatorio_usuarios_meses_frequentaram
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
+        - columns:
+          - "usuario_id_cns_criptografado"
+      materialized: incremental
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "incremental"
+        - "ambulatorio"
+        - "referencias"
+      unique_key: "id"
