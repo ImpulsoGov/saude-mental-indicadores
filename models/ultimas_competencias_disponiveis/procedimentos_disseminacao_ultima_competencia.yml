@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: procedimentos_disseminacao_ultima_competencia
+    description: >
+      Lista as últimas competências para as quais houve disponibilização dos
+      arquivos de disseminação dos procedimentos do Sistema de Informações
+      Ambulatoriais do SUS (SIASUS), incluindo informações resumidas de
+      diversos documentos (BPA-i, BPA-c, RAAS-PS, RAAS-AD, APAC-P, APAC-S).
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _procedimentos_disseminacao_ultima_competencia
+      enabled: true
+      indexes:
+        - columns:
+            - "unidade_geografica_id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "procedimentos"
