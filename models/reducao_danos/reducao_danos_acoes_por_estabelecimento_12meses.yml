@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: reducao_danos_acoes_por_estabelecimento_12meses
+    description: >
+      [a inserir]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao'] 
+      alias: reducao_danos_acoes_por_estabelecimento_12meses
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "sisab"
+        - "reducao_de_danos"
+        - "reducao_danos"
+      unique_key: "id"
