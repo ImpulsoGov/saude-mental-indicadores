@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: aih_rd_dissiminacao_primeira_competencia
+  - name: aih_rd_disseminacao_primeira_competencia
     description: >
       Lista as últimas competências para as quais houve disponibilização dos
       arquivos de disseminação dos Boletins de Produção Ambulatorial
