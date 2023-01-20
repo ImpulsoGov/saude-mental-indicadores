@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: sisab_producao_conduta_problema_condicao_ultima_competencia
+    description: >
+      Lista as últimas competências para as quais houve disponibilização dos
+      arquivos do SISAB de quantidade de atendimentos individuais realizados 
+      por equipes da Atenção Primária à Saúde, por município, mês, categoria 
+      de problema/condição avaliada e desfecho.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _sisab_producao_conduta_problema_condicao_ultima_competencia
+      enabled: true
+      indexes:
+        - columns:
+            - "unidade_geografica_id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "sisab"
+        - "encaminhamentos"
