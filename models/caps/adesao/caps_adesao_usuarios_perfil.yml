@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+# SPDX-FileCopyrightText: 2023 Impulso Gov <contato@impulsogov.org>
 #
 # SPDX-License-Identifier: MIT
 
@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: _caps_adesao_usuarios_perfil
+  - name: caps_adesao_usuarios_perfil
     description: >
       Contabiliza o total de usuários em CAPS de acordo com as
       características demográficas, grupo do diagnóstico principal e estatus em
@@ -19,20 +19,9 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _caps_adesao_usuarios_perfil
+      alias: caps_adesao_usuarios_perfil
       enabled: true
-      indexes:
-        - columns:
-          - "id"
-          unique: true
-        - columns:
-          - "unidade_geografica_id_sus"
-          - "unidade_geografica_id"
-          - "estabelecimento_id_scnes"
-        - columns:
-          - "periodo_data_inicio"
-          - "periodo_id"
-      materialized: table
+      materialized: view
       persist_docs:
         relation: true
       tags:
