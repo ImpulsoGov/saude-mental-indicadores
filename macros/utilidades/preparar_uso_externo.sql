@@ -132,11 +132,10 @@ SPDX-License-Identifier: MIT
         or (coluna in remover_ids_exceto)
         or (not re.match(".*_id(_.*)?$", coluna))
     ) %}
-        {{ re.sub(
-            "(.*)" + (sufixos_a_eliminar|join("|")) + "$",
-            "\1",
+        {{ re.match(
+            "(.*)(" + (sufixos_a_eliminar|join("|")) + ")?$",
             coluna
-        ) }}{{ "," if not loop.last }}
+        ).groups(1)[0] }}{{ "," if not loop.last }}
     {%- endif %}
     {%- endif %}
     {%- endfor %}
