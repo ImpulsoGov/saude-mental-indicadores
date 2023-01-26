@@ -6,13 +6,12 @@
 version: 2
 
 models:
-  - name: caps_usuarios_primeiro_procedimento
+  - name: _caps_adesao_usuarios_perfil
     description: >
-      Lista os usuários que já tiveram algum procedimento registrado em Centros
-      de Atenção Psicossociais (identificados por uma chave criptografada
-      derivada do Cartão Nacional de Saúde), relacionando-os à data em que
-      realizaram o seu primeiro acolhimento inicial e à data em que realizaram
-      pela primeira vez algum outro procedimento naquele CAPS.
+      Contabiliza o total de usuários em CAPS de acordo com as
+      características demográficas, grupo do diagnóstico principal e estatus em
+      relação à adesão ou não ao processo terapêutico (medida pela 
+      continuidade do atendimento ao menos nos três meses iniciais).
       
       Os valores tem como base os dados enviados mensalmente ao Sistema
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
@@ -20,15 +19,19 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _caps_usuarios_primeiro_procedimento
+      alias: _caps_adesao_usuarios_perfil
       enabled: true
       indexes:
         - columns:
           - "id"
           unique: true
         - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
           - "estabelecimento_id_scnes"
-          - "usuario_id_cns_criptografado"
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
       materialized: table
       persist_docs:
         relation: true
@@ -37,4 +40,5 @@ models:
         - "caps"
         - "bpa_i"
         - "raas"
-      unique_key: "id"
+        - "incremental"
+        - "adesao"

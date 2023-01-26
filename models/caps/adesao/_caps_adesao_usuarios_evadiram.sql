@@ -58,7 +58,8 @@ usuarios_recentes_nao_aderiram AS (
         -- seguinte ao último em que houve movimentação nas fichas de 
         -- procedimentos
         (
-            '1 mon'::interval + max(ultimo_procedimento_periodo_data_inicio)
+            '1 mon'::interval
+            + max(usuario_ultimo_procedimento_periodo_data_inicio)
             FILTER (WHERE tornandose_inativo)
         )::date AS evadiu_a_partir_de_periodo_data_inicio,
         bool_or(tornandose_inativo) AS evadiu
@@ -86,21 +87,52 @@ usuarios_recentes_nao_aderiram AS (
 -- tendo perfil para ambulatório
 exceto_perfil_ambulatorial AS (
     SELECT
-        usuarios_recentes_nao_aderiram.*
+        usuarios_recentes_nao_aderiram.unidade_geografica_id,
+        usuarios_recentes_nao_aderiram.unidade_geografica_id_sus,
+        usuarios_recentes_nao_aderiram.estabelecimento_id_scnes,
+        usuarios_recentes_nao_aderiram.usuario_id_cns_criptografado,
+        usuario_primeiro_procedimento_periodo_data_inicio,
+        (
+            CASE
+                WHEN usuarios_perfil_ambulatorial.id IS NOT NULL THEN NULL
+                ELSE evadiu_a_partir_de_periodo_data_inicio
+            END
+        ) AS evadiu_a_partir_de_periodo_data_inicio,
+        (
+            CASE
+                WHEN usuarios_perfil_ambulatorial.id IS NOT NULL THEN NULL
+                ELSE evadiu
+            END
+        ) AS evadiu
     FROM usuarios_recentes_nao_aderiram
     LEFT JOIN usuarios_perfil_ambulatorial
         ON usuarios_recentes_nao_aderiram.estabelecimento_id_scnes
             = usuarios_perfil_ambulatorial.estabelecimento_id_scnes
         AND usuarios_recentes_nao_aderiram.usuario_id_cns_criptografado
             = usuarios_perfil_ambulatorial.usuario_id_cns_criptografado
-    WHERE usuarios_perfil_ambulatorial.id IS NULL
 ),
 
 -- Exclui da conta usuários que foram atendidos em um ambulatório de saúde
 -- mental em até três meses após parar de frequentar um CAPS
 exceto_encaminhamentos_ambulatorio AS (
     SELECT
-        exceto_perfil_ambulatorial.*
+        exceto_perfil_ambulatorial.unidade_geografica_id,
+        exceto_perfil_ambulatorial.unidade_geografica_id_sus,
+        exceto_perfil_ambulatorial.estabelecimento_id_scnes,
+        exceto_perfil_ambulatorial.usuario_id_cns_criptografado,
+        usuario_primeiro_procedimento_periodo_data_inicio,
+        (
+            CASE
+                WHEN usuarios_atividade_ambulatorio.id IS NOT NULL THEN NULL
+                ELSE evadiu_a_partir_de_periodo_data_inicio
+            END
+        ) AS evadiu_a_partir_de_periodo_data_inicio,
+        (
+            CASE
+                WHEN usuarios_atividade_ambulatorio.id IS NOT NULL THEN NULL
+                ELSE evadiu
+            END
+        ) AS evadiu
     FROM exceto_perfil_ambulatorial
     LEFT JOIN usuarios_atividade_ambulatorio
         ON exceto_perfil_ambulatorial.usuario_id_cns_criptografado
@@ -112,19 +144,7 @@ exceto_encaminhamentos_ambulatorio AS (
             <= 
             exceto_perfil_ambulatorial.evadiu_a_partir_de_periodo_data_inicio
             + '2 mon'::interval
-    WHERE usuarios_atividade_ambulatorio.id IS NULL
 ),
-
-{# -- Exclui as 4 competências mais recentes, já que nelas ainda não houve tempo 
--- para observar o comportamento (adesão/evasão) nos três meses iniciais após
--- o primeiro procedimento, mais os 2 meses necessários para confirmar as
--- evasões ocorridas nas últimas competências dentro desse período 
-{{ ultimas_competencias(
-    relacao="exceto_perfil_ambulatorial",
-    fontes=["bpa_i_disseminacao", "raas_psicossocial_disseminacao"],
-    meses_antes_ultima_competencia=(4, none),
-    cte_resultado="exceto_ultimas_4_competencias"
-) }}, #}
 
 final AS (
     SELECT
@@ -135,7 +155,6 @@ final AS (
         ]) }} AS id,
         *,
         now() AS atualizacao_data
-    {# FROM exceto_ultimas_4_competencias #}
     FROM exceto_perfil_ambulatorial
 )
 
