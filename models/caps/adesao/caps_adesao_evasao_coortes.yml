@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2023 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_adesao_evasao_coortes
+    description: >
+      Contabiliza a proporção e o total de usuários que realizaram o primeiro
+      procedimento em CAPS há até três meses e que deixaram de frequentar o
+      serviço, por estabelecimento e por mês de início dos procedimentos.
+      
+      Os valores tem como base os dados enviados mensalmente ao Sistema
+      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
+      Departamento de Informática do SUS (DATASUS) em seu FTP público.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_adesao_evasao_coortes
+      enabled: true
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "adesao"
