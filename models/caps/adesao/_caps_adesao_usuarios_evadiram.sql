@@ -72,7 +72,7 @@ usuarios_recentes_nao_aderiram AS (
     -- ela aparecerá como "tornando-se inativa" na tabela de usuários ativos.
     WHERE periodo_data_inicio >=
         usuario_primeiro_procedimento_periodo_data_inicio
-        AND periodo_data_inicio <= (
+        AND periodo_data_inicio < (
             usuario_primeiro_procedimento_periodo_data_inicio
             + '5 mon'::interval
         )
