@@ -102,7 +102,7 @@ usuarios_perfil AS (
 -- evasões ocorridas nas últimas competências dentro desse período
 {{ ultimas_competencias(
     relacao="usuarios_perfil",
-    fontes=["bpa_i_disseminacao", "vinculos_profissionais"],
+    fontes=["bpa_i_disseminacao", "raas_psicossocial_disseminacao"],
     meses_antes_ultima_competencia=(4, none),
     cte_resultado="exceto_ultimas_4_competencias"
 ) }},

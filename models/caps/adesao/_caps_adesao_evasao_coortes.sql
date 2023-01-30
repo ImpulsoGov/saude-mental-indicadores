@@ -42,7 +42,7 @@ estatus_por_coorte_inicio AS (
         estabelecimento_id_scnes
 ),
 
-final AS (
+com_percentuais AS (
     SELECT
         {{ dbt_utils.surrogate_key([
             "estabelecimento_id_scnes",
@@ -73,6 +73,17 @@ final AS (
     LEFT JOIN periodos
     ON estatus_por_coorte_inicio.periodo_data_inicio = periodos.data_inicio
     WHERE periodos.tipo = 'Mensal'
-)
+),
+
+-- Exclui as 4 competências mais recentes, já que nelas ainda não houve tempo 
+-- para observar o comportamento (adesão/evasão) nos três meses iniciais após
+-- o primeiro procedimento, mais os 2 meses necessários para confirmar as
+-- evasões ocorridas nas últimas competências dentro desse período
+{{ ultimas_competencias(
+    relacao="com_percentuais",
+    fontes=["bpa_i_disseminacao", "raas_psicossocial_disseminacao"],
+    meses_antes_ultima_competencia=(4, none),
+    cte_resultado="final"
+) }}
 
 SELECT * FROM final
