@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: encaminhamentos_aps_caps_resumo_ultimo_mes_horizontal
+    description: >
+      Quantidade de atendimentos individuais em saúde mental realizadas 
+      por equipes da Atenção Primária em Saúde por município na última 
+      competência com dados disponíveis, e quantidade desses atendimentos 
+      que tiveram como desfecho o encaminhamento para CAPS.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao'] 
+      alias: encaminhamentos_aps_caps_resumo_ultimo_mes_horizontal
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "sisab"
+        - "encaminhamentos_aps"
+      unique_key: "id"
