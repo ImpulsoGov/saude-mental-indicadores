@@ -6,16 +6,16 @@
 version: 2
 
 models:
-  - name: aih_rd_disseminacao_primeira_competencia
+  - name: sisab_producao_conduta_problema_condicao_ultima_competencia
     description: >
       Lista as últimas competências para as quais houve disponibilização dos
-      arquivos de disseminação dos Boletins de Produção Ambulatorial
-      individualizados (BPA-i) do Sistema de Informações Ambulatoriais do SUS
-      (SIASUS), para cada município.
+      arquivos do SISAB de quantidade de atendimentos individuais realizados 
+      por equipes da Atenção Primária à Saúde, por município, mês, categoria 
+      de problema/condição avaliada e desfecho.
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _aih_rd_disseminacao_primeira_competencia
+      alias: _sisab_producao_conduta_problema_condicao_ultima_competencia
       enabled: true
       indexes:
         - columns:
@@ -25,4 +25,5 @@ models:
       persist_docs:
         relation: true
       tags:
-        - "sihsus"
+        - "sisab"
+        - "encaminhamentos"
