@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: matriciamentos_por_municipio_ultimo_ano
+    description: >
+      ...
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao'] 
+      alias: matriciamentos_por_municipio_ultimo_ano
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+        - columns:
+          - "estabelecimento"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+      unique_key: "id"
