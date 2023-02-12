@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _caps_usuarios_novos_perfil
+    description: >
+      **Modelo para uso interno no dbt**. Ver modelo [`caps_usuarios_novos_perfil`](https://impulsogov.github.io/saude-mental-indicadores/#!/model/model.impulso_saude_mental.caps_usuarios_novos_perfil) para a versão final. 
+      Perfil dos usuários que realizaram o primeiro procedimento em CAPS na competência em questão.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _caps_usuarios_novos_perfil
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+        - columns:
+          - "periodo_data_inicio"
+          - "periodo_id"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "estabelecimento_id_scnes"
+          - "periodo_id"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "usuario_condicao_saude"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "raas"
+        - "usuarios_novos"
