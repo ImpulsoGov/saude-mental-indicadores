@@ -5,6 +5,8 @@ SPDX-License-Identifier: MIT
 #}
 
 
+-- depends_on: {{ ref('intervalos_tempo_servico') }}
+
 WITH
 periodos AS (
     SELECT * FROM {{ source('codigos', 'periodos') }}
