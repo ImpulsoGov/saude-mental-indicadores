@@ -14,6 +14,15 @@ SPDX-License-Identifier: MIT
     todas_linhas_valor="Todas",
     cte_resultado="com_linhas_cuidado"
 ) %}
+{%- set re = modules.re -%}
+{%- set lista_de_codigos_colunas = adapter.get_columns_in_relation(
+    source("codigos", "estabelecimentos")
+) -%}
+{%- set lista_de_codigos_coluna_id = "estabelecimento" + re.match(
+        ".*estabelecimento.*(_id.*)",
+        coluna_estabelecimento_id
+    ).groups(1)[0]
+ -%}
 {{ cte_resultado }} AS (
     SELECT
         t.*,
@@ -21,7 +30,7 @@ SPDX-License-Identifier: MIT
             CASE
             {%- if todos_estabelecimentos_id is not none %}
                 WHEN
-                    {{ coluna_estabelecimento_id }}
+                    t.{{ coluna_estabelecimento_id }}
                     = '{{todos_estabelecimentos_id}}'
                 THEN '{{ todas_linhas_valor }}'
             {%- endif %}
@@ -41,7 +50,7 @@ SPDX-License-Identifier: MIT
         (
             CASE
                 WHEN
-                    {{ coluna_estabelecimento_id }}
+                    t.{{ coluna_estabelecimento_id }}
                     = '{{todos_estabelecimentos_id}}'
                 THEN '{{ todas_linhas_valor }}'
                 WHEN
@@ -59,14 +68,14 @@ SPDX-License-Identifier: MIT
     FROM {{ relacao }} t
     LEFT JOIN (
         SELECT 
-        {%- for coluna in adapter.get_columns_in_relation(
-            source("codigos", "estabelecimentos")
-        ) %}
+        {%- for coluna in lista_de_codigos_colunas %}
             {{coluna.quoted}} AS "estabelecimento_{{coluna.name}}"
             {{- "," if not loop.last }}
         {%- endfor %}
         FROM {{ source("codigos", "estabelecimentos") }}
     ) estabelecimento
-    USING ({{ coluna_estabelecimento_id }})
+    ON 
+        t.{{ coluna_estabelecimento_id }}
+        = estabelecimento.{{ lista_de_codigos_coluna_id }}
 )
 {%- endmacro -%}
