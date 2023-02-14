@@ -33,6 +33,11 @@ models:
           - "estabelecimento_id_scnes"
           - "usuario_id_cns_criptografado"
           unique: true
+        - columns:
+          - "estabelecimento_id_scnes"
+          - "usuario_id_cns_criptografado"
+          - "periodo_data_inicio"
+          - "periodo_id"
       materialized: incremental
       persist_docs:
         relation: true
