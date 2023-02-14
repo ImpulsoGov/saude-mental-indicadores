@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: caps_adesao_evasao_coortes
+  - name: caps_adesao_evasao_coortes_resumo
     description: >
       Contabiliza a proporção e o total de usuários que realizaram o primeiro
       procedimento em CAPS há até três meses e que deixaram de frequentar o
@@ -18,7 +18,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: caps_adesao_evasao_coortes
+      alias: caps_adesao_evasao_coortes_resumo
       enabled: true
       materialized: view
       persist_docs:
