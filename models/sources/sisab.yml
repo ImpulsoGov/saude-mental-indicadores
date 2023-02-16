@@ -22,3 +22,9 @@ sources:
           Relatório de produção do Sistema de Informações em Saúde para a Atenção Básica 
           que relaciona os tipos de equipe ao tipo (e ao tamanho) da produção realizada 
           mensalmente em cada município.
+      - name: sisab_producao_conduta_problema_condicao
+        identifier: sisab_producao_municipios_por_conduta_por_problema_condicao_ava
+        description: >
+          Quantidade de atendimentos individuais realizados por equipes da Atenção Primária 
+          à Saúde, por município, mês, categoria de problema/condição avaliada e desfecho 
+          do atendimento.

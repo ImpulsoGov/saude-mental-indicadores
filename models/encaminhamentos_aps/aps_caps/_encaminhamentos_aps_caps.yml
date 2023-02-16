@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _encaminhamentos_aps_caps
+    description: >
+      **Modelo para uso interno no dbt**. Ver modelo 'encaminhamentos_aps_caps' para a versão final.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao'] 
+      alias: _encaminhamentos_aps_caps
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "sisab"
+        - "encaminhamentos_aps"
+      unique_key: "id"

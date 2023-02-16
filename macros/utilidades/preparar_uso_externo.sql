@@ -1,10 +1,8 @@
-
 {#
 SPDX-FileCopyrightText: 2022 ImpulsoGov <contato@impulsogov.org>
 
 SPDX-License-Identifier: MIT
 #}
-
 
 
 {%- macro preparar_uso_externo(
@@ -42,6 +40,23 @@ SPDX-License-Identifier: MIT
     cte_resultado=cte
 ) }},
 {%- set _ = colunas.append(coluna_sexo_nome) -%}
+{%- set _ = ctes.append(cte) -%}
+{%- endfor %}
+{#- Trocar códigos de categorias de ocupação por nomes legíveis -#}
+{%- set colunas_ocupacao_ids = filtrar_regex(colunas, ".*ocupacao.*_id.*") -%}
+{%- for coluna_ocupacao_id in colunas_ocupacao_ids %}
+{%- set coluna_ocupacao_nome=(
+    re.match("(.*ocupacao.*)_id.*", coluna_ocupacao_id).groups(1)[0]
+) -%}
+{%- set cte = "com_nomes_ocupacoes_" + loop.index|string -%}
+{{ nomear_ocupacoes(
+    relacao=ctes|last,
+	coluna_ocupacao_nome=coluna_ocupacao_nome,
+    coluna_ocupacao_id=coluna_ocupacao_id,
+	todas_ocupacoes_id="000000",
+    cte_resultado=cte
+) }},
+{%- set _ = colunas.append(coluna_ocupacao_nome) -%}
 {%- set _ = ctes.append(cte) -%}
 {%- endfor %}
 {#- Trocar códigos de categorias de raça/cor por nomes legíveis -#}
