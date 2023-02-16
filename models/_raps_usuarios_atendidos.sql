@@ -32,6 +32,8 @@ raps_atendimentos AS (
         condicao_principal_id_cid10,
         usuario_sexo_id_sigtap,
         usuario_raca_cor_id_siasus,
+        NULL AS usuario_situacao_rua,
+        NULL AS usuario_abuso_substancias,
         quantidade_apresentada,
         atualizacao_data
     FROM ambulatorios_atendimentos
@@ -51,6 +53,8 @@ raps_atendimentos AS (
         condicao_principal_id_cid10,
         usuario_sexo_id_sigtap,
         usuario_raca_cor_id_siasus,
+        usuario_situacao_rua,
+        usuario_abuso_substancias,
         quantidade_apresentada,
         atualizacao_data
     FROM caps_atendimentos
@@ -81,6 +85,12 @@ atendimentos_por_usuario AS (
         mode() WITHIN GROUP (
             ORDER BY condicao_principal_id_cid10
         ) AS condicao_principal_id_cid10,
+        mode() WITHIN GROUP (
+            ORDER BY usuario_situacao_rua
+        ) AS usuario_situacao_rua,
+        mode() WITHIN GROUP (
+            ORDER BY usuario_abuso_substancias
+        ) AS usuario_abuso_substancias,
         sum(quantidade_apresentada) FILTER (
             WHERE
                 procedimento_id_sigtap NOT IN ({{ procedimentos_urgencia }})
@@ -127,6 +137,8 @@ final AS (
         usuario_sexo_id_sigtap,
         usuario_raca_cor_id_siasus,
         condicao_principal_id_cid10,
+        usuario_situacao_rua,
+        usuario_abuso_substancias,
         coalesce(
             quantidade_registrada_rotina,
             0

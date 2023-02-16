@@ -7,29 +7,31 @@ SPDX-License-Identifier: MIT
 
 {%- macro adicionar_datas_legiveis(
     relacao,
+    coluna_periodo_data="periodo_data_inicio",
+    prefixo_colunas="",
     cte_resultado="com_datas_legiveis"
 ) %}
 {%- set mes -%}
-EXTRACT ( MONTH FROM periodo_data_inicio )
+EXTRACT ( MONTH FROM {{ coluna_periodo_data }} )
 {%- endset -%}
-ultimas_competencias AS (
+{{ coluna_periodo_data -}}_ultimas_competencias AS (
     SELECT
         DISTINCT ON (
             unidade_geografica_id
         )
         unidade_geografica_id,
-        periodo_data_inicio AS ultima_competencia
+        {{ coluna_periodo_data }} AS ultima_competencia
     FROM {{ relacao }}
     ORDER BY
         unidade_geografica_id,
-        periodo_data_inicio DESC
+        {{ coluna_periodo_data }} DESC
 ),
 {{ cte_resultado }} AS (
     SELECT
         t.*,
         (
             CASE
-                WHEN periodo_data_inicio = ultima_competencia
+                WHEN {{ coluna_periodo_data }} = ultima_competencia
                 THEN 'Último período'
             ELSE (
                 CASE
@@ -45,9 +47,9 @@ ultimas_competencias AS (
                     WHEN {{ mes }} = 10 THEN 'Out/'
                     WHEN {{ mes }} = 11 THEN 'Nov/'
                     WHEN {{ mes }} = 12 THEN 'Dez/'
-                END || to_char(periodo_data_inicio, 'YY')
+                END || to_char({{ coluna_periodo_data }}, 'YY')
             ) END
-        )  AS periodo,
+        )  AS {{ prefixo_colunas -}}periodo,
         (
             CASE
                 WHEN {{ mes }} = 1 THEN 'Janeiro'
@@ -63,12 +65,12 @@ ultimas_competencias AS (
                 WHEN {{ mes }} = 11 THEN 'Novembro'
                 WHEN {{ mes }} = 12 THEN 'Dezembro'
             END
-        ) AS nome_mes,
+        ) AS {{ prefixo_colunas -}}nome_mes,
         (
-            to_char(periodo_data_inicio, 'YY')::numeric + {{ mes }}/100
-        ) AS periodo_ordem
+            to_char({{ coluna_periodo_data }}, 'YY')::numeric + {{ mes }}/100
+        ) AS {{ prefixo_colunas -}}periodo_ordem
     FROM {{ relacao }} t
-    LEFT JOIN ultimas_competencias
+    LEFT JOIN {{ coluna_periodo_data -}}_ultimas_competencias
     USING (unidade_geografica_id)
 )
 {%- endmacro -%}

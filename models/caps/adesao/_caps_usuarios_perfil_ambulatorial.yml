@@ -6,13 +6,11 @@
 version: 2
 
 models:
-  - name: caps_usuarios_primeiro_procedimento
+  - name: _caps_usuarios_perfil_ambulatorial
     description: >
-      Lista os usuários que já tiveram algum procedimento registrado em Centros
-      de Atenção Psicossociais (identificados por uma chave criptografada
-      derivada do Cartão Nacional de Saúde), relacionando-os à data em que
-      realizaram o seu primeiro acolhimento inicial e à data em que realizaram
-      pela primeira vez algum outro procedimento naquele CAPS.
+      Elenca os usuários de Centros de Atenção Psicossocial que, até o 3º mês
+      após o primeiro procedimento realizado (exceto o acolhimento inicial),
+      realizaram apenas procedimentos considerados como de perfil ambulatorial.
       
       Os valores tem como base os dados enviados mensalmente ao Sistema
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
@@ -20,7 +18,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _caps_usuarios_primeiro_procedimento
+      alias: _caps_usuarios_perfil_ambulatorial
       enabled: true
       indexes:
         - columns:
@@ -29,7 +27,7 @@ models:
         - columns:
           - "estabelecimento_id_scnes"
           - "usuario_id_cns_criptografado"
-      materialized: table
+      materialized: incremental
       persist_docs:
         relation: true
       tags:
@@ -37,4 +35,6 @@ models:
         - "caps"
         - "bpa_i"
         - "raas"
+        - "incremental"
+        - "adesao"
       unique_key: "id"

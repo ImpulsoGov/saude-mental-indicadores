@@ -29,6 +29,12 @@ final AS (
                 '0301040079'  -- ESCUTA INICIAL/ORIENTAÇÃO (AC DEMANDA ESPONT)
             )
          ) AS primeiro_procedimento_periodo_data_inicio,
+        max(periodo_data_inicio) FILTER (
+            WHERE procedimento_id_sigtap NOT IN (
+                '0301080232',  -- ACOLHIMENTO INICIAL POR CAPS
+                '0301040079'  -- ESCUTA INICIAL/ORIENTAÇÃO (AC DEMANDA ESPONT)
+            )
+         ) AS ultimo_procedimento_periodo_data_inicio,
         now() AS atualizado_em
     FROM caps_procedimentos
     GROUP BY

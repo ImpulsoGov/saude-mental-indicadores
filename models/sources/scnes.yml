@@ -14,6 +14,11 @@ sources:
       schema: false
       identifier: false
     tables:
+
+      - name: estabelecimentos_identificados
+        identifier: _scnes_estabelecimentos_identificados
+        description: Informações dos estabelecimentos de saúde identificados.
+
       - name: vinculos_profissionais
         identifier: scnes_vinculos_disseminacao
         description: >

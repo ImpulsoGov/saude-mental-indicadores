@@ -120,21 +120,28 @@ SPDX-License-Identifier: MIT
 {%- set _ = colunas.append(coluna_estabelecimento_nome) -%}
 {%- set _ = ctes.append(cte) -%}
 {%- endfor %}
-{%- if (
-        "periodo_data_inicio" in colunas
-    ) and (
-        "unidade_geografica_id" in colunas
-    )
-%}
-{%- set cte = "com_datas_legiveis" -%}
+{%- if "unidade_geografica_id" in colunas %}
+{%- for coluna in colunas %}
+{%- set coluna_periodo_data = re.match("(.*)periodo_data(.*)", coluna) -%}
+{%- if coluna_periodo_data %}
+{%- set coluna_prefixo = (
+    coluna_periodo_data.group(1)
+    if coluna_periodo_data.group(1) is not none
+    else ""
+) -%}
+{%- set cte = "com_" + coluna_prefixo + "datas_legiveis" -%}
 {{ adicionar_datas_legiveis(
 	relacao=ctes|last,
+    coluna_periodo_data=coluna,
+    prefixo_colunas=coluna_prefixo,
 	cte_resultado=cte
 ) }},
-{%- set _ = colunas.append("periodo") -%}
-{%- set _ = colunas.append("nome_mes") -%}
-{%- set _ = colunas.append("periodo_ordem") -%}
+{%- set _ = colunas.append(coluna_prefixo + "periodo") -%}
+{%- set _ = colunas.append(coluna_prefixo + "nome_mes") -%}
+{%- set _ = colunas.append(coluna_prefixo + "periodo_ordem") -%}
 {%- set _ = ctes.append(cte) -%}
+{%- endif %}
+{%- endfor %}
 {%- endif %}
 {{ cte_resultado }} AS (
     SELECT
@@ -147,11 +154,10 @@ SPDX-License-Identifier: MIT
         or (coluna in remover_ids_exceto)
         or (not re.match(".*_id(_.*)?$", coluna))
     ) %}
-        {{ re.sub(
-            "(.*)" + (sufixos_a_eliminar|join("|")) + "$",
-            "\1",
+        {{ re.match(
+            "(.*)(" + (sufixos_a_eliminar|join("|")) + ")?$",
             coluna
-        ) }}{{ "," if not loop.last }}
+        ).groups(1)[0] }}{{ "," if not loop.last }}
     {%- endif %}
     {%- endif %}
     {%- endfor %}

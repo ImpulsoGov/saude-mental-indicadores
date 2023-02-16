@@ -6,12 +6,13 @@
 version: 2
 
 models:
-  - name: _raps_usuarios_atendidos
+  - name: caps_usuarios_vinculos
     description: >
-      Enumera os atendimentos mensais de rotina e de urgência realizados por 
-      usuários (identificados por uma chave criptografada derivada do Cartão
-      Nacional de Saúde) nos Centros de Atenção Psicossociais (CAPS) ou em
-      estabelecimentos de atenção ambulatorial em saúde mental.
+      Lista os usuários que já tiveram algum procedimento registrado em Centros
+      de Atenção Psicossociais (identificados por uma chave criptografada
+      derivada do Cartão Nacional de Saúde), relacionando-os à data em que
+      realizaram o seu primeiro acolhimento inicial e à data em que realizaram
+      pela primeira vez algum outro procedimento naquele CAPS.
       
       Os valores tem como base os dados enviados mensalmente ao Sistema
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
@@ -19,32 +20,21 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _raps_usuarios_atendidos
+      alias: _caps_usuarios_vinculos
       enabled: true
       indexes:
         - columns:
           - "id"
           unique: true
         - columns:
-          - "periodo_data_inicio"
-          - "periodo_id"
-          - "unidade_geografica_id_sus"
-          - "unidade_geografica_id"
           - "estabelecimento_id_scnes"
           - "usuario_id_cns_criptografado"
-          unique: true
-        - columns:
-          - "estabelecimento_id_scnes"
-          - "usuario_id_cns_criptografado"
-          - "periodo_data_inicio"
-          - "periodo_id"
-      materialized: incremental
+      materialized: table
       persist_docs:
         relation: true
       tags:
         - "saude_mental"
-        - "internacoes"
+        - "caps"
         - "bpa_i"
         - "raas"
-        - "incremental"
       unique_key: "id"

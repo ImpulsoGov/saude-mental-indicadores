@@ -6,45 +6,38 @@
 version: 2
 
 models:
-  - name: _raps_usuarios_atendidos
+  - name: _ambulatorio_usuarios_meses_frequentaram
     description: >
-      Enumera os atendimentos mensais de rotina e de urgência realizados por 
-      usuários (identificados por uma chave criptografada derivada do Cartão
-      Nacional de Saúde) nos Centros de Atenção Psicossociais (CAPS) ou em
-      estabelecimentos de atenção ambulatorial em saúde mental.
-      
-      Os valores tem como base os dados enviados mensalmente ao Sistema
-      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
+      Lista o estatus da movimentação mensal de prontuários de usuários de 
+      ambulatórios de saúde mental, conforme as informações enviadas ao Sistema
+      de Informações Ambulatoriais do SUS (SIASUS) e disponibilizado pelo
       Departamento de Informática do SUS (DATASUS) em seu FTP público.
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _raps_usuarios_atendidos
+      alias: _ambulatorio_usuarios_meses_frequentaram
       enabled: true
       indexes:
         - columns:
           - "id"
           unique: true
         - columns:
-          - "periodo_data_inicio"
-          - "periodo_id"
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
           - "estabelecimento_id_scnes"
-          - "usuario_id_cns_criptografado"
-          unique: true
         - columns:
-          - "estabelecimento_id_scnes"
-          - "usuario_id_cns_criptografado"
           - "periodo_data_inicio"
           - "periodo_id"
+        - columns:
+          - "usuario_id_cns_criptografado"
       materialized: incremental
       persist_docs:
         relation: true
       tags:
         - "saude_mental"
-        - "internacoes"
+        - "caps"
         - "bpa_i"
-        - "raas"
         - "incremental"
+        - "ambulatorio"
+        - "referencias"
       unique_key: "id"

@@ -6,12 +6,12 @@
 version: 2
 
 models:
-  - name: _raps_usuarios_atendidos
+  - name: _caps_adesao_usuarios_evadiram
     description: >
-      Enumera os atendimentos mensais de rotina e de urgência realizados por 
-      usuários (identificados por uma chave criptografada derivada do Cartão
-      Nacional de Saúde) nos Centros de Atenção Psicossociais (CAPS) ou em
-      estabelecimentos de atenção ambulatorial em saúde mental.
+      Lista, para cada combinação de Cartão Nacional de Saúde e Centro de
+      Atenção Psicossocial, se o usuário evadiu o serviço nos três primeiros
+      meses após a realização do primeiro procedimento (*exceto acolhimento
+      inicial*). 
       
       Os valores tem como base os dados enviados mensalmente ao Sistema
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
@@ -19,32 +19,30 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _raps_usuarios_atendidos
+      alias: _caps_adesao_usuarios_evadiram
       enabled: true
       indexes:
         - columns:
           - "id"
           unique: true
         - columns:
-          - "periodo_data_inicio"
-          - "periodo_id"
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
           - "estabelecimento_id_scnes"
+        - columns:
           - "usuario_id_cns_criptografado"
-          unique: true
         - columns:
           - "estabelecimento_id_scnes"
           - "usuario_id_cns_criptografado"
-          - "periodo_data_inicio"
-          - "periodo_id"
+          - "usuario_primeiro_procedimento_periodo_data_inicio"
       materialized: incremental
       persist_docs:
         relation: true
       tags:
         - "saude_mental"
-        - "internacoes"
+        - "caps"
         - "bpa_i"
         - "raas"
         - "incremental"
+        - "adesao"
       unique_key: "id"
