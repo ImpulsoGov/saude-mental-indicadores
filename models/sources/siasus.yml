@@ -17,14 +17,14 @@ sources:
     tables:
 
       - name: bpa_i_disseminacao
-        identifier: _siasus_bpa_i_disseminacao
+        identifier: siasus_bpa_i_disseminacao_sm_complemento
         description: >
           Arquivo de disseminação dos Boletins de Produção Ambulatorial 
           individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
           SUS (SIASUS).
 
       - name: procedimentos_disseminacao
-        identifier: _siasus_procedimentos_ambulatoriais
+        identifier: siasus_procedimentos_ambulatoriais_sm_complemento
         description: >
           Arquivo de disseminação dos procedimentos do Sistema de Informações
           Ambulatoriais do SUS (SIASUS), incluindo informações resumidas de
