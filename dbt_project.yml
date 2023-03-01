@@ -10,7 +10,7 @@ config-version: 2
 profile: 'impulso-saude-mental'
 
 # Caminhos para pastas com recursos
-model-paths: ["models"]
+model-paths: ["models", "sources"]
 analysis-paths: ["analysis"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
