@@ -22,7 +22,6 @@ models:
       indexes:
         - columns:
           - "id"
-          unique: true
         - columns:
           - "internacao_data_inicio"
         - columns:

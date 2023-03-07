@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 
 WITH
-_matriciamentos_por_caps_ultimo_ano AS (
+procedimentos_disseminacao AS (
     SELECT * FROM {{ source('siasus', 'procedimentos_disseminacao') }}
 ),
 ultima_competencia AS (

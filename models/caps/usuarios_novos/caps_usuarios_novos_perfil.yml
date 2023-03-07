@@ -42,10 +42,10 @@ models:
           - "usuario_faixa_etaria"
         - columns:
           - "unidade_geografica_id_sus"
-          - "raca_cor"
+          - "usuario_raca_cor"
         - columns:
           - "unidade_geografica_id_sus"
-          - "sexo"
+          - "usuario_sexo"
       materialized: table
       persist_docs:
         relation: true
