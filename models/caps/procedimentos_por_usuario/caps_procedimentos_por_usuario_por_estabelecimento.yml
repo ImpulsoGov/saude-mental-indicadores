@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_procedimentos_por_usuario_por_estabelecimento
+    description: >
+      Quantidade de usuários únicos e de procedimentos ambulatoriais registrados
+      por mês em RAAS ou BPA-i nos Centros de Atenção Psicossocial (exceto 
+      acolhimentos iniciais). Inclui comparação com mês anterior.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_procedimentos_por_usuario_por_estabelecimento
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+        - columns:
+          - "periodo_id"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "bpa_c"
+        - "raas"
+        - "procedimentos_por_usuario"
+
