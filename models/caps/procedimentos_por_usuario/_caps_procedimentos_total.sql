@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 procedimentos_ambulatoriais AS (
-    SELECT * FROM {{ source('siasus', 'procedimentos_disseminacao') }}
+    SELECT * FROM {{ ref("procedimentos_disseminacao_municipios_selecionados") }}
 ),
 caps_procedimentos_total AS (
     SELECT 

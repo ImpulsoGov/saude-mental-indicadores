@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 procedimentos_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'procedimentos_disseminacao') }}
+    SELECT * FROM {{ ref("procedimentos_disseminacao_municipios_selecionados") }}
 ),
 final AS (
     SELECT

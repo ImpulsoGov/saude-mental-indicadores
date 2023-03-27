@@ -23,15 +23,14 @@ models:
           - "unidade_geografica_id"
           - "realizacao_periodo_data_inicio"
         - columns:
-          - "profissional_vinculo_ocupacao_id_cbo2002"
-        - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
           - "estabelecimento_id_scnes"
           - "usuario_id_cns_criptografado"
-          - "periodo_id"
         - columns: 
           - "usuario_id_cns_criptografado"
+        - columns: 
+          - "periodo_id"
       materialized: table
       persist_docs:
         relation: true
