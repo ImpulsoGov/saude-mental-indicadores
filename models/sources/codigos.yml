@@ -88,3 +88,9 @@ sources:
         description: >
           Informações de endereços associadas aos Códigos de Endereçamento
           Postal dos Correios.
+
+      - name: procedimentos_sigtap
+        identifier: procedimentos_sigtap
+        description: >
+          Lista a Tabela de Procedimentos do SUS, contendo a correspondência 
+          entre códigos e descrição de Sigtap.
