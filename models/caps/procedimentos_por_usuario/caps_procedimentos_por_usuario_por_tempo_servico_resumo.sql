@@ -16,6 +16,10 @@ final AS (
             unidade_geografica_id_sus,
             estabelecimento
         )
+        {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id",
+            "periodo_id"
+        ]) }} AS id,
         unidade_geografica_id,
         unidade_geografica_id_sus,
         periodo_id,

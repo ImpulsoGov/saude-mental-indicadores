@@ -26,5 +26,13 @@ matriciamentos_por_municipio AS (
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus
+),
+final AS (
+    SELECT
+        {{ dbt_utils.surrogate_key([
+				"unidade_geografica_id"
+		]) }} AS id,
+		*
+    FROM matriciamentos_por_municipio
 )
-SELECT * FROM matriciamentos_por_municipio
+SELECT * FROM final

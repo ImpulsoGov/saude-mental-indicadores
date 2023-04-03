@@ -16,6 +16,8 @@ models:
       enabled: true
       indexes:
         - columns:
+          - "id"
+        - columns:
           - "unidade_geografica_id_sus"
           - "estabelecimento"
         - columns:
