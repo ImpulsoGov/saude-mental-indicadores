@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 WITH
 bpa_i AS (
     SELECT *
-    FROM {{ source('siasus', 'bpa_i_disseminacao') }}
+    FROM {{ ref("bpa_i_disseminacao_municipios_selecionados") }}
     {% if is_incremental() -%}
     WHERE atualizacao_data > (
         SELECT max(atualizacao_data) FROM {{ this }}

@@ -1,0 +1,29 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _caps_procedimentos_total
+    description: >
+      Quantidade de procedimentos ambulatoriais registrados em RAAS, 
+      BPA-i e BPA-c nos Centros de Atenção Psicossocial. Diferencia o 
+      total de procedimentos e o número de procedimentos que são 
+      acolhimentos iniciais.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _caps_procedimentos_total
+      enabled: true
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "bpa_c"
+        - "raas"
+        - "procedimentos_por_usuario"

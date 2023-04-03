@@ -7,10 +7,10 @@ SPDX-License-Identifier: MIT
 
 WITH
 raas_psicossocial_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'raas_psicossocial_disseminacao') }}
+    SELECT * FROM {{ ref("raas_psicossocial_disseminacao_municipios_selecionados") }}
 ),
 bpa_i_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'bpa_i_disseminacao') }}
+    SELECT * FROM {{ ref("bpa_i_disseminacao_municipios_selecionados") }}
 ),
 procedimentos_caps_raas AS (
     SELECT

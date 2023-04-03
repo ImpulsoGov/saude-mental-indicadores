@@ -15,7 +15,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: referencias_usuarios_perfil
+      alias: ambulatorio_usuarios_perfil
       enabled: true
       indexes:
         - columns:

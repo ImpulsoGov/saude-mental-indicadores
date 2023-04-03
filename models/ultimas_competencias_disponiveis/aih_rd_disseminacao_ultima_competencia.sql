@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 aih_rd_disseminacao AS (
-    SELECT * FROM {{ source('sihsus', 'aih_rd_disseminacao') }}
+    SELECT * FROM {{ ref("aih_rd_disseminacao_municipios_selecionados") }}
 ),
 final AS (
     SELECT

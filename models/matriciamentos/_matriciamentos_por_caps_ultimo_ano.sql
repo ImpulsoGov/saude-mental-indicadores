@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 procedimentos_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'procedimentos_disseminacao') }}
+    SELECT * FROM {{ ref("procedimentos_disseminacao_municipios_selecionados") }}
 ),
 ultima_competencia AS (
     SELECT * FROM {{ ref('procedimentos_disseminacao_ultima_competencia') }}
@@ -43,7 +43,7 @@ matriciamentos_por_caps_ultimo_ano AS (
         unidade_geografica_id_sus,
         estabelecimento_id_scnes
 ),
-final AS (
+intermediario AS (
     SELECT
         matriciamento.unidade_geografica_id,
         matriciamento.unidade_geografica_id_sus,
@@ -64,5 +64,15 @@ final AS (
             1
         ) AS media_mensal_para_meta
     FROM matriciamentos_por_caps_ultimo_ano matriciamento
+),
+final AS (
+    SELECT
+        {{ dbt_utils.surrogate_key([
+				"unidade_geografica_id",
+				"competencia",
+				"estabelecimento_id_scnes"
+		]) }} AS id,
+		*
+    FROM intermediario
 )
 SELECT * FROM final

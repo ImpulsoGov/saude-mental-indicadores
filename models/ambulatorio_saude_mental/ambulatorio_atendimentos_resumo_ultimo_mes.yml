@@ -17,7 +17,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: referencias_atendimentos_resumo_ultimo_mes
+      alias: ambulatorio_atendimentos_resumo_ultimo_mes
       enabled: true
       indexes:
         - columns:

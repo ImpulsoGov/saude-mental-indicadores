@@ -12,7 +12,7 @@ models:
       ambulatorial e "outras") dos vínculos com o SUS, por profissional.
     config:
       enabled: true
-      materialized: ephemeral
+      materialized: view
       persist_docs:
         relation: true
       tags:

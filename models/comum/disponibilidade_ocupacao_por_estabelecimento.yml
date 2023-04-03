@@ -13,7 +13,7 @@ models:
       por categoria profissional (CBO) e por estabelecimento de saúde (SCNES).
     config:
       enabled: true
-      materialized: ephemeral
+      materialized: view
       persist_docs:
         relation: true
       tags:

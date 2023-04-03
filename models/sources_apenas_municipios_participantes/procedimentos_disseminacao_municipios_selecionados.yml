@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: procedimentos_disseminacao_municipios_selecionados
+    description: >
+      [...]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: procedimentos_disseminacao_municipios_selecionados
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+          - "realizacao_periodo_data_inicio"
+          - "periodo_id"
+          - "estabelecimento_id_scnes"
+          - "procedimento_id_sigtap"
+        - columns:
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "profissional_vinculo_ocupacao_id_cbo2002"
+        - columns:
+          - "unidade_geografica_id"
+          - "periodo_id"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "procedimentos"
+        - "municipios_painel"
