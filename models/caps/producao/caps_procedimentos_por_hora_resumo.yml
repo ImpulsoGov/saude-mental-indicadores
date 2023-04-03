@@ -1,0 +1,33 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_procedimentos_por_hora_resumo
+    description: >
+      [...].
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_procedimentos_por_hora_resumo
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+          - "periodo_data_inicio"
+          - "periodo_id"
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "bpa_c"
+        - "raas"
+        - "producao"
+
