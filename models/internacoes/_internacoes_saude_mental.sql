@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 aih AS (
-    SELECT * FROM {{ source("sihsus", "aih_rd_disseminacao") }}
+    SELECT * FROM {{ ref("aih_rd_disseminacao_municipios_selecionados") }}
 ),
 sexos AS (
     SELECT * FROM {{ source("codigos", "sexos") }}
@@ -28,7 +28,7 @@ aih_saude_mental_todas AS (
         sexo.id_sigtap AS usuario_sexo_id_sigtap,
         condicao_saude_mental.classificacao AS condicao_saude_mental_classificao,
         {{ dbt_utils.star(
-            from=source("sihsus", "aih_rd_disseminacao"),
+            from=ref("aih_rd_disseminacao_municipios_selecionados"),
             relation_alias="aih",
             except=[
                 "id",

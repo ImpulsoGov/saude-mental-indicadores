@@ -82,7 +82,7 @@ caps_maior_taxa AS (
         periodo_id,
         coalesce(
             estabelecimento_id_scnes
-        ) AS estabelecimento_maior_taxa,
+        ) AS maior_taxa_estabelecimento_id_scnes,
         procedimentos_por_usuario AS maior_taxa
         FROM por_estabelecimento
         ORDER BY
