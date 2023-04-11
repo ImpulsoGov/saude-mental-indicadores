@@ -11,7 +11,7 @@ periodos_sucessao AS (
 ),
 vinculos_profissionais AS (
     SELECT *
-    FROM {{ source('scnes', 'vinculos_profissionais') }}
+    FROM {{ ref('vinculos_profissionais_municipios_selecionados') }}
 ),
 disponibilidade_por_dia_util AS (
     SELECT

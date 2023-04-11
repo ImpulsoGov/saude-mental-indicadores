@@ -31,6 +31,7 @@ final AS (
             '292740', -- Salvador/BA
             '320530', -- Vitória/ES
             '410690', -- Curitiba/PR
+            '431440', -- Pelotas/RS
             '431490' -- Porto Alegre/RS            
         )
 )

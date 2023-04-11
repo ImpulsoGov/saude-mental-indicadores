@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 vinculos_profissionais AS (
-    SELECT * FROM {{ source('scnes', 'vinculos_profissionais') }}
+    SELECT * FROM {{ ref('vinculos_profissionais_municipios_selecionados') }}
 ),
 final AS (
     SELECT
