@@ -65,7 +65,7 @@ procedimentos_x_disponibilidade AS (
     meses_antes_ultima_competencia=(0, 0),
     cte_resultado="procedimentos_x_disponibilidade_ultimo_mes"
 ) }},
-{# {{ calcular_subtotais(
+{{ calcular_subtotais(
     relacao="procedimentos_x_disponibilidade_ultimo_mes",
     agrupar_por=[
         "unidade_geografica_id",
@@ -90,7 +90,7 @@ procedimentos_x_disponibilidade AS (
     },
     manter_original=true,
     cte_resultado="procedimentos_x_disponibilidade_com_totais"
-) }}, #}
+) }},
 com_procedimentos_por_hora AS (
     SELECT
         *,
@@ -99,8 +99,8 @@ com_procedimentos_por_hora AS (
 			/ nullif(disponibilidade_mensal, 0)::numeric,
 			2
 		) AS procedimentos_por_hora
-    {# FROM procedimentos_x_disponibilidade_com_totais #}
-    FROM procedimentos_x_disponibilidade_ultimo_mes
+    FROM procedimentos_x_disponibilidade_com_totais
+    {# FROM procedimentos_x_disponibilidade_ultimo_mes #}
 ),
 final AS (
     SELECT
@@ -116,3 +116,4 @@ final AS (
     FROM com_procedimentos_por_hora pph
 )
 SELECT * FROM final
+

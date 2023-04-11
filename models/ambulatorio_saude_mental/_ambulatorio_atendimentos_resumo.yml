@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: ambulatorio_atendimentos_resumo
+  - name: _ambulatorio_atendimentos_resumo
     description: >
       Dados consolidados de atendimentos de profissionais de referência em
       saúde mental (psicólogos e psiquiatras) em estabelecimentos selecionados,
@@ -16,7 +16,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: ambulatorio_atendimentos_resumo
+      alias: _ambulatorio_atendimentos_resumo
       enabled: true
       indexes:
         - columns:
@@ -26,11 +26,14 @@ models:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
           - "periodo_id"
-      materialized: table
+          - "estabelecimento_id_scnes"
+          - "ocupacao_id_cbo2002"
+      materialized: incremental
       persist_docs:
         relation: true
       tags:
         - "bpa_i"
+        - "incremental"
         - "referencias"
         - "saude_mental"
         - "vinculos_profissionais"

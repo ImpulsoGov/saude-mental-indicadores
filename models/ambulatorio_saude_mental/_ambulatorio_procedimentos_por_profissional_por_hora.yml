@@ -22,7 +22,6 @@ models:
       indexes:
         - columns:
           - "id"
-          unique: true
       materialized: table
       persist_docs:
         relation: true

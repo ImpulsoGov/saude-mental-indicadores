@@ -6,7 +6,7 @@
 version: 2
 
 models:
-  - name: ambulatorio_usuarios_perfil
+  - name: _ambulatorio_usuarios_perfil
     description: >
       Perfil dos usuários atendidos por profissionais de referência em saúde
       mental (psicólogos e psiquiatras) em estabelecimentos selecionados,
@@ -15,17 +15,33 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: ambulatorio_usuarios_perfil
+      alias: _ambulatorio_usuarios_perfil
       enabled: true
       indexes:
         - columns:
           - "id"
           unique: true
-      materialized: table
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+        - columns:
+          - "periodo_id"
+          - "periodo_data_inicio"
+        - columns:
+          - "usuario_faixa_etaria"
+        - columns:
+          - "usuario_sexo_id_sigtap"
+        - columns:
+          - "cid_grupo_descricao_curta"
+        - columns:
+          - "atualizacao_data"
+      materialized: incremental
+      on_schema_change: "append_new_columns"
       persist_docs:
         relation: true
       tags:
-        - "bpa_i"
-        - "referencias"
         - "saude_mental"
-        - "vinculos_profissionais"
+        - "referencias"
+        - "bpa_i"
+        - "incremental"
+      unique_key: "id"
