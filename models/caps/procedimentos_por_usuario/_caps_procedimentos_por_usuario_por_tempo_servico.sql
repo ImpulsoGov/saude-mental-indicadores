@@ -66,7 +66,8 @@ final AS (
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "periodo_id",
-            "estabelecimento_id_scnes"
+            "estabelecimento_id_scnes",
+            "tempo_servico_descricao"
         ]) }} AS id,
         unidade_geografica_id,
         unidade_geografica_id_sus,

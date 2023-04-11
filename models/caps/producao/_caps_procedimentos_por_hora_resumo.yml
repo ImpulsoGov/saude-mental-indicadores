@@ -15,6 +15,9 @@ models:
       alias: _caps_procedimentos_por_hora_resumo
       enabled: true
       indexes:
+        - columns: 
+          - "id"
+          unique: true
         - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"

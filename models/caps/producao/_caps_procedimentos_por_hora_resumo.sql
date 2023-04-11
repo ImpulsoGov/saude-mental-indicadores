@@ -81,7 +81,10 @@ producao_hora_ate_ultima_competencia AS (
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "estabelecimento_id_scnes",
-            "periodo_id"
+            "periodo_id",
+            "estabelecimento_linha_perfil",
+            "estabelecimento_linha_idade",
+            "ocupacao_id_cbo2002"
         ]) }} AS id,
         *,
         round(
