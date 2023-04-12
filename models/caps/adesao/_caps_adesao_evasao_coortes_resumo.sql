@@ -192,6 +192,7 @@ com_pior_taxa AS (
         unidade_geografica_id_sus,
         periodo_id,
         periodo_data_inicio,
+        coorte_fim_periodo_data_inicio,
         estabelecimento_id_scnes,
         usuarios_coorte_nao_aderiram_perc,
         usuarios_coorte_nao_aderiram,
@@ -235,6 +236,14 @@ final AS (
             "estabelecimento_id_scnes",
             "periodo_id"
         ]) }} AS id,
+        listas_de_codigos.nome_mes(
+            periodo_data_inicio::date
+        ) AS a_partir_do_mes,
+        EXTRACT(YEAR FROM periodo_data_inicio)::text AS a_partir_do_ano,
+        listas_de_codigos.nome_mes(
+            coorte_fim_periodo_data_inicio::date
+        ) AS ate_mes,
+        EXTRACT(YEAR FROM coorte_fim_periodo_data_inicio)::text AS ate_ano,
         *
     FROM exceto_4_ultimas
 )
