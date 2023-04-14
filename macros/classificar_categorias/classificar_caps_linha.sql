@@ -35,16 +35,12 @@ SPDX-License-Identifier: MIT
                 THEN '{{ todas_linhas_valor }}'
             {%- endif %}
                 WHEN
-                    estabelecimento.estabelecimento_nome LIKE '%Ad %'
-                    OR estabelecimento.estabelecimento_nome LIKE '%Alc%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%lcool%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%Drg%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%Droga%'
-                    -- TODO: gambiarra horrivel, mudar!!!
-                    OR estabelecimento.estabelecimento_nome
-                        = 'Caps Era Uma Vez'
+                    estabelecimento.estabelecimento_linha_perfil = 'Álcool e outras drogas'
                 THEN 'Álcool e outras drogas'
-                ELSE 'Transtornos'
+                WHEN
+                    estabelecimento.estabelecimento_linha_perfil = 'Geral'
+                THEN 'Geral'
+                ELSE 'Sem classificação'
             END
         ) AS {{ coluna_linha_perfil }},
         (
@@ -54,15 +50,15 @@ SPDX-License-Identifier: MIT
                     = '{{todos_estabelecimentos_id}}'
                 THEN '{{ todas_linhas_valor }}'
                 WHEN
-                    estabelecimento.estabelecimento_nome LIKE '%Inf%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%nfant%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%Juven%'
-                    OR estabelecimento.estabelecimento_nome LIKE '%Capsi%'
-                    -- TODO: gambiarra horrivel, mudar!!!
-                    OR estabelecimento.estabelecimento_nome
-                        = 'Caps Era Uma Vez'
+                    estabelecimento.estabelecimento_linha_idade = 'Infantil/Infanto-Juvenil'
                 THEN 'Infantil/Infanto-Juvenil'
-                ELSE 'Adulto'
+                WHEN
+                    estabelecimento.estabelecimento_linha_idade = 'Adulto'
+                THEN 'Adulto'
+                WHEN
+                    estabelecimento.estabelecimento_linha_idade = 'Adulto + Infantil/Infanto-Juvenil (+15a)'
+                THEN 'Adulto e Juvenil (+15a)'
+                ELSE 'Sem classificação'
             END
         ) AS {{ coluna_linha_idade }}
     FROM {{ relacao }} t
