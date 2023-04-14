@@ -90,34 +90,33 @@ caps_maior_taxa AS (
             periodo_id,
             procedimentos_por_usuario DESC
 ),
+{{ juntar_periodos_consecutivos(
+    relacao="por_estabelecimento_com_total",
+    agrupar_por=[
+        "unidade_geografica_id", 
+        "unidade_geografica_id_sus", 
+        "estabelecimento_id_scnes"
+    ],
+    colunas_valores=[
+        "procedimentos_exceto_acolhimento",
+        "ativos_mes",
+        "procedimentos_por_usuario"
+    ],
+    periodo_tipo="Mensal",
+    coluna_periodo="periodo_id",    
+    cte_resultado="com_periodo_anterior"
+) }},
 procedimentos_com_maior_taxa AS (
     SELECT *
-    FROM por_estabelecimento_com_total
+    FROM com_periodo_anterior
     LEFT JOIN caps_maior_taxa
     USING (
         unidade_geografica_id,
         periodo_id
     )
 ),
-{{ juntar_periodos_consecutivos(
-    relacao="procedimentos_com_maior_taxa",
-    agrupar_por=[
-        "unidade_geografica_id", 
-        "unidade_geografica_id_sus", 
-        "estabelecimento_id_scnes",
-    ],
-    colunas_valores=[
-        "procedimentos_exceto_acolhimento",
-        "ativos_mes",
-        "procedimentos_por_usuario",
-        "maior_taxa"
-    ],
-    periodo_tipo="Mensal",
-    coluna_periodo="periodo_id",    
-    cte_resultado="com_periodo_anterior"
-) }},
 {{ ultimas_competencias(
-    relacao="com_periodo_anterior",
+    relacao="procedimentos_com_maior_taxa",
     fontes=["raas_psicossocial_disseminacao", "bpa_i_disseminacao"],
     meses_antes_ultima_competencia=(0, none),
     cte_resultado="ate_ultima_competencia"
@@ -131,6 +130,35 @@ procedimentos_com_maior_taxa AS (
     todas_linhas_valor=none,
     cte_resultado="com_linhas_cuidado"
 ) }},
+{{ calcular_subtotais(
+    relacao="com_linhas_cuidado",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "estabelecimento_id_scnes",
+        "periodo_data_inicio",
+        "periodo_id",
+        "maior_taxa_estabelecimento_id_scnes"      
+    ],
+    colunas_a_totalizar=[
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade"
+    ],
+    nomes_categorias_com_totais=[
+        "Todos", 
+        "Todos"
+    ],
+    agregacoes_valores={
+        "procedimentos_exceto_acolhimento": "max",
+        "procedimentos_exceto_acolhimento_anterior": "max",
+        "ativos_mes": "max",
+        "ativos_mes_anterior": "max",
+        "procedimentos_por_usuario": "max",
+        "procedimentos_por_usuario_anterior": "max",
+        "maior_taxa": "max"
+    },
+    cte_resultado="com_totais"
+) }},
 final AS (
     SELECT 
         {{ dbt_utils.surrogate_key([
@@ -140,7 +168,20 @@ final AS (
             "estabelecimento_linha_perfil",
             "estabelecimento_linha_idade"
         ]) }} AS id,
-        *,
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        procedimentos_exceto_acolhimento,
+        procedimentos_exceto_acolhimento_anterior,
+        ativos_mes,
+        ativos_mes_anterior,
+        procedimentos_por_usuario,
+        procedimentos_por_usuario_anterior,
+        maior_taxa,
+        maior_taxa_estabelecimento_id_scnes,
+        estabelecimento_linha_perfil,
+        estabelecimento_linha_idade,
         round(
             100 * (
                 coalesce(procedimentos_por_usuario, 0)
@@ -151,7 +192,8 @@ final AS (
                 0
             ), 1
             ) AS dif_procedimentos_por_usuario_anterior_perc,
-        now() AS atualizacao_data  
-    FROM com_linhas_cuidado
+        now() AS atualizacao_data,
+        estabelecimento_id_scnes  
+    FROM com_totais
 )
 SELECT * FROM final
