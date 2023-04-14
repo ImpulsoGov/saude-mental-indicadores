@@ -127,6 +127,31 @@ todos_atendimentos_por_caps AS (
     todas_linhas_valor=none,
     cte_resultado="com_linhas_cuidado"
 ) }},
+{{ calcular_subtotais(
+    relacao="com_linhas_cuidado",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "estabelecimento_id_scnes",
+        "periodo_data_inicio",
+        "periodo_id",
+        "estabelecimento_maior_taxa"
+    ],
+    colunas_a_totalizar=[
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade"
+    ],
+    nomes_categorias_com_totais=[
+        "Todos", 
+        "Todos"
+    ],
+    agregacoes_valores={
+        "perc_apenas_atendimentos_individuais": "max",
+        "perc_apenas_atendimentos_individuais_anterior": "max",
+        "maior_taxa": "max"
+    },
+    cte_resultado="com_totais"
+) }},
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -160,6 +185,6 @@ final AS (
             maior_taxa,
             0::bigint
             ) AS maior_taxa    
-    FROM com_linhas_cuidado
+    FROM com_totais
 )
 SELECT * FROM final

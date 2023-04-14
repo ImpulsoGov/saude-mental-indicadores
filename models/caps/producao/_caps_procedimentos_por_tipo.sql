@@ -42,12 +42,48 @@ procedimentos_por_tipo AS (
         estabelecimento_id_scnes,
         procedimento_id_sigtap
 ),
+{{ classificar_caps_linha(
+    relacao="procedimentos_por_tipo",
+    coluna_linha_perfil="estabelecimento_linha_perfil",
+    coluna_linha_idade="estabelecimento_linha_idade",
+    coluna_estabelecimento_id="estabelecimento_id_scnes",
+    todos_estabelecimentos_id=none,
+    todas_linhas_valor=none,
+    cte_resultado="procedimentos_por_tipo_estabelecimento_linha"
+) }},
+{{ calcular_subtotais(
+    relacao="procedimentos_por_tipo_estabelecimento_linha",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "periodo_data_inicio",
+        "periodo_id",
+        "procedimento_id_sigtap"       
+    ],
+    colunas_a_totalizar=[
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade",
+        "estabelecimento_id_scnes"
+    ],
+    nomes_categorias_com_totais=[
+        "Todos", 
+        "Todos",
+        "0000000"
+    ],
+    agregacoes_valores={
+        "procedimentos_registrados_raas": "sum",
+        "procedimentos_registrados_bpa": "sum"
+    },
+    cte_resultado="com_totais"
+) }},
 final AS (
     SELECT  
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "estabelecimento_id_scnes",
             "periodo_id",
+            "estabelecimento_linha_perfil",
+            "estabelecimento_linha_idade",
             "procedimento_id_sigtap"
         ]) }} AS id,
         unidade_geografica_id,
@@ -60,9 +96,11 @@ final AS (
         procedimentos_registrados_bpa,
         (
             procedimentos_registrados_raas + procedimentos_registrados_bpa
-        ) AS procedimentos_registrados_total
-    FROM procedimentos_por_tipo
+        ) AS procedimentos_registrados_total,
+        estabelecimento_linha_perfil,
+        estabelecimento_linha_idade
+    FROM com_totais
     LEFT JOIN procedimentos_sigtap
-    ON procedimentos_por_tipo.procedimento_id_sigtap = procedimentos_sigtap.procedimento_id
+    ON com_totais.procedimento_id_sigtap = procedimentos_sigtap.procedimento_id
 )
 SELECT * FROM final

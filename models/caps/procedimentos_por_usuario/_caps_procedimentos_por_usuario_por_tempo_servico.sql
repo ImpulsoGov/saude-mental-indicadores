@@ -61,13 +61,47 @@ por_tempo_servico AS (
     UNION
     SELECT * FROM por_tempo_servico_todos_estabelecimentos
 ),
+{{ classificar_caps_linha(
+    relacao="por_tempo_servico",
+    coluna_linha_perfil="estabelecimento_linha_perfil",
+    coluna_linha_idade="estabelecimento_linha_idade",
+    coluna_estabelecimento_id="estabelecimento_id_scnes",
+    todos_estabelecimentos_id=none,
+    todas_linhas_valor=none,
+    cte_resultado="com_linhas_cuidado"
+) }},
+{{ calcular_subtotais(
+    relacao="com_linhas_cuidado",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "estabelecimento_id_scnes",
+        "competencia",
+        "periodo_id",
+        "tempo_servico_descricao"
+    ],
+    colunas_a_totalizar=[
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade"
+    ],
+    nomes_categorias_com_totais=[
+        "Todos", 
+        "Todos"
+    ],
+    agregacoes_valores={
+        "procedimentos_por_usuario": "max"
+    },
+    cte_resultado="com_totais"
+) }},
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "periodo_id",
             "estabelecimento_id_scnes",
-            "tempo_servico_descricao"
+            "tempo_servico_descricao",
+            "estabelecimento_linha_perfil",
+            "estabelecimento_linha_idade"
         ]) }} AS id,
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -75,7 +109,9 @@ final AS (
         estabelecimento_id_scnes,
         competencia AS periodo_data_inicio,
         tempo_servico_descricao,
-        procedimentos_por_usuario
-    FROM por_tempo_servico
+        procedimentos_por_usuario,
+        estabelecimento_linha_perfil,
+        estabelecimento_linha_idade
+    FROM com_totais
 )
 SELECT * FROM final
