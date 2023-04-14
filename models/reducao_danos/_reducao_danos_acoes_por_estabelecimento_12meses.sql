@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 procedimentos_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'procedimentos_disseminacao') }}
+    SELECT * FROM {{ ref("procedimentos_disseminacao_municipios_selecionados") }}
 ),
 _reducao_danos_acoes_por_estabelecimento_mes AS (
     SELECT
@@ -156,5 +156,17 @@ reducao_danos_12meses_agrupado_comperiodoanterior AS (
         reducao_danos_12meses_agrupado.unidade_geografica_id_sus = reducao_danos_12a24meses_agrupado.unidade_geografica_id_sus AND
         reducao_danos_12meses_agrupado.profissional_vinculo_ocupacao_id_cbo2002 = reducao_danos_12a24meses_agrupado.profissional_vinculo_ocupacao_id_cbo2002 AND
         reducao_danos_12meses_agrupado.estabelecimento_id_scnes = reducao_danos_12a24meses_agrupado.estabelecimento_id_scnes
+),
+final AS (
+    SELECT
+        {{ dbt_utils.surrogate_key([
+				"unidade_geografica_id",
+                "profissional_vinculo_ocupacao_id_cbo2002",
+                "estabelecimento_id_scnes",
+                "a_partir_de",
+                "ate"
+		]) }} AS id,
+		*
+    FROM reducao_danos_12meses_agrupado_comperiodoanterior
 )
-SELECT * FROM reducao_danos_12meses_agrupado_comperiodoanterior
+SELECT * FROM final

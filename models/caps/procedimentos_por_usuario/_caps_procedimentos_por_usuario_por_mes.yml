@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _caps_procedimentos_por_usuario_por_mes
+    description: >
+      Quantidade de procedimentos ambulatoriais registrados em RAAS ou BPA-i por
+      usuário por mês em cada estabelecimento vinculado ao SUS.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _caps_procedimentos_por_usuario_por_mes
+      enabled: true
+      materialized: view
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "bpa_c"
+        - "raas"
+        - "procedimentos_por_usuario"
+

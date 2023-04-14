@@ -17,7 +17,7 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: ambulatorio_procedimentos_por_profissional_por_hora_ultimo_mes
+      alias: ambulatorio_procedimentos_por_profissional_por_hora
       enabled: true
       indexes:
         - columns:

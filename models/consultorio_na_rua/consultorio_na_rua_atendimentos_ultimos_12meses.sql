@@ -169,5 +169,16 @@ cnr_12meses_agrupado_comperiodoanterior AS (
     ON
         cnr_12meses_agrupado.unidade_geografica_id_sus = cnr_12a24meses_agrupado.unidade_geografica_id_sus AND
         cnr_12meses_agrupado.tipo_producao = cnr_12a24meses_agrupado.tipo_producao
+),
+final AS (
+    SELECT
+        {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id",
+            "a_partir_de",
+            "ate",
+            "tipo_producao"
+        ]) }} AS id,
+        *
+    FROM cnr_12meses_agrupado_comperiodoanterior
 )
-SELECT * FROM cnr_12meses_agrupado_comperiodoanterior
+SELECT * FROM final

@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _ambulatorio_atendimentos_resumo
+    description: >
+      Dados consolidados de atendimentos de profissionais de referência em
+      saúde mental (psicólogos e psiquiatras) em estabelecimentos selecionados,
+      conforme registrado em Boletins de Produção Ambulatorial individualizados
+      (BPA-i), enviado ao Sistema de Informações Ambulatoriais do SUS (SIASUS)
+      e disponibilizado pelo Departamento de Informática do SUS (DATASUS).
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _ambulatorio_atendimentos_resumo
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+          - "periodo_id"
+          - "estabelecimento_id_scnes"
+          - "ocupacao_id_cbo2002"
+      materialized: incremental
+      persist_docs:
+        relation: true
+      tags:
+        - "bpa_i"
+        - "incremental"
+        - "referencias"
+        - "saude_mental"
+        - "vinculos_profissionais"

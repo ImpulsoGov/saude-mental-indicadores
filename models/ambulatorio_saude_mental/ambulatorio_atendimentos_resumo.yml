@@ -16,23 +16,21 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: referencias_atendimentos_resumo
+      alias: ambulatorio_atendimentos_resumo
       enabled: true
-      # indexes:
-        # - columns:
-        #   - "unidade_geografica_id"
-        #   - "unidade_geografica_id_sus"
-        #   - "periodo_id"
-        #   - "competencia"
-        #   - "estabelecimento"
-        #   - "ocupacao"
-        #   unique: true
-      materialized: incremental
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+          - "periodo_id"
+      materialized: table
       persist_docs:
         relation: true
       tags:
         - "bpa_i"
-        - "incremental"
         - "referencias"
         - "saude_mental"
         - "vinculos_profissionais"

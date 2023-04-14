@@ -42,6 +42,7 @@ resumo_usuarios_novos AS (
 ),
 final AS (
     SELECT 
+        usuarios_ativos.id,
         usuarios_ativos.unidade_geografica_id,
         usuarios_ativos.unidade_geografica_id_sus,
         usuarios_ativos.periodo_id,        

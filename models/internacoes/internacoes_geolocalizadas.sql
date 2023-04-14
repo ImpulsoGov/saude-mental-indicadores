@@ -66,6 +66,15 @@ internacoes_provavel_mesmo_usuario AS (
 	WHERE
         internacao_anterior.aih_data_fim < internacao_posterior.aih_data_inicio
 ),
+internacoes_provavel_mesmo_usuario_sem_duplicados AS (
+	SELECT 
+        DISTINCT ON (id) 
+        * 
+    FROM internacoes_provavel_mesmo_usuario 
+    ORDER BY 
+        id, 
+        aih_data_inicio DESC
+),
 internacoes_com_cep AS (
     SELECT
         internacao.id,
@@ -97,7 +106,7 @@ internacoes_com_cep AS (
         internacao.condicao_saude_mental_classificao,
         internacao.usuario_residencia_cep,
         internacao.atualizacao_data
-    FROM internacoes_provavel_mesmo_usuario internacao
+    FROM internacoes_provavel_mesmo_usuario_sem_duplicados internacao
     INNER JOIN listas_de_codigos.ceps_por_municipio
     ON internacao.usuario_residencia_cep = ceps_por_municipio.id_cep
     LEFT JOIN listas_de_codigos.ceps cep

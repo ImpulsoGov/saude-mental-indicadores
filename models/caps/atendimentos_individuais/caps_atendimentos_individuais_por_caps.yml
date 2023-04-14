@@ -1,0 +1,31 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_atendimentos_individuais_por_caps
+    description: >
+      [...].
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_atendimentos_individuais_por_caps
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "bpa_c"
+        - "raas"
+        - "procedimentos_por_usuario"
+

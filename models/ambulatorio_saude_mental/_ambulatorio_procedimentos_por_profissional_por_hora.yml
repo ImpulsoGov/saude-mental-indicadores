@@ -1,0 +1,32 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _ambulatorio_procedimentos_por_profissional_por_hora
+    description: >
+      Dados de atendimentos de profissionais de referência em saúde mental
+      (psicólogos e psiquiatras) em estabelecimentos selecionados, por
+      nome e CPF do profissional, conforme registrado em Boletins de Produção
+      Ambulatorial individualizados (BPA-i), enviado ao Sistema de Informações
+      Ambulatoriais do SUS (SIASUS) e disponibilizado pelo Departamento de
+      Informática do SUS (DATASUS).
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _ambulatorio_procedimentos_por_profissional_por_hora
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "bpa_i"
+        - "referencias"
+        - "saude_mental"
+        - "vinculos_profissionais"

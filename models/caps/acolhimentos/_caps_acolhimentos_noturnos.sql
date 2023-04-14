@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 raas_psicossocial_disseminacao AS (
-    SELECT * FROM {{ source('siasus', 'raas_psicossocial_disseminacao') }}
+    SELECT * FROM {{ ref("raas_psicossocial_disseminacao_municipios_selecionados") }}
     {% if is_incremental() %}
     {# TODO: suporte completo a atualizações retroativas #}
     WHERE criacao_data > (SELECT max(atualizacao_data) FROM {{ this }})

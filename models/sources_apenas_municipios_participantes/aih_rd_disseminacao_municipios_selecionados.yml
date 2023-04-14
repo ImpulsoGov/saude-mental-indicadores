@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: aih_rd_disseminacao_municipios_selecionados
+    description: >
+      [...]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: aih_rd_disseminacao_municipios_selecionados
+      enabled: true
+      indexes:
+        - columns: 
+          - "aih_data_inicio"
+        - columns: 
+          - "aih_data_fim"
+        - columns: 
+          - "periodo_data_inicio"
+        - columns:
+          - "unidade_geografica_id"
+          - "unidade_geografica_id_sus"
+          - "periodo_data_inicio"
+        - columns:
+          - "usuario_nascimento_data"
+        - columns:
+          - "usuario_sexo_id_sihsus"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "aih"
+        - "municipios_painel"
