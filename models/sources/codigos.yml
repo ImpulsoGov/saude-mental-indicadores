@@ -33,7 +33,7 @@ sources:
           (acesso em 22 jun. 2022).
 
       - name: estabelecimentos
-        identifier: estabelecimentos
+        identifier: estabelecimentos_painel_sm
         description: >
           Lista de estabelecimentos de saúde, baseada no Cadastro Nacional de
           Estabelecimentos de Saúde. (WIP)
