@@ -152,7 +152,32 @@ resumo AS (
         evadiu,
         (periodo_data_inicio = evadiu_a_partir_de_periodo_data_inicio)
 ),
-
+{{ calcular_subtotais(
+    relacao="resumo",
+    agrupar_por=[
+        "periodo_id",
+        "periodo_data_inicio",
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "usuario_faixa_etaria_id",
+        "usuario_faixa_etaria_descricao",
+        "usuario_faixa_etaria_ordem",
+        "usuario_sexo_id_sigtap",
+        "grupo_descricao_curta_cid10",
+        "estatus_adesao_mes",
+        "estatus_adesao_final"
+    ],
+    colunas_a_totalizar=[
+		"estabelecimento_id_scnes"
+    ],
+    nomes_categorias_com_totais=["0000000"],
+    agregacoes_valores={
+        "quantidade_registrada": "sum",
+        "atualizacao_data": "max"
+    },
+    manter_original=true,
+    cte_resultado="final_comtotais"
+) }},
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -165,7 +190,7 @@ final AS (
             "estatus_adesao_mes",
             "estatus_adesao_final"
         ])}} AS id,
-        resumo.*
-    FROM resumo
+        final_comtotais.*
+    FROM final_comtotais
 )
 SELECT * FROM final
