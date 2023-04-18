@@ -178,7 +178,7 @@ final AS (
             ) AS perc_apenas_atendimentos_individuais_anterior,
         (
     	coalesce(perc_apenas_atendimentos_individuais, 0)
-    	- coalesce(perc_apenas_atendimentos_individuais, 0)
+    	- coalesce(perc_apenas_atendimentos_individuais_anterior, 0)
         ) AS dif_perc_apenas_atendimentos_individuais,
         estabelecimento_maior_taxa AS maior_taxa_estabelecimento_id_scnes,
         coalesce(
