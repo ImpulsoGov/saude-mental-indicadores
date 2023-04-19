@@ -79,8 +79,6 @@ _usuarios_novos AS (
         faixa_etaria_id AS usuario_faixa_etaria_id,
         faixa_etaria_descricao AS usuario_faixa_etaria,
         faixa_etaria_ordem AS usuario_faixa_etaria_ordem,
-        extract(YEAR FROM age(periodo_data_inicio, usuario_nascimento_data))
-            AS usuario_idade,
         count(DISTINCT usuario_id_cns_criptografado) AS usuarios_novos
     FROM usuarios_com_idade
     GROUP BY 
@@ -96,8 +94,7 @@ _usuarios_novos AS (
         usuario_raca_cor_id_siasus,
         usuario_faixa_etaria_id,
         usuario_faixa_etaria,
-        usuario_faixa_etaria_ordem,
-        usuario_idade
+        usuario_faixa_etaria_ordem
 ),
 {{ juntar_periodos_consecutivos(
     relacao="_usuarios_novos",
@@ -112,8 +109,7 @@ _usuarios_novos AS (
         "usuario_raca_cor_id_siasus", 
         "usuario_faixa_etaria_id", 
         "usuario_faixa_etaria", 
-        "usuario_faixa_etaria_ordem", 
-        "usuario_idade",
+        "usuario_faixa_etaria_ordem"
     ],
     colunas_valores=[
         "usuarios_novos"
@@ -150,7 +146,6 @@ intermediaria AS (
         usuario_faixa_etaria_id,
         usuario_faixa_etaria,
         usuario_faixa_etaria_ordem,
-        usuario_idade,
         usuarios_novos,
         usuarios_novos_anterior,
         now() AS atualizacao_data   
@@ -179,8 +174,7 @@ intermediaria AS (
         "usuario_condicao_saude",
         "usuario_raca_cor_id_siasus",
         "usuario_situacao_rua",
-        "usuario_abuso_substancias",
-        "usuario_idade"
+        "usuario_abuso_substancias"
     ],
     colunas_a_totalizar=[
 		"estabelecimento_linha_perfil",
