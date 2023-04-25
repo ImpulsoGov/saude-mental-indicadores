@@ -58,6 +58,9 @@ SPDX-License-Identifier: MIT
                 WHEN
                     estabelecimento.estabelecimento_linha_idade = 'Adulto + Infantil/Infanto-Juvenil (+15a)'
                 THEN 'Adulto e Juvenil (+15a)'
+                WHEN
+                    estabelecimento.estabelecimento_linha_idade = 'Adulto + Infantil/Infanto-Juvenil'
+                THEN 'Adulto e Infantil/Infanto-Juvenil'
                 ELSE 'Sem classificação'
             END
         ) AS {{ coluna_linha_idade }}
