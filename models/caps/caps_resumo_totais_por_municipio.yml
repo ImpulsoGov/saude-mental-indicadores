@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_resumo_totais_por_municipio
+    description: >
+      [...]]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_resumo_totais_por_municipio
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "resumo"
