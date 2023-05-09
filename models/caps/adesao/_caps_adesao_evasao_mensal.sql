@@ -34,6 +34,7 @@ evadiram_vs_total AS (
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id_sus",
             "estabelecimento_id_scnes",
             "periodo_id"
         ]) }} AS id,
