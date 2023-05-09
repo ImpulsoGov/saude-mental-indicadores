@@ -60,6 +60,7 @@ procedimentos_caps_bpa_i AS (
     FROM bpa_i_disseminacao
     WHERE 
         estabelecimento_tipo_id_sigtap = '70'  -- CAPS
+        -- ou id_scnes bate com uma tabela de exceções de coisas que são CAPS
     AND quantidade_apresentada > 0
     {%- if is_incremental() %}
     -- TODO: suporte completo a atualizações retroativas
