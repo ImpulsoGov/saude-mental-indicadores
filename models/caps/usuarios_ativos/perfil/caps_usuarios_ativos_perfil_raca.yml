@@ -6,12 +6,8 @@
 version: 2
 
 models:
-  - name: _caps_usuarios_ativos_perfil
+  - name: caps_usuarios_ativos_perfil_raca
     description: >
-      *Modelo para uso interno no dbt**. Ver modelo 
-      [`caps_usuarios_ativos_perifl`](https://impulsogov.github.io/saude-mental-indicadores/#!/model/model.impulso_saude_mental.caps_usuarios_ativos_perfil)
-      para a versão final.
-
       Número de usuários que tiveram movimentação do prontuário na competência
       de referência (usuários que "frequentaram no mês"); dos que tiveram
       movimentação do prontuário em alguma das três competências até a atual
@@ -20,8 +16,7 @@ models:
       "tornando-se inativo").
       
       Os valores são somados para cada combinação de estabelecimento de saúde
-      (apenas CAPS), período de referência, e categorias de sexo, raça/cor,
-      faixa etária, e grupo do diagnóstico principal (conforme a CID-10).
+      (apenas CAPS), período de referência, e categorias de grupo do diagnóstico principal (conforme a CID-10).
       
       Os valores tem como base os dados enviados mensalmente ao Sistema
       de Informações Ambulatoriais do SUS (SIASUS) e disponibilizados pelo
@@ -29,9 +24,20 @@ models:
     config:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
-      alias: _caps_usuarios_ativos_perfil
+      alias: caps_usuarios_ativos_perfil_raca
       enabled: true
-      materialized: view
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "competencia"
+          - "periodo_id"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "estabelecimento"
+      materialized: table
       persist_docs:
         relation: true
       tags:
