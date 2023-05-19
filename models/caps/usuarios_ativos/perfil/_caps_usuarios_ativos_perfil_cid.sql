@@ -78,7 +78,8 @@ final AS (
     	    "estabelecimento_linha_idade",
             "estabelecimento_id_scnes",
             "periodo_id",
-            "grupo_id_cid10"
+            "grupo_id_cid10",
+            "usuario_condicao_saude"
         ]) }} AS id,
         unidade_geografica_id,
         unidade_geografica_id_sus,
