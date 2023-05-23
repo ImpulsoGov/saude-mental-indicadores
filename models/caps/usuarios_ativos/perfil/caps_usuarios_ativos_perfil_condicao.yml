@@ -29,7 +29,6 @@ models:
       indexes:
         - columns:
           - "id"
-          unique: true
         - columns:
           - "competencia"
           - "periodo_id"
@@ -37,6 +36,11 @@ models:
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
           - "estabelecimento"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "estabelecimento"
+          - "usuario_situacao_rua"
+          - "usuario_abuso_substancias"
       materialized: table
       persist_docs:
         relation: true
