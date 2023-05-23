@@ -95,7 +95,7 @@ final AS (
             usuario_abuso_substancias
         ) AS usuario_abuso_substancias,
         sum(coalesce(ativos_mes, 0)) AS ativos_mes,
-        sum(coalesce(ativos_3meses, 0)) AS ativo_3meses,
+        sum(coalesce(ativos_3meses, 0)) AS ativos_3meses,
         sum(coalesce(tornandose_inativos, 0)) AS tornandose_inativos,
         now() AS atualizacao_data
     FROM com_combinacoes 
