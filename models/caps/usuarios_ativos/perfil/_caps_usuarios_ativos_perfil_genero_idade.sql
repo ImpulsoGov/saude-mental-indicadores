@@ -108,7 +108,7 @@ final AS (
         estabelecimento_linha_perfil,
     	estabelecimento_linha_idade,
         estabelecimento_id_scnes,
-        usuario_faixa_etaria_id,
+        usuario_faixa_etaria_descricao,
         usuario_sexo_id_sigtap
 )
 SELECT * FROM final
