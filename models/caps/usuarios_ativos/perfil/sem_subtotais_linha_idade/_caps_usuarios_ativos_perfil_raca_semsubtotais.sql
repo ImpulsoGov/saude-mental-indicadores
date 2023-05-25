@@ -44,8 +44,6 @@ usuarios_ativos_perfil AS (
     colunas_a_completar=[
         ["periodo_id", "periodo_data_inicio"],
         ["estabelecimento_id_scnes"],
-        ["estabelecimento_linha_perfil"],
-    	["estabelecimento_linha_idade"],
         ["usuario_raca_cor_id_siasus"]
     ],
     cte_resultado="com_combinacoes"
