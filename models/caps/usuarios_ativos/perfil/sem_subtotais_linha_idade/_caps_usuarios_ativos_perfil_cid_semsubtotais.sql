@@ -68,7 +68,7 @@ GROUP BY
 	usuario_condicao_saude
 ),
 
-com_combinacoes_sem_subtotais_sem_cids_zerados AS (s
+com_combinacoes_sem_subtotais_sem_cids_zerados AS (
     SELECT *
     FROM com_combinacoes_sem_subtotais TOrg
     WHERE NOT EXISTS (
