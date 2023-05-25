@@ -56,6 +56,32 @@ usuarios_ativos_perfil AS (
     relacao="com_combinacoes",
     cte_resultado="com_combinacoes_sem_subtotais"
 ) }},
+
+cids_zerados_por_municipio AS (
+    SELECT
+	unidade_geografica_id_sus,
+	usuario_condicao_saude,
+	sum(ativos_mes) as ativos_mes,
+	sum(ativos_3meses) as ativos_3meses,
+	sum(tornandose_inativos) as tornandose_inativos
+FROM saude_mental.caps_usuarios_ativos_perfil_cid_semsubtotais
+WHERE ativos_mes = NULL and ativos_3meses = NULL and tornandose_inativos = NULL
+GROUP BY 
+	unidade_geografica_id_sus,
+	usuario_condicao_saude
+),
+
+com_combinacoes_sem_subtotais_sem_cids_zerados AS (
+    SELECT *
+    FROM com_combinacoes_sem_subtotais TOrg
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM cids_zerados_por_municipio CZ
+        WHERE CZ.usuario_condicao_saude = TOrg.usuario_condicao_saude
+        AND CZ.unidade_geografica_id_sus = TOrg.unidade_geografica_id_sus
+    )
+),
+
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -78,7 +104,7 @@ final AS (
         sum(coalesce(ativos_3meses, 0)) AS ativos_3meses,
         sum(coalesce(tornandose_inativos, 0)) AS tornandose_inativos,
         now() AS atualizacao_data
-    FROM com_combinacoes_sem_subtotais
+    FROM com_combinacoes_sem_subtotais_sem_cids_zerados
     GROUP BY    
         unidade_geografica_id,
         unidade_geografica_id_sus,
