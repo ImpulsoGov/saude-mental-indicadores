@@ -45,8 +45,6 @@ usuarios_ativos_perfil AS (
     colunas_a_completar=[
         ["periodo_id", "periodo_data_inicio"],
         ["estabelecimento_id_scnes"],
-        ["estabelecimento_linha_perfil"],
-    	["estabelecimento_linha_idade"],
         ["grupo_id_cid10"],
         ["usuario_condicao_saude"]
     ],
@@ -59,24 +57,20 @@ usuarios_ativos_perfil AS (
 
 cids_zerados_por_municipio AS (
     SELECT
-	unidade_geografica_id_sus,
-	usuario_condicao_saude
-FROM com_combinacoes_sem_subtotais
-WHERE ativos_mes = NULL and ativos_3meses = NULL and tornandose_inativos = NULL
-GROUP BY 
-	unidade_geografica_id_sus,
-	usuario_condicao_saude
+	    unidade_geografica_id_sus,
+	    usuario_condicao_saude
+    FROM com_combinacoes_sem_subtotais
+    WHERE ativos_mes is NOT NULL and ativos_3meses IS not NULL and tornandose_inativos IS not NULL
+    GROUP BY 
+	    unidade_geografica_id_sus,
+	    usuario_condicao_saude
 ),
 
 com_combinacoes_sem_subtotais_sem_cids_zerados AS (
     SELECT *
     FROM com_combinacoes_sem_subtotais TOrg
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM cids_zerados_por_municipio CZ
-        WHERE CZ.usuario_condicao_saude = TOrg.usuario_condicao_saude
-        AND CZ.unidade_geografica_id_sus = TOrg.unidade_geografica_id_sus
-    )
+    INNER JOIN cids_zerados_por_municipio CZ
+    ON CZ.usuario_condicao_saude = TOrg.usuario_condicao_saude AND CZ.unidade_geografica_id_sus = TOrg.unidade_geografica_id_sus
 ),
 
 final AS (
