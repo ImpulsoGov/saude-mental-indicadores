@@ -44,6 +44,8 @@ usuarios_ativos_perfil AS (
     agrupar_por=[
         "unidade_geografica_id",
         "unidade_geografica_id_sus",
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade"
     ],
     colunas_a_completar=[
         ["periodo_id", "periodo_data_inicio"],
