@@ -60,18 +60,15 @@ usuarios_ativos_perfil AS (
 cids_zerados_por_municipio AS (
     SELECT
 	unidade_geografica_id_sus,
-	usuario_condicao_saude,
-	sum(ativos_mes) as ativos_mes,
-	sum(ativos_3meses) as ativos_3meses,
-	sum(tornandose_inativos) as tornandose_inativos
-FROM saude_mental.caps_usuarios_ativos_perfil_cid_semsubtotais
+	usuario_condicao_saude
+FROM com_combinacoes_sem_subtotais
 WHERE ativos_mes = NULL and ativos_3meses = NULL and tornandose_inativos = NULL
 GROUP BY 
 	unidade_geografica_id_sus,
 	usuario_condicao_saude
 ),
 
-com_combinacoes_sem_subtotais_sem_cids_zerados AS (
+com_combinacoes_sem_subtotais_sem_cids_zerados AS (s
     SELECT *
     FROM com_combinacoes_sem_subtotais TOrg
     WHERE NOT EXISTS (
