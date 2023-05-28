@@ -32,7 +32,9 @@ final AS (
             '320530', -- Vitória/ES
             '410690', -- Curitiba/PR
             '431440', -- Pelotas/RS
-            '431490' -- Porto Alegre/RS            
+            '431490', -- Porto Alegre/RS   
+            '320520', -- Vila Velha/ES        
+            '352590'  -- Jundiaí          
         )
 )
 SELECT * FROM final
