@@ -4,7 +4,7 @@ SPDX-FileCopyrightText: 2022 ImpulsoGov <contato@impulsogov.org>
 SPDX-License-Identifier: MIT
 #}
 
--- depends_on: {{ ref('_caps_usuarios_ativos_perfil_cid') }}
+-- depends_on: {{ ref('_caps_usuarios_ativos_perfil_cid_semsubtotais') }}
 
 WITH
 {{ preparar_uso_externo(
