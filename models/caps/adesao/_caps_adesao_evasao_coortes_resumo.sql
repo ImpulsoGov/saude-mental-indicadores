@@ -98,8 +98,55 @@ com_unidades_geograficas AS (
     ON com_faixa_etaria.estabelecimento_id_scnes
         = estabelecimentos.estabelecimento_id_scnes
 ),
-
-resumo AS (
+evasao_por_cid_por_estabelecimento AS (
+    SELECT
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        coalesce(
+            estabelecimento_id_scnes,
+            '0000000'
+        ) AS estabelecimento_id_scnes,
+        grupo_descricao_curta_cid10,
+        count(
+            DISTINCT usuario_id_cns_criptografado
+        ) AS usuarios_coorte_nao_aderiram
+    FROM com_unidades_geograficas
+    WHERE evadiu
+    GROUP BY
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        grupo_descricao_curta_cid10,
+        ROLLUP(estabelecimento_id_scnes)
+),
+cid_predominante AS (
+    SELECT DISTINCT ON (
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        estabelecimento_id_scnes
+    )
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        estabelecimento_id_scnes,
+        grupo_descricao_curta_cid10 AS predominio_condicao_grupo_descricao_curta_cid10,
+        usuarios_coorte_nao_aderiram AS predominio_condicao_grupo_usuarios_cid10
+    FROM evasao_por_cid_por_estabelecimento
+    ORDER BY
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        estabelecimento_id_scnes,
+        usuarios_coorte_nao_aderiram DESC
+),
+resumo_sem_cid_predominante AS (
     SELECT
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -113,19 +160,16 @@ resumo AS (
             WHERE evadiu
         ) AS usuarios_coorte_nao_aderiram,
         count(DISTINCT usuario_id_cns_criptografado) AS usuarios_coorte_total,
-        mode() WITHIN GROUP (
+        coalesce(mode() WITHIN GROUP (
             ORDER BY usuario_sexo_id_sigtap
-        ) FILTER (WHERE evadiu) AS predominio_sexo_id_sigtap,
-        mode() WITHIN GROUP (
-            ORDER BY faixa_etaria_descricao
-        ) FILTER (WHERE evadiu) AS predominio_faixa_etaria,
-        mode() WITHIN GROUP (
-            ORDER BY grupo_descricao_curta_cid10
-        ) FILTER (
-            WHERE evadiu
-        ) AS predominio_condicao_grupo_descricao_curta_cid10,
-        max(atualizacao_data) AS atualizacao_data,
-        count(*) AS controle
+        ) FILTER (WHERE evadiu), 'Sem predominância') AS predominio_sexo_id_sigtap,
+        coalesce(
+            mode() WITHIN GROUP (ORDER BY faixa_etaria_descricao) FILTER (
+                WHERE evadiu
+            ),
+            'Sem predominância'
+        ) AS predominio_faixa_etaria,
+        max(atualizacao_data) AS atualizacao_data
     FROM com_unidades_geograficas
     GROUP BY
         unidade_geografica_id,
@@ -134,7 +178,27 @@ resumo AS (
         periodo_data_inicio,
         ROLLUP(estabelecimento_id_scnes)
 ),
-
+resumo_com_tudo AS (
+    SELECT
+        r.*,
+        coalesce(
+            predominio_condicao_grupo_descricao_curta_cid10,
+            'Sem predominância'
+        ) AS predominio_condicao_grupo_descricao_curta_cid10,
+        coalesce(
+            predominio_condicao_grupo_usuarios_cid10,
+            0
+        ) AS predominio_condicao_grupo_usuarios_cid10 
+    FROM resumo_sem_cid_predominante r
+    LEFT JOIN cid_predominante
+    USING (
+        unidade_geografica_id,
+        unidade_geografica_id_sus,
+        periodo_id,
+        periodo_data_inicio,
+        estabelecimento_id_scnes
+    )
+),
 com_percentuais AS (
     SELECT
         unidade_geografica_id,
@@ -155,10 +219,10 @@ com_percentuais AS (
         predominio_sexo_id_sigtap,
         predominio_faixa_etaria,
         predominio_condicao_grupo_descricao_curta_cid10,
+        predominio_condicao_grupo_usuarios_cid10,
         atualizacao_data
-    FROM resumo
+    FROM resumo_com_tudo
 ),
-
 caps_pior_taxa AS (
     SELECT 
         DISTINCT ON (
@@ -185,7 +249,6 @@ caps_pior_taxa AS (
         usuarios_coorte_nao_aderiram_perc DESC,
         usuarios_coorte_nao_aderiram DESC
 ),
-
 com_pior_taxa AS (
     SELECT
         unidade_geografica_id,
@@ -200,6 +263,7 @@ com_pior_taxa AS (
         predominio_sexo_id_sigtap,
         predominio_faixa_etaria,
         predominio_condicao_grupo_descricao_curta_cid10,
+        predominio_condicao_grupo_usuarios_cid10,
         maior_taxa_estabelecimento_id_scnes,
         maior_taxa_perc,
         maior_taxa_usuarios_nao_aderiram,
@@ -217,7 +281,6 @@ com_pior_taxa AS (
         periodo_id
     )
 ),
-
 -- Exclui as 4 competências mais recentes, já que nelas ainda não houve tempo 
 -- para observar o comportamento (adesão/evasão) nos três meses iniciais após
 -- o primeiro procedimento, mais os 2 meses necessários para confirmar as
@@ -247,5 +310,4 @@ final AS (
         *
     FROM exceto_4_ultimas
 )
-
 SELECT * FROM final
