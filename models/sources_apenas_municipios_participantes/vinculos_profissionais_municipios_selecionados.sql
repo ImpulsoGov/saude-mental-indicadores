@@ -17,22 +17,24 @@ final AS (
     WHERE estabelecimento_municipio_id_sus IN 
         (
             '150140', -- Belém/PA
+            '230190', -- Barbalha/CE
+            '230440', -- Fortaleza/CE (para Impulsolandia)
+            '231290', -- Sobral/CE
             '261160', -- Recife/PE
             '280030', -- Aracaju/SE
-            '431490', -- Porto Alegre/RS 
-            '315780', -- Santa Luzia/MG
-            '351640', -- Franco da Rocha/SP
-            '230190', -- Barbalha/CE
-            '231290', -- Sobral/CE            
-            '320500', -- Serra/ES
-            '330490', -- São Gonçalo/RJ
-            '350950', -- Campinas/SP            
-            '410480', -- Cascavel/PR
-            '520140', -- Aparecida de Goiânia/GO            
             '292740', -- Salvador/BA
-            '320530', -- Vitória/ES
+            '315780', -- Santa Luzia/MG
+            '320500', -- Serra/ES
+            '320520', -- Vila Velha/ES
+            '330490', -- São Gonçalo/RJ
+            '350950', -- Campinas/SP
+            '351640', -- Franco da Rocha/SP
+            '352590', -- Jundiaí/SP
+            '410480', -- Cascavel/PR
+            '410690', -- Curitiba/PR
             '431440', -- Pelotas/RS
-            '410690' -- Curitiba/PR                       
+            '431490', -- Porto Alegre/RS 
+            '520140' -- Aparecida de Goiânia/GO
         )
 )
 SELECT * FROM final

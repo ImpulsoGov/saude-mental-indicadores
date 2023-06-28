@@ -129,7 +129,7 @@ procedimentos_por_hora_resumo AS (
     FROM saude_mental.caps_procedimentos_por_hora_resumo
     WHERE estabelecimento = 'Todos' AND estabelecimento_linha_perfil = 'Todos' AND estabelecimento_linha_idade = 'Todos' AND periodo = 'Último período' AND ocupacao = 'Todas'
 ),
-final AS (
+intermediaria AS (
     SELECT *
     FROM usuarios_ativos_resumo
     FULL JOIN usuarios_novos_resumo
@@ -146,5 +146,13 @@ final AS (
     USING (unidade_geografica_id_sus)
     left JOIN procedimentos_por_hora_resumo
     USING (unidade_geografica_id_sus)
+),
+final AS (
+    SELECT 
+	{{ dbt_utils.surrogate_key([
+      		"unidade_geografica_id_sus"
+        ]) }} AS id,
+	*
+    FROM intermediaria
 )
 SELECT * FROM final
