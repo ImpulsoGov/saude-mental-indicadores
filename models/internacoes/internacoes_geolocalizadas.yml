@@ -18,7 +18,7 @@ models:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: internacoes_geolocalizadas
-      enabled: true
+      enabled: false
       indexes:
         - columns:
           - "id"
