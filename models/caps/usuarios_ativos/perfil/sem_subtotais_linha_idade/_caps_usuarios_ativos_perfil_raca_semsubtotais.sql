@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 usuarios_ativos_perfil AS (
-    SELECT * FROM {{ ref("_caps_usuarios_ativos_perfil") }}
+    SELECT * FROM {{ ref("_caps_usuarios_ativos_perfil_semsubtotais") }}
 ),
 
 -- Calcula subtotais para todos os estabelecimentos
