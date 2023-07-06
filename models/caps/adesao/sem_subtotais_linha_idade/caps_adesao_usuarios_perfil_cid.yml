@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: caps_adesao_usuarios_perfil_cid
+    description: >
+      [...]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: caps_adesao_usuarios_perfil_cid
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "competencia"
+          - "periodo_id"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "estabelecimento"
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "estabelecimento"
+          - "usuario_condicao_saude"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "usuarios_ativos"
