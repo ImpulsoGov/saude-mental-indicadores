@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-
 impulso-saude-mental:
 
     target: analitico
@@ -49,21 +48,22 @@ impulso-saude-mental:
         # Opções do Postgres. Ver:
         # https://docs.getdbt.com/reference/warehouse-profiles/postgres-profile
 
-        dbname: postgres
-        schema: saude_mental
+        dbname: principal
+        schema: _saude_mental_producao
 
         # Defina a variável DBT_ENV_SECRET_PRODUCAO_SERVIDOR no GitHub Actions
         # e/ou no arquivo .env
-        host: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SERVIDOR') }}"
+        host: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SERVIDOR') }}"
         port: 5432
 
         # Defina a variável DBT_ENV_SECRET_PRODUCAO_USUARIO no GitHub Actions
         # e/ou no arquivo .env
-        user: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_USUARIO') }}"
+        user: "{{ env_var('DBT_ENV_SECRET_ANALITICO_USUARIO') }}"
 
         # Defina DBT_ENV_SECRET_PRODUCAO_SENHA no GitHub Actions
         # e/ou no arquivo .env
-        password: "{{ env_var('DBT_ENV_SECRET_PRODUCAO_SENHA') }}"
+        password: "{{ env_var('DBT_ENV_SECRET_ANALITICO_SENHA') }}"
 
         keepalives_idle: 0 # default 0, indicating the system default
         connect_timeout: 10 # default 10 seconds
+        search_path: "$user, public, extensoes, postgis"
