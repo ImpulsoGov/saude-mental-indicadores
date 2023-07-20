@@ -32,7 +32,6 @@ perfil_por_estabelecimento AS (
             WHERE fez_procedimentos
         ) AS usuarios_frequentantes
     FROM usuarios_atendimendos_individuais usuario
-    WHERE NOT procedimentos_alem_individual
     GROUP BY 
         unidade_geografica_id,
         unidade_geografica_id_sus,
