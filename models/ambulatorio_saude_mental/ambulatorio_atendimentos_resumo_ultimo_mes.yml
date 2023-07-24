@@ -28,7 +28,7 @@ models:
           - "estabelecimento"
           - "ocupacao"
           unique: true
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:

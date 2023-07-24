@@ -34,7 +34,7 @@ models:
           - "quantidade_registrada"
           - "quantidade_registrada_anterior"
           - "dif_quantidade_registrada_anterior"
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:
