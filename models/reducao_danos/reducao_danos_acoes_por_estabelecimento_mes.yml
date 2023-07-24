@@ -18,7 +18,7 @@ models:
         - columns:
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:

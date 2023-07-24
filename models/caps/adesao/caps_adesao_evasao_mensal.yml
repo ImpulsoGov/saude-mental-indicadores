@@ -20,7 +20,7 @@ models:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: caps_adesao_evasao_mensal
       enabled: true
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:

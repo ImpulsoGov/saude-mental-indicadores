@@ -20,7 +20,7 @@ models:
           - "unidade_geografica_id_sus"
           - "periodo_data_inicio"
           - "periodo_id"
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:

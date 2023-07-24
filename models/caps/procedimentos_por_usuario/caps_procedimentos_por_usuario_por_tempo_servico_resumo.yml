@@ -14,7 +14,7 @@ models:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: caps_procedimentos_por_usuario_por_tempo_servico_resumo
       enabled: true
-      materialized: view
+      materialized: table
       persist_docs:
         relation: true
       tags:
