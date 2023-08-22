@@ -18,8 +18,6 @@ models:
         - columns:
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
-        - columns:
-          - "estabelecimento"
       materialized: table
       persist_docs:
         relation: true

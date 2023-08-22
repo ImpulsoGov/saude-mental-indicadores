@@ -147,4 +147,9 @@ final AS (
     left JOIN procedimentos_por_hora_resumo
     USING (unidade_geografica_id_sus)
 )
-SELECT * FROM final
+SELECT 
+    {{ dbt_utils.surrogate_key([
+        "unidade_geografica_id_sus"
+    ]) }} AS id,
+    * 
+FROM final

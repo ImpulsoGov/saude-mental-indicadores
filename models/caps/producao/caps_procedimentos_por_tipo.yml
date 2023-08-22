@@ -21,7 +21,7 @@ models:
         - columns:
           - "unidade_geografica_id"
           - "unidade_geografica_id_sus"
-          - "periodo_data_inicio"
+          - "competencia"
           - "periodo_id"
       materialized: table
       persist_docs:
