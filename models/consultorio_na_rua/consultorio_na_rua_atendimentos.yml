@@ -23,12 +23,11 @@ models:
           - "competencia"
           - "nome_mes"
         - columns:
-          - "tipo_equipe"
           - "tipo_producao"
         - columns:
           - "quantidade_registrada"
           - "quantidade_registrada_anterior"
-          - "dif_quantidade_registrada"
+          - "dif_quantidade_registrada_anterior"
         - columns:
           - "periodo"
           - "periodo_ordem"

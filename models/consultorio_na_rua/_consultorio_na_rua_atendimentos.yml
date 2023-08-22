@@ -25,7 +25,6 @@ models:
           - "periodo_id"
           - "periodo_data_inicio"
         - columns:
-          - "tipo_equipe"
           - "tipo_producao"
         - columns:
           - "quantidade_registrada"
