@@ -71,6 +71,21 @@ _reducao_danos_acoes_por_estabelecimento_mes AS (
     meses_antes_ultima_competencia=(0, none),
     cte_resultado="ate_ultima_competencia"
 ) }},
+
+{{  revelar_combinacoes_implicitas(
+    relacao="ate_ultima_competencia",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
+        ["estabelecimento_id_scnes"],
+        ["profissional_vinculo_ocupacao_id_cbo2002"]
+    ],
+    cte_resultado="com_combinacoes_vazias"
+) }},
+
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -84,13 +99,13 @@ final AS (
         periodo_id,
         periodo_data_inicio,
         profissional_vinculo_ocupacao_id_cbo2002,
-        quantidade_registrada,
-        quantidade_registrada_anterior,
+        coalesce(quantidade_registrada, 0) AS quantidade_registrada,
+        coalesce(quantidade_registrada_anterior, 0) AS quantidade_registrada_anterior,
         (
-            coalesce(ate_ultima_competencia.quantidade_registrada, 0)
-            - coalesce(ate_ultima_competencia.quantidade_registrada_anterior, 0)
+            coalesce(com_combinacoes_vazias.quantidade_registrada, 0)
+            - coalesce(com_combinacoes_vazias.quantidade_registrada_anterior, 0)
         ) AS dif_quantidade_registrada_anterior,
         now() AS atualizacao_data
-    FROM ate_ultima_competencia
+    FROM com_combinacoes_vazias
 )
 SELECT * FROM final
