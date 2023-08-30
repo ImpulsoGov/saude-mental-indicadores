@@ -182,18 +182,29 @@ final AS (
         maior_taxa_estabelecimento_id_scnes,
         estabelecimento_linha_perfil,
         estabelecimento_linha_idade,
-        round(
-            100 * (
-                coalesce(procedimentos_por_usuario, 0)
-                - coalesce(procedimentos_por_usuario_anterior, 0)
-            )::numeric
-            / nullif(
-                coalesce(procedimentos_por_usuario_anterior, 0),
-                0
-            ), 1
-            ) AS dif_procedimentos_por_usuario_anterior_perc,
+        -- Trecho inserido para garantir que se o valor de 'procedimentos_por_usuario_anterior'
+        -- for igual a 0 e 'procedimentos_por_usuario' for > 0 ele retorna o valor de 100%, mas
+        -- se ambos forem zero ele retorna o valor de diferença de 0%
+        CASE
+            WHEN coalesce(procedimentos_por_usuario_anterior, 0) = 0 THEN
+                CASE
+                    WHEN coalesce(procedimentos_por_usuario, 0) > 0 THEN 100
+                    ELSE 0
+                END
+            ELSE round(
+                100 * (
+                    coalesce(procedimentos_por_usuario, 0)
+                    - coalesce(procedimentos_por_usuario_anterior, 0)
+                )::numeric
+                / coalesce(procedimentos_por_usuario_anterior, 0), 1
+            )
+        END AS dif_procedimentos_por_usuario_anterior_perc,
         now() AS atualizacao_data,
         estabelecimento_id_scnes  
     FROM com_totais
 )
 SELECT * FROM final
+
+
+
+

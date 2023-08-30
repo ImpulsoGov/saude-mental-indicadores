@@ -65,6 +65,8 @@ atendimentos_com_joins AS (
         ],
     cte_resultado="com_periodo_anterior"
 ) }},
+
+-- Calcula ações para os últimos 12 meses 
 {{ ultimas_competencias(
     relacao="com_periodo_anterior",
     fontes=["sisab_producao_municipios_equipe_producao"],
@@ -90,6 +92,22 @@ atendimentos_com_joins AS (
     manter_original=true,
     cte_resultado="cnr_12meses_subtotais"
 ) }},
+{{  revelar_combinacoes_implicitas(
+    relacao="cnr_12meses_subtotais",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
+        ["tipo_producao"]
+    ],
+    cte_resultado="cnr_12meses_subtotais_com_combinacoes_vazias"
+) }},
+
+
+
+-- Calcula ações os últimos 12 a 24 meses
 {{ ultimas_competencias(
     relacao="com_periodo_anterior",
     fontes=["sisab_producao_municipios_equipe_producao"],
@@ -115,6 +133,20 @@ atendimentos_com_joins AS (
     manter_original=true,
     cte_resultado="cnr_12a24meses_subtotais"
 ) }},
+{{  revelar_combinacoes_implicitas(
+    relacao="cnr_12a24meses_subtotais",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
+        ["tipo_producao"]
+    ],
+    cte_resultado="cnr_12a24meses_subtotais_com_combinacoes_vazias"
+) }},
+
+
 cnr_12meses_agrupado AS (
     SELECT
         unidade_geografica_id,
@@ -123,7 +155,7 @@ cnr_12meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada
-    FROM cnr_12meses_subtotais
+    FROM cnr_12meses_subtotais_com_combinacoes_vazias
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -137,7 +169,7 @@ cnr_12a24meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada_anterior
-    FROM cnr_12a24meses_subtotais
+    FROM cnr_12a24meses_subtotais_com_combinacoes_vazias
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
@@ -158,8 +190,8 @@ cnr_12meses_agrupado_comperiodoanterior AS (
         )::text AS ate_ano,
         listas_de_codigos.nome_mes(cnr_12meses_agrupado.a_partir_de::date) AS a_partir_do_mes,
         listas_de_codigos.nome_mes(cnr_12meses_agrupado.ate::date) AS ate_mes,
-        cnr_12meses_agrupado.quantidade_registrada,
-        cnr_12a24meses_agrupado.quantidade_registrada_anterior,
+        coalesce(cnr_12meses_agrupado.quantidade_registrada, 0) AS quantidade_registrada,
+        coalesce(cnr_12a24meses_agrupado.quantidade_registrada_anterior, 0) AS quantidade_registrada_anterior,
         (
             coalesce(cnr_12meses_agrupado.quantidade_registrada, 0)
             - coalesce(cnr_12a24meses_agrupado.quantidade_registrada_anterior, 0)

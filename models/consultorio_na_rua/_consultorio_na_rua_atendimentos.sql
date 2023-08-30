@@ -90,6 +90,20 @@ atendimentos_com_joins AS (
     manter_original=true,
     cte_resultado="ate_ultima_competencia_com_substotais"
 ) }},
+
+{{  revelar_combinacoes_implicitas(
+    relacao="ate_ultima_competencia_com_substotais",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
+        ["tipo_producao"]
+    ],
+    cte_resultado="ate_ultima_competencia_com_substotais_com_combinacoes_vazias"
+) }},
+
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -102,13 +116,13 @@ final AS (
         periodo_data_inicio,
         periodo_id,
         tipo_producao,
-        ate_ultima_competencia_com_substotais.quantidade_registrada,
-        ate_ultima_competencia_com_substotais.quantidade_registrada_anterior,
+        coalesce(ate_ultima_competencia_com_substotais_com_combinacoes_vazias.quantidade_registrada) AS quantidade_registrada,
+        coalesce(ate_ultima_competencia_com_substotais_com_combinacoes_vazias.quantidade_registrada_anterior) AS quantidade_registrada_anterior,
         (
-            coalesce(ate_ultima_competencia_com_substotais.quantidade_registrada, 0)
-            - coalesce(ate_ultima_competencia_com_substotais.quantidade_registrada_anterior, 0)
+            coalesce(ate_ultima_competencia_com_substotais_com_combinacoes_vazias.quantidade_registrada, 0)
+            - coalesce(ate_ultima_competencia_com_substotais_com_combinacoes_vazias.quantidade_registrada_anterior, 0)
         ) AS dif_quantidade_registrada_anterior,
         now() AS atualizacao_data   
-    FROM ate_ultima_competencia_com_substotais
+    FROM ate_ultima_competencia_com_substotais_com_combinacoes_vazias
 )  
 SELECT * FROM final

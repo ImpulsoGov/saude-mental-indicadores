@@ -23,7 +23,7 @@ saude_mental_encaminhamentos_especializada AS (
         'Encaminhamento para serviço especializado' AS conduta
     FROM sisab_producao_por_conduta
     WHERE 
-        conduta  = 'Encaminhamento p/ serviço especializado'
+        conduta  = 'Encaminhamento p/ serviço espe'
     AND problema_condicao_avaliada 
         = ANY (ARRAY[
             'Saúde mental'::text,

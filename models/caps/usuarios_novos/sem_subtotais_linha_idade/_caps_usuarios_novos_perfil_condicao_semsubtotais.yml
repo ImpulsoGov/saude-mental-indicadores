@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: _caps_usuarios_novos_perfil_condicao_semsubtotais
+    description: >
+      [...]
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: _caps_usuarios_novos_perfil_condicao_semsubtotais
+      enabled: true
+      indexes:
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "unidade_geografica_id"
+          - "periodo_data_inicio"
+        - columns: 
+          - "unidade_geografica_id_sus"
+          - "periodo_data_inicio"
+          - "usuario_situacao_rua"
+        - columns: 
+          - "unidade_geografica_id_sus"
+          - "periodo_data_inicio"
+          - "usuario_abuso_substancias"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"
+        - "caps"
+        - "bpa_i"
+        - "raas"
+        - "usuarios_novos"

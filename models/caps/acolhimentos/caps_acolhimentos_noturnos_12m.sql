@@ -4,14 +4,26 @@ SPDX-FileCopyrightText: 2022 ImpulsoGov <contato@impulsogov.org>
 SPDX-License-Identifier: MIT
 #}
 
--- depends_on: {{ ref('_caps_usuarios_ativos_perfil') }}
+-- depends_on: {{ ref('_caps_acolhimentos_noturnos') }}
 
 WITH
 acolhimentos_noturnos_por_municipio_por_mes AS (
 	SELECT * FROM {{ ref("_caps_acolhimentos_noturnos") }}
 ),
-{{ ultimas_competencias(
+
+{{  revelar_combinacoes_implicitas(
     relacao="acolhimentos_noturnos_por_municipio_por_mes",
+    agrupar_por=[
+        
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"]
+    ],
+    cte_resultado="com_combinacoes"
+) }},
+{{ ultimas_competencias(
+    relacao="com_combinacoes",
     fontes=[
         "aih_rd_disseminacao",
         "bpa_i_disseminacao",
@@ -61,9 +73,9 @@ final AS (
                 WHEN {{ mes_max }} = 12 THEN 'Dezembro'
             END
 		) AS ate_mes,
-        sum(acolhimentos_noturnos) AS acolhimentos_noturnos,
-        sum(acolhimentos_noturnos_diarias) AS acolhimentos_noturnos_diarias,
-        max(atualizacao_data) AS atualizacao_data
+        sum(coalesce(acolhimentos_noturnos, 0)) AS acolhimentos_noturnos,
+        sum(coalesce(acolhimentos_noturnos_diarias, 0)) AS acolhimentos_noturnos_diarias,
+        now() AS atualizacao_data
 	FROM ultimos_12m
 	GROUP BY
 		unidade_geografica_id,

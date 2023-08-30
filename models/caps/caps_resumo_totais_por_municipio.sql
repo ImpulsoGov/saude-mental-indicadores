@@ -155,4 +155,6 @@ final AS (
 	*
     FROM intermediaria
 )
-SELECT * FROM final
+SELECT 
+    * 
+FROM final
