@@ -26,15 +26,15 @@ final AS (
             '315780', -- Santa Luzia/MG
             '320500', -- Serra/ES
             '320520', -- Vila Velha/ES  
-            '330490', -- São Gonçalo/RJ
-            '350950', -- Campinas/SP
+            -- '330490', -- São Gonçalo/RJ
+            -- '350950', -- Campinas/SP
             '351640', -- Franco da Rocha/SP
             '352590', -- Jundiaí/SP
-            '410480', -- Cascavel/PR
-            '410690', -- Curitiba/PR
+            -- '410480', -- Cascavel/PR
+            -- '410690', -- Curitiba/PR
             '431440', -- Pelotas/RS
             '431490', -- Porto Alegre/RS   
-            '520140'  -- Aparecida de Goiânia/GO             
+            '520140'  -- Aparecida de Goiânia/GO            
         )
 )
 SELECT * FROM final
