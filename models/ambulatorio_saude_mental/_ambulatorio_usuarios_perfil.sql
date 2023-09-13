@@ -17,6 +17,7 @@ final AS (
         {{ dbt_utils.surrogate_key([
             "unidade_geografica_id",
             "periodo_id",
+            "estabelecimento_id_scnes",
             "faixa_etaria_id",
             "usuario_sexo_id_sigtap",
             "condicao_saude.grupo_id_cid10"
@@ -24,6 +25,7 @@ final AS (
         unidade_geografica_id,
         unidade_geografica_id_sus,
         periodo_id,
+        estabelecimento_id_scnes,
         realizacao_periodo_data_inicio AS periodo_data_inicio,
         faixa_etaria_descricao AS usuario_faixa_etaria,
         faixa_etaria_ordem AS usuario_faixa_etaria_ordem,
@@ -46,6 +48,7 @@ final AS (
         unidade_geografica_id_sus,
         periodo_id,
         periodo_data_inicio,
+        estabelecimento_id_scnes,
         faixa_etaria_id,
         faixa_etaria_descricao,
         faixa_etaria_ordem,
