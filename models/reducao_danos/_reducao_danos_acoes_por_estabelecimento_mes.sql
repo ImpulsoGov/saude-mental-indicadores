@@ -109,6 +109,7 @@ com_combinacoes_vazias_sem_cbos_zerados AS (
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id",
             "estabelecimento_id_scnes",
             "periodo_id",
             "profissional_vinculo_ocupacao_id_cbo2002"
