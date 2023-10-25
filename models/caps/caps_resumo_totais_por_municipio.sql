@@ -39,7 +39,7 @@ usuarios_ativos_resumo AS (
             dif_ativos_mes_anterior,
             periodo as periodo_ativos,
             nome_mes as nome_mes_ativos
-        FROM saude_mental.caps_usuarios_ativos_por_estabelecimento_resumo
+        FROM caps_usuarios_ativos_por_estabelecimento_resumo
         WHERE estabelecimento = 'Todos'
             AND estabelecimento_linha_perfil = 'Todos'
             AND estabelecimento_linha_idade = 'Todos'
@@ -52,7 +52,7 @@ usuarios_novos_resumo AS (
         dif_usuarios_novos_anterior,
         periodo as periodo_novos,
         nome_mes as nome_mes_novos
-    FROM saude_mental.caps_usuarios_novos_resumo
+    FROM caps_usuarios_novos_resumo
     WHERE estabelecimento = 'Todos' AND estabelecimento_linha_perfil = 'Todos' AND estabelecimento_linha_idade = 'Todos' AND periodo = 'Último período'
 ),
 nao_adesao_resumo AS (
@@ -68,7 +68,7 @@ nao_adesao_resumo AS (
 		a_partir_do_ano,
 		ate_mes,
 		ate_ano
-    FROM saude_mental.caps_adesao_evasao_coortes_resumo
+    FROM caps_adesao_evasao_coortes_resumo
     WHERE estabelecimento = 'Todos' AND periodo = 'Último período'
 ),
 atendimentos_individuais_resumo AS (
@@ -80,7 +80,7 @@ atendimentos_individuais_resumo AS (
         maior_taxa_estabelecimento AS maior_taxa_estabelecimento_atendimentos_individuais,
         periodo as periodo_atendimentos_individuais,
         nome_mes as nome_mes_atendimentos_individuais
-    FROM saude_mental.caps_atendimentos_individuais_por_caps
+    FROM caps_atendimentos_individuais_por_caps
     WHERE estabelecimento = 'Todos' AND estabelecimento_linha_perfil = 'Todos' AND estabelecimento_linha_idade = 'Todos' AND periodo = 'Último período'
 ),
 atendimentos_individuais_perfil_resumo AS (
@@ -92,7 +92,7 @@ atendimentos_individuais_perfil_resumo AS (
         usuarios_cid_predominante AS usuarios_cid_atendimentos_individuais,
         periodo as periodo_atendimentos_individuais_perfil,
         nome_mes as nome_mes_atendimentos_individuais_perfil
-    FROM saude_mental.caps_usuarios_atendimentos_individuais_perfil_resumo
+    FROM caps_usuarios_atendimentos_individuais_perfil_resumo
     -- WHERE periodo = 'Último período'
 ),
 procedimentos_por_usuario_estabelecimento_resumo AS (
@@ -104,7 +104,7 @@ procedimentos_por_usuario_estabelecimento_resumo AS (
         dif_procedimentos_por_usuario_anterior_perc,
         periodo as periodo_proced_usuario,
         nome_mes as nome_mes_proced_usuario
-    FROM saude_mental.caps_procedimentos_por_usuario_por_estabelecimento
+    FROM caps_procedimentos_por_usuario_por_estabelecimento
     WHERE estabelecimento = 'Todos' AND estabelecimento_linha_perfil = 'Todos' AND estabelecimento_linha_idade = 'Todos' AND periodo = 'Último período'
 ),
 procedimentos_por_usuario_tempo_servico_resumo AS (
@@ -112,7 +112,7 @@ procedimentos_por_usuario_tempo_servico_resumo AS (
         unidade_geografica_id_sus,
         tempo_servico_maior_taxa,
         maior_taxa AS maior_taxa_procedimentos_tempo_servico
-    FROM saude_mental.caps_procedimentos_por_usuario_por_tempo_servico_resumo
+    FROM caps_procedimentos_por_usuario_por_tempo_servico_resumo
     WHERE estabelecimento = 'Todos'
 ),
 procedimentos_por_hora_resumo AS (
@@ -126,7 +126,7 @@ procedimentos_por_hora_resumo AS (
         dif_procedimentos_registrados_raas_anterior,
         periodo as periodo_procedimentos_hora,
         nome_mes as nome_mes_procedimentos_hora
-    FROM saude_mental.caps_procedimentos_por_hora_resumo
+    FROM caps_procedimentos_por_hora_resumo
     WHERE estabelecimento = 'Todos' AND estabelecimento_linha_perfil = 'Todos' AND estabelecimento_linha_idade = 'Todos' AND periodo = 'Último período' AND ocupacao = 'Todas'
 ),
 intermediaria AS (
@@ -152,7 +152,8 @@ final AS (
 	{{ dbt_utils.surrogate_key([
       		"unidade_geografica_id_sus"
         ]) }} AS id,
-	*
+	*,
+    now() AS atualizacao_data
     FROM intermediaria
 )
 SELECT 
