@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 WITH
 procedimentos_usuario_mes AS (
     SELECT * FROM {{ ref("_caps_procedimentos_por_usuario_por_mes") }}
+    WHERE usuario_id_cns_criptografado IS NOT NULL
 ),
 por_tempo_servico_por_estabelecimento AS (
     SELECT
@@ -66,33 +67,32 @@ por_tempo_servico AS (
     coluna_linha_perfil="estabelecimento_linha_perfil",
     coluna_linha_idade="estabelecimento_linha_idade",
     coluna_estabelecimento_id="estabelecimento_id_scnes",
-    todos_estabelecimentos_id=none,
-    todas_linhas_valor=none,
+    todos_estabelecimentos_id="0000000",
+    todas_linhas_valor="Todos",
     cte_resultado="com_linhas_cuidado"
 ) }},
-{{ calcular_subtotais(
+
+{{  revelar_combinacoes_implicitas(
     relacao="com_linhas_cuidado",
     agrupar_por=[
         "unidade_geografica_id",
         "unidade_geografica_id_sus",
-        "estabelecimento_id_scnes",
-        "competencia",
-        "periodo_id",
-        "tempo_servico_descricao"
-    ],
-    colunas_a_totalizar=[
         "estabelecimento_linha_perfil",
         "estabelecimento_linha_idade"
     ],
-    nomes_categorias_com_totais=[
-        "Todos", 
-        "Todos"
+    colunas_a_completar=[
+        ["periodo_id", "competencia"],
+        ["estabelecimento_id_scnes"],
+        ["tempo_servico_descricao"]
     ],
-    agregacoes_valores={
-        "procedimentos_por_usuario": "max"
-    },
-    cte_resultado="com_totais"
+    cte_resultado="com_combinacoes"
 ) }},
+
+{{  remover_subtotais(
+    relacao="com_combinacoes",
+    cte_resultado="limpado_subtotais"
+) }},
+
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
@@ -109,9 +109,10 @@ final AS (
         estabelecimento_id_scnes,
         competencia AS periodo_data_inicio,
         tempo_servico_descricao,
-        procedimentos_por_usuario,
+        coalesce(procedimentos_por_usuario, 0) AS procedimentos_por_usuario,
         estabelecimento_linha_perfil,
-        estabelecimento_linha_idade
-    FROM com_totais
+        estabelecimento_linha_idade,
+        now() AS atualizacao_data
+    FROM limpado_subtotais
 )
 SELECT * FROM final
