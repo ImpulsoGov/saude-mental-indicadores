@@ -76,6 +76,10 @@ procedimentos_por_tipo AS (
     },
     cte_resultado="com_totais"
 ) }},
+{{  remover_subtotais(
+    relacao="com_totais",
+    cte_resultado="com_totais_sem_subtotais"
+) }},
 final AS (
     SELECT  
         {{ dbt_utils.surrogate_key([
@@ -98,9 +102,10 @@ final AS (
             procedimentos_registrados_raas + procedimentos_registrados_bpa
         ) AS procedimentos_registrados_total,
         estabelecimento_linha_perfil,
-        estabelecimento_linha_idade
-    FROM com_totais
+        estabelecimento_linha_idade,
+        now() AS atualizacao_data
+    FROM com_totais_sem_subtotais
     LEFT JOIN procedimentos_sigtap
-    ON com_totais.procedimento_id_sigtap = procedimentos_sigtap.procedimento_id
+    ON com_totais_sem_subtotais.procedimento_id_sigtap = procedimentos_sigtap.procedimento_id
 )
 SELECT * FROM final
