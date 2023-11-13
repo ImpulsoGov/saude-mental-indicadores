@@ -44,7 +44,8 @@ final AS (
 				"ate_mes",
 				"atendimento_raps_6m_antes"
 		]) }} AS id,
-		*
+		*,
+		now() AS atualizacao_data
 	FROM intermediario
 )
 SELECT * FROM final

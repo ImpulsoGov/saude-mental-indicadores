@@ -184,7 +184,8 @@ final AS (
         coalesce(
             maior_taxa,
             0::bigint
-            ) AS maior_taxa    
+            ) AS maior_taxa,
+        now() AS atualizacao_data
     FROM com_totais
 )
 SELECT * FROM final

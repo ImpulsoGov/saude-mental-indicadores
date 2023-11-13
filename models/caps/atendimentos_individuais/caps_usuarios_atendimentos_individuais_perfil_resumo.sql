@@ -203,7 +203,8 @@ final AS (
             "unidade_geografica_id",
             "periodo_id"
         ]) }} AS id,
-        *      
+        *,
+        now() AS atualizacao_data      
     FROM intermediaria
 )
 SELECT * FROM final

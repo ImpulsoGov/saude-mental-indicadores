@@ -15,7 +15,7 @@ estabelecimentos AS (
 ocupacoes AS (
     SELECT * FROM {{ source("codigos", "ocupacoes") }}
 ),
-referencias_atendimentos AS (
+ambulatorio_atendimentos AS (
     SELECT * FROM {{ ref("ambulatorio_atendimentos") }}
 ),
 atendimentos_por_profissional AS (
@@ -29,7 +29,7 @@ atendimentos_por_profissional AS (
         profissional_id_cns,
 		sum(quantidade_apresentada) AS procedimentos_realizados,
         max(atualizacao_data) AS atualizacao_data
-	FROM referencias_atendimentos
+	FROM ambulatorio_atendimentos
     WHERE profissional_id_cns IS NOT NULL
 	GROUP BY 
 		unidade_geografica_id,

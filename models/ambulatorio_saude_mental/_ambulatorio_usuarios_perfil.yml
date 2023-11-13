@@ -32,8 +32,6 @@ models:
         - columns:
           - "usuario_sexo_id_sigtap"
         - columns:
-          - "cid_grupo_descricao_curta"
-        - columns:
           - "atualizacao_data"
       materialized: incremental
       on_schema_change: "append_new_columns"

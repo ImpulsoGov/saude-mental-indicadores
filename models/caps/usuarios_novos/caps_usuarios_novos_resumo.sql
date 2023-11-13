@@ -55,7 +55,8 @@ final AS (
         usuarios_ativos.estabelecimento,
         usuarios_ativos.periodo,
         usuarios_ativos.nome_mes,
-        usuarios_ativos.periodo_ordem
+        usuarios_ativos.periodo_ordem,
+        now() AS atualizacao_data
     FROM resumo_usuarios_novos
     -- Junta com usuários ativos para garantir que todos os CAPS com usuários ativos
     -- apareçam na consulta final, mesmo que não haja usuários novos no mês nem no

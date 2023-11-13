@@ -37,7 +37,8 @@ final AS (
         "periodo_id",
         "encaminhamento"
     ]) }} AS id,
-     *
+    *,
+    now() AS atualizacao_data
     FROM view_vertical
 )
 SELECT * FROM final
