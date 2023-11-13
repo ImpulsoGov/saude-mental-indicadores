@@ -75,7 +75,23 @@ vinculos_profissionais AS (
             -- '410690', -- Curitiba/PR
             '431440', -- Pelotas/RS
             '431490', -- Porto Alegre/RS   
-            '520140'  -- Aparecida de Goiânia/GO                    
+            '520140',  -- Aparecida de Goiânia/GO  
+
+            -- MUNICIPIOS BNDES
+            -- '260120', -- Arcoverde/PE
+            -- '210005', -- Açailândia/MA
+            -- '150170', -- Bragança/PA
+            -- '230280', -- Canindé/CE
+            -- '280290', -- Itabaiana/SE
+            -- '280350', -- Lagarto/SE
+            -- '160030', -- Macapá/AP
+            -- '280480', -- Nossa Senhora do Socorro/SE
+            -- '230970', -- Pacatuba/CE
+            '231130', -- Quixadá/CE
+            -- '231140', -- Quixeramobim/CE
+            '150680' -- Santarém/PA
+            -- '261390', -- Serra Talhada/PE
+
         )
 )
 SELECT * FROM vinculos_profissionais
