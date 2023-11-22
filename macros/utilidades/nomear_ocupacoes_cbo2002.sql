@@ -30,11 +30,12 @@ SELECT
             t.{{ coluna_ocupacao_id }} = '{{ todas_ocupacoes_id }}'
             THEN '{{ todas_ocupacoes_valor }}'
         ELSE
-{%- endif %}    ocupacao.ocupacao_descricao_cbo2002
+{%- endif %}    coalesce(ocupacao.ocupacao_descricao_cbo2002, ocupacao_sigtap.ocupacao_descricao_sigtap)
     {%- if todas_ocupacoes_id is not none %}
         END
     ){%- endif %} AS {{ coluna_ocupacao_nome }}
 FROM {{ relacao }} t
+
 LEFT JOIN (
     SELECT 
     {%- for coluna in lista_de_codigos_colunas %}
@@ -44,5 +45,16 @@ LEFT JOIN (
     FROM {{ source("codigos", "ocupacoes") }}
 ) ocupacao
 ON t.{{ coluna_ocupacao_id }} = ocupacao.{{ lista_de_codigos_coluna_id }}
+
+LEFT JOIN (
+    SELECT 
+    {%- for coluna in lista_de_codigos_colunas %}
+        {{coluna.quoted}} AS "ocupacao_{{coluna.name}}"
+        {{- "," if not loop.last }}
+    {%- endfor %}
+    FROM {{ source("codigos", "ocupacoes") }}
+) ocupacao_sigtap
+ON t.{{ coluna_ocupacao_id }} = ocupacao_sigtap.ocupacao_id_sigtap
+
 )
 {%- endmacro -%}
