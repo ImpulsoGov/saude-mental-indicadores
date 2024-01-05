@@ -157,8 +157,14 @@ procedimentos_com_maior_taxa AS (
         "procedimentos_por_usuario_anterior": "max",
         "maior_taxa": "max"
     },
-    cte_resultado="com_totais"
+    cte_resultado="com_subtotais"
 ) }},
+
+{{  remover_subtotais(
+    relacao="com_subtotais",
+    cte_resultado="com_combinacoes_sem_subtotais"
+) }},
+
 final AS (
     SELECT 
         {{ dbt_utils.surrogate_key([
@@ -201,7 +207,7 @@ final AS (
         END AS dif_procedimentos_por_usuario_anterior_perc,
         now() AS atualizacao_data,
         estabelecimento_id_scnes  
-    FROM com_totais
+    FROM com_combinacoes_sem_subtotais
 )
 SELECT * FROM final
 
