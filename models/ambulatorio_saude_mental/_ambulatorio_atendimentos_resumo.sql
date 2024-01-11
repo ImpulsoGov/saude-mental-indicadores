@@ -77,16 +77,33 @@ procedimentos_x_disponibilidade AS (
 {{  revelar_combinacoes_implicitas(
     relacao="procedimentos_x_disponibilidade_com_totais",
     agrupar_por=[
-        "unidade_geografica_id",
-        "unidade_geografica_id_sus"
+        
     ],
     colunas_a_completar=[
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
         ["periodo_id", "periodo_data_inicio"],
         ["estabelecimento_id_scnes"],
         ["ocupacao_id_cbo2002"]
     ],
-    cte_resultado="com_combinacoes_vazias"
+    cte_resultado="com_combinacoes_vazias_e_repeticoes"
 ) }},
+
+-- Passo necessário para remover os estabelecimentos não pertencentes ao município
+-- que acabaram sendo gerados na etapa anterior. CÓDIGO A REFATORAR ASSIM QUE POSSÍVEL
+-- PARA EVITAR ESSE PROBLEMA.
+
+ambulatorios_por_municipio AS (
+    SELECT DISTINCT estabelecimento_id_scnes, unidade_geografica_id_sus
+    FROM procedimentos_x_disponibilidade_com_totais
+),
+
+com_combinacoes_vazias AS (
+    SELECT ccver.*
+    FROM com_combinacoes_vazias_e_repeticoes ccver
+    RIGHT JOIN ambulatorios_por_municipio amb_por_mun
+    USING (unidade_geografica_id_sus, estabelecimento_id_scnes)
+),
+
 com_procedimentos_por_hora AS (
     SELECT
         *,

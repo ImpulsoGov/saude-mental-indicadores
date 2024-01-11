@@ -72,7 +72,8 @@ final AS (
 				"competencia",
 				"estabelecimento_id_scnes"
 		]) }} AS id,
-		*
+		*,
+        now() AS atualizacao_data
     FROM intermediario
 )
 SELECT * FROM final

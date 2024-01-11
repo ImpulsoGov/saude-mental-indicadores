@@ -210,7 +210,8 @@ final AS (
             "ate",
             "tipo_producao"
         ]) }} AS id,
-        *
+        *,
+        now() AS atualizacao_data
     FROM cnr_12meses_agrupado_comperiodoanterior
 )
 SELECT * FROM final

@@ -27,7 +27,8 @@ final AS (
         nome_mes,
         estabelecimento,
         tempo_servico_descricao AS tempo_servico_maior_taxa,
-        procedimentos_por_usuario AS maior_taxa
+        procedimentos_por_usuario AS maior_taxa,
+        now() AS atualizacao_data
     FROM procedimentos_por_tempo_servico
     ORDER BY
         unidade_geografica_id,

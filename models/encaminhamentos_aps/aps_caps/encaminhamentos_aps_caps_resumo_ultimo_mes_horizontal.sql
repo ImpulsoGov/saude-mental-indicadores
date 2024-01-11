@@ -17,7 +17,7 @@ SELECT
         conduta
     )
     *
-FROM saude_mental.encaminhamentos_aps_caps
+FROM encaminhamentos_aps_caps
 ORDER BY 
     unidade_geografica_id,
     unidade_geografica_id_sus,
@@ -71,7 +71,8 @@ final AS (
         ) AS perc_encaminhamentos_caps,
         (
             encaminhamentos_caps - encaminhamentos_caps_anterior
-        ) AS dif_encaminhamentos_caps_anterior
+        ) AS dif_encaminhamentos_caps_anterior,
+        now() AS atualizacao_data
     FROM relacao_aps_caps_horizontalizado
 )
 SELECT * FROM final

@@ -14,7 +14,7 @@ models:
       grants:
         select: ['saude_mental_analistas', 'saude_mental_integracao']
       alias: _ceps_por_bairro
-      enabled: true
+      enabled: false
       indexes:
         - columns:
             - "municipio_id_sus"

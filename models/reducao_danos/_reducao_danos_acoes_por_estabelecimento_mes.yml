@@ -21,7 +21,13 @@ models:
         - columns:
           - "unidade_geografica_id_sus"
           - "unidade_geografica_id"
-      materialized: view
+          - "estabelecimento_id_scnes"
+        - columns:
+          - "estabelecimento_id_scnes"
+          - "profissional_vinculo_ocupacao_id_cbo2002"
+          - "periodo_id"
+          - "periodo_data_inicio"
+      materialized: table
       persist_docs:
         relation: true
       tags:

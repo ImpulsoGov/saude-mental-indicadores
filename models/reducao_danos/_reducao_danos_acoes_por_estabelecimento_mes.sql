@@ -75,20 +75,41 @@ _reducao_danos_acoes_por_estabelecimento_mes AS (
 {{  revelar_combinacoes_implicitas(
     relacao="ate_ultima_competencia",
     agrupar_por=[
-
+        "unidade_geografica_id", 
+        "unidade_geografica_id_sus"
     ],
     colunas_a_completar=[
         ["periodo_id", "periodo_data_inicio"],
-        ["unidade_geografica_id", "unidade_geografica_id_sus"],
         ["estabelecimento_id_scnes"],
         ["profissional_vinculo_ocupacao_id_cbo2002"]
     ],
     cte_resultado="com_combinacoes_vazias"
 ) }},
 
+
+-- Passo necessário para remover cbos que não apareceram nenhuma vez em nenhuma competência no município
+cbos_zerados_por_municipio AS (
+    SELECT
+	    unidade_geografica_id_sus,
+	    profissional_vinculo_ocupacao_id_cbo2002
+    FROM com_combinacoes_vazias
+    WHERE quantidade_registrada IS NOT NULL AND quantidade_registrada_anterior IS NOT NULL
+    GROUP BY 
+	    unidade_geografica_id_sus,
+	    profissional_vinculo_ocupacao_id_cbo2002
+),
+com_combinacoes_vazias_sem_cbos_zerados AS (
+    SELECT comb_vazia.*
+    FROM com_combinacoes_vazias comb_vazia
+    INNER JOIN cbos_zerados_por_municipio cbos_zerados
+    ON cbos_zerados.profissional_vinculo_ocupacao_id_cbo2002 = comb_vazia.profissional_vinculo_ocupacao_id_cbo2002 
+    AND cbos_zerados.unidade_geografica_id_sus = comb_vazia.unidade_geografica_id_sus
+),
+
 final AS (
     SELECT
         {{ dbt_utils.surrogate_key([
+            "unidade_geografica_id",
             "estabelecimento_id_scnes",
             "periodo_id",
             "profissional_vinculo_ocupacao_id_cbo2002"
@@ -99,13 +120,13 @@ final AS (
         periodo_id,
         periodo_data_inicio,
         profissional_vinculo_ocupacao_id_cbo2002,
-        coalesce(quantidade_registrada, 0) AS quantidade_registrada,
-        coalesce(quantidade_registrada_anterior, 0) AS quantidade_registrada_anterior,
+        coalesce(com_combinacoes_vazias_sem_cbos_zerados.quantidade_registrada, 0) AS quantidade_registrada,
+        coalesce(com_combinacoes_vazias_sem_cbos_zerados.quantidade_registrada_anterior, 0) AS quantidade_registrada_anterior,
         (
-            coalesce(com_combinacoes_vazias.quantidade_registrada, 0)
-            - coalesce(com_combinacoes_vazias.quantidade_registrada_anterior, 0)
+            coalesce(com_combinacoes_vazias_sem_cbos_zerados.quantidade_registrada, 0)
+            - coalesce(com_combinacoes_vazias_sem_cbos_zerados.quantidade_registrada_anterior, 0)
         ) AS dif_quantidade_registrada_anterior,
         now() AS atualizacao_data
-    FROM com_combinacoes_vazias
+    FROM com_combinacoes_vazias_sem_cbos_zerados
 )
 SELECT * FROM final

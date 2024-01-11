@@ -32,7 +32,8 @@ final AS (
         {{ dbt_utils.surrogate_key([
 				"unidade_geografica_id"
 		]) }} AS id,
-		*
+		*,
+        now() AS atualizacao_data
     FROM matriciamentos_por_municipio
 )
 SELECT * FROM final

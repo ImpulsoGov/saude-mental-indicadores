@@ -45,10 +45,32 @@ procedimentos_hora_ocupacao_estabelecimento AS (
         "procedimentos_registrados_total": "sum",
         "horas_disponibilidade_profissionais": "sum"
     },
-    cte_resultado="producao_todos_estabelecimentos_todas_ocupacoes"
+    cte_resultado="com_todos_subtotais"
 ) }},
+
+{{  revelar_combinacoes_implicitas(
+    relacao="com_todos_subtotais",
+    agrupar_por=[
+        "unidade_geografica_id",
+        "unidade_geografica_id_sus",
+        "estabelecimento_linha_perfil",
+        "estabelecimento_linha_idade"
+    ],
+    colunas_a_completar=[
+        ["periodo_id", "periodo_data_inicio"],
+        ["estabelecimento_id_scnes"],
+        ["ocupacao_id_cbo2002"]
+    ],
+    cte_resultado="com_combinacoes"
+) }},
+
+{{  remover_subtotais(
+    relacao="com_combinacoes",
+    cte_resultado="estabelecimentos_ocupacoes_sem_subtotais"
+) }},
+
 {{ juntar_periodos_consecutivos(
-    relacao="producao_todos_estabelecimentos_todas_ocupacoes",
+    relacao="estabelecimentos_ocupacoes_sem_subtotais",
     agrupar_por=[
         "unidade_geografica_id",
         "unidade_geografica_id_sus",
@@ -88,18 +110,21 @@ producao_hora_ate_ultima_competencia AS (
         ]) }} AS id,
         *,
         round(
+            coalesce(
                 procedimentos_registrados_total::numeric 
                 / nullif(horas_disponibilidade_profissionais, 0),
-                2
-            ) AS procedimentos_por_hora,
+                0
+            ),
+            2
+        ) AS procedimentos_por_hora,
         round(
+            coalesce(
                 procedimentos_registrados_total_anterior::numeric 
-                / nullif(
-                    horas_disponibilidade_profissionais_anterior,
-                    0
-                ),
-                2
-            ) AS procedimentos_por_hora_anterior
+                / nullif(horas_disponibilidade_profissionais_anterior, 0),
+                0
+            ),
+            2
+        ) AS procedimentos_por_hora_anterior
     FROM producao_ate_ultima_competencia
 ),
 final AS (
@@ -117,11 +142,24 @@ final AS (
             procedimentos_registrados_total
             - procedimentos_registrados_total_anterior
         ) AS dif_procedimentos_registrados_total_anterior,
-        round(
-            100 * procedimentos_por_hora::numeric
-            / nullif(procedimentos_por_hora_anterior, 0),
-            1
-        ) - 100 AS perc_dif_procedimentos_por_hora_anterior
+        -- Trecho inserido para garantir que se o valor de 'procedimentos_por_hora_anterior'
+        -- for igual a 0 e 'procedimentos_por_hora' for > 0 ele retorna o valor de 100%, mas
+        -- se ambos forem zero ele retorna o valor de diferença de 0%
+        CASE
+            WHEN coalesce(procedimentos_por_hora_anterior, 0) = 0 THEN
+                CASE
+                    WHEN coalesce(procedimentos_por_hora, 0) > 0 THEN 100
+                    ELSE 0
+                END
+            ELSE round(
+                100 * (
+                    coalesce(procedimentos_por_hora, 0)
+                    - coalesce(procedimentos_por_hora_anterior, 0)
+                )::numeric
+                / coalesce(procedimentos_por_hora_anterior, 0), 1
+            )
+        END AS perc_dif_procedimentos_por_hora_anterior,
+        now() AS atualizacao_data
     FROM producao_hora_ate_ultima_competencia
 )
 SELECT * FROM final

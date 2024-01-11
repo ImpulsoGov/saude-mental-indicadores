@@ -48,10 +48,62 @@ _reducao_danos_acoes_por_estabelecimento_mes AS (
     cte_resultado="com_periodo_anterior"
 ) }},
 
+{{  revelar_combinacoes_implicitas(
+    relacao="com_periodo_anterior",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["unidade_geografica_id", "unidade_geografica_id_sus"],
+        ["periodo_id", "periodo_data_inicio"],
+        ["estabelecimento_id_scnes"],
+        ["profissional_vinculo_ocupacao_id_cbo2002"]
+    ],
+    cte_resultado="com_periodo_anterior_com_combinacoes"
+) }},
+
+-- Passo necessário para obter todas as combinações de estabelecimentos x períodos
+-- E remover os estabelecimentos que não são da UF correspondentes gerados na CTE
+-- com_periodo_anterior_com_combinacoes
+estabelecimentos_por_unidade_geografica AS (
+    SELECT DISTINCT
+        unidade_geografica_id,
+        estabelecimento_id_scnes
+    FROM _reducao_danos_acoes_por_estabelecimento_mes
+), 
+
+com_periodo_anterior_com_combinacoes_corrigido AS (
+    SELECT com_comb.*
+    FROM com_periodo_anterior_com_combinacoes com_comb
+    INNER JOIN estabelecimentos_por_unidade_geografica distintos
+    ON com_comb.unidade_geografica_id = distintos.unidade_geografica_id 
+    AND com_comb.estabelecimento_id_scnes = distintos.estabelecimento_id_scnes
+),
+
+-- Passo necessário para remover cbos que não apareceram nenhuma vez em nenhuma competência no município
+cbos_zerados_por_municipio AS (
+    SELECT
+	    unidade_geografica_id_sus,
+	    profissional_vinculo_ocupacao_id_cbo2002
+    FROM com_periodo_anterior_com_combinacoes_corrigido
+    WHERE quantidade_registrada IS NOT NULL AND quantidade_registrada_anterior IS NOT NULL
+    GROUP BY 
+	    unidade_geografica_id_sus,
+	    profissional_vinculo_ocupacao_id_cbo2002
+),
+com_combinacoes_vazias_sem_cbos_zerados AS (
+    SELECT comb_vazia.*
+    FROM com_periodo_anterior_com_combinacoes_corrigido comb_vazia
+    INNER JOIN cbos_zerados_por_municipio cbos_zerados
+    ON cbos_zerados.profissional_vinculo_ocupacao_id_cbo2002 = comb_vazia.profissional_vinculo_ocupacao_id_cbo2002 
+    AND cbos_zerados.unidade_geografica_id_sus = comb_vazia.unidade_geografica_id_sus
+),
+
+
 
 -- Calcula ações para os últimos 12 meses 
 {{ ultimas_competencias(
-    relacao="com_periodo_anterior",
+    relacao="com_combinacoes_vazias_sem_cbos_zerados",
     fontes=["procedimentos_disseminacao"],
     meses_antes_ultima_competencia=(0, 11),
     cte_resultado="reducao_danos_12meses"
@@ -74,23 +126,11 @@ _reducao_danos_acoes_por_estabelecimento_mes AS (
     },
     cte_resultado="reducao_danos_12meses_subtotais"
 ) }},
-{{  revelar_combinacoes_implicitas(
-    relacao="reducao_danos_12meses_subtotais",
-    agrupar_por=[
 
-    ],
-    colunas_a_completar=[
-        ["periodo_id", "periodo_data_inicio"],
-        ["unidade_geografica_id", "unidade_geografica_id_sus"],
-        ["estabelecimento_id_scnes"],
-        ["profissional_vinculo_ocupacao_id_cbo2002"]
-    ],
-    cte_resultado="reducao_danos_12meses_com_combinacoes_vazias"
-) }},
 
 -- Calcula ações os últimos 12 a 24 meses
 {{ ultimas_competencias(
-    relacao="com_periodo_anterior",
+    relacao="com_combinacoes_vazias_sem_cbos_zerados",
     fontes=["procedimentos_disseminacao"],
     meses_antes_ultima_competencia=(12, 23),
     cte_resultado="reducao_danos_12a24meses"
@@ -113,19 +153,6 @@ _reducao_danos_acoes_por_estabelecimento_mes AS (
     },
     cte_resultado="reducao_danos_12a24meses_subtotais"
 ) }},
-{{  revelar_combinacoes_implicitas(
-    relacao="reducao_danos_12a24meses_subtotais",
-    agrupar_por=[
-
-    ],
-    colunas_a_completar=[
-        ["periodo_id", "periodo_data_inicio"],
-        ["unidade_geografica_id", "unidade_geografica_id_sus"],
-        ["estabelecimento_id_scnes"],
-        ["profissional_vinculo_ocupacao_id_cbo2002"]
-    ],
-    cte_resultado="reducao_danos_12a24meses_com_combinacoes_vazias"
-) }},
 
 
 reducao_danos_12meses_agrupado AS (
@@ -137,14 +164,13 @@ reducao_danos_12meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada
-    FROM reducao_danos_12meses_com_combinacoes_vazias
+    FROM reducao_danos_12meses_subtotais
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
         profissional_vinculo_ocupacao_id_cbo2002,
         estabelecimento_id_scnes
 ),
-
 reducao_danos_12a24meses_agrupado AS (
     SELECT
         unidade_geografica_id,
@@ -154,13 +180,14 @@ reducao_danos_12a24meses_agrupado AS (
         min(periodo_data_inicio) AS a_partir_de,
         max(periodo_data_inicio) AS ate,
         sum(quantidade_registrada) AS quantidade_registrada_anterior
-    FROM reducao_danos_12a24meses_com_combinacoes_vazias
+    FROM reducao_danos_12a24meses_subtotais
     GROUP BY
         unidade_geografica_id,
         unidade_geografica_id_sus,
         profissional_vinculo_ocupacao_id_cbo2002,
         estabelecimento_id_scnes
 ),
+
 reducao_danos_12meses_agrupado_comperiodoanterior AS (
     SELECT
         reducao_danos_12meses_agrupado.unidade_geografica_id,

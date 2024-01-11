@@ -15,7 +15,7 @@ estabelecimentos AS (
 ocupacoes AS (
     SELECT * FROM {{ source("codigos", "ocupacoes") }}
 ),
-referencias_atendimentos AS (
+ambulatorio_atendimentos AS (
     SELECT * FROM {{ ref("ambulatorio_atendimentos") }}
 ),
 atendimentos_por_profissional AS (
@@ -29,7 +29,7 @@ atendimentos_por_profissional AS (
         profissional_id_cns,
 		sum(quantidade_apresentada) AS procedimentos_realizados,
         max(atualizacao_data) AS atualizacao_data
-	FROM referencias_atendimentos
+	FROM ambulatorio_atendimentos
     WHERE profissional_id_cns IS NOT NULL
 	GROUP BY 
 		unidade_geografica_id,
@@ -59,38 +59,7 @@ procedimentos_x_disponibilidade AS (
         disponibilidade.profissional_ids_cns
     )
 ),
-{{ ultimas_competencias(
-    relacao="procedimentos_x_disponibilidade",
-    fontes=["bpa_i_disseminacao", "vinculos_profissionais"],
-    meses_antes_ultima_competencia=(0, 0),
-    cte_resultado="procedimentos_x_disponibilidade_ultimo_mes"
-) }},
-{{ calcular_subtotais(
-    relacao="procedimentos_x_disponibilidade_ultimo_mes",
-    agrupar_por=[
-        "unidade_geografica_id",
-        "unidade_geografica_id_sus",
-        "periodo_id",
-        "periodo_data_inicio",
-        "profissional_id_cpf_criptografado",
-        "profissional_nome"
-    ],
-    colunas_a_totalizar=[
-        "estabelecimento_id_scnes",
-        "ocupacao_id_cbo2002",
-    ],
-    nomes_categorias_com_totais=[
-        "0000000",
-        "000000",
-    ],
-    agregacoes_valores={
-        "procedimentos_realizados": "sum",
-        "disponibilidade_mensal": "sum",
-        "atualizacao_data": "max"
-    },
-    manter_original=true,
-    cte_resultado="procedimentos_x_disponibilidade_com_totais"
-) }},
+
 com_procedimentos_por_hora AS (
     SELECT
         *,
@@ -99,7 +68,7 @@ com_procedimentos_por_hora AS (
 			/ nullif(disponibilidade_mensal, 0)::numeric,
 			2
 		) AS procedimentos_por_hora
-    FROM procedimentos_x_disponibilidade_com_totais
+    FROM procedimentos_x_disponibilidade
     {# FROM procedimentos_x_disponibilidade_ultimo_mes #}
 ),
 final AS (
@@ -110,6 +79,7 @@ final AS (
             "estabelecimento_id_scnes",
             "ocupacao_id_cbo2002",
             "profissional_id_cpf_criptografado",
+            "profissional_id_cns",
             "profissional_nome"
         ]) }} AS id,
         *
