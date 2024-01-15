@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: selecionar_municipios_ativos
+    description: >
+      Macro para selecionar os municípios atualmente ativos no painel de 
+      Saúde Mental.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] cujas competências se deseja
+          filtrar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression      
+      - name: coluna_municipio_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único do município
+          de saúde, que deve estar presente também na tabela
+          [`listas_de_codigos.unidades_geograficas`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.unidades_geograficas)
+          . Por padrão, assume o valor `unidade_geografica_id_sus`.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
