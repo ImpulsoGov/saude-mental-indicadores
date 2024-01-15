@@ -94,3 +94,18 @@ sources:
         description: >
           Lista a Tabela de Procedimentos do SUS, contendo a correspondência 
           entre códigos e descrição de Sigtap.
+
+  - name: utilidades
+    schema: saude_mental
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    tables:
+
+      - name: municipios_painel_sm
+        identifier: __municipios_painel_sm
+        description: >
+          Lista de municípios ativos e inativos no painel de saúde mental,
+          contendo ID do banco, ID do SUS, nome do município e status.
