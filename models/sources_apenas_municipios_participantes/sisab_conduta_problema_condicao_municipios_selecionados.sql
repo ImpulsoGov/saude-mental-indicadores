@@ -7,17 +7,20 @@ SPDX-License-Identifier: MIT
 
 
 WITH
-raas_psicossocial_disseminacao AS (
-	SELECT * FROM {{ source("siasus", "raas_psicossocial_disseminacao") }}
+sisab_producao_conduta_problema_condicao AS (
+	SELECT * FROM {{ source("sisab", "sisab_producao_conduta_problema_condicao") }}
 ),
 
 {{ selecionar_municipios_ativos(
-	relacao="raas_psicossocial_disseminacao",
+	relacao="sisab_producao_conduta_problema_condicao",
+	coluna_municipio_id="unidade_geografica_id",
 	cte_resultado="municipios_selecionados"
 ) }},
 
 {{ limitar_quantidade_meses(
 	relacao="municipios_selecionados",
+	coluna_data="periodo_id",
+	coluna_municipio_id="unidade_geografica_id",
 	cte_resultado="final"
 ) }}
 SELECT * FROM final

@@ -126,44 +126,18 @@ aih_rd_disseminacao AS (
         -- _nao_documentado_num_proc
         -- _nao_documentado_tot_pt_sp
         -- _nao_documentado_cpf_aut
-    FROM {{ source("sihsus", "aih_rd_disseminacao") }}
-    WHERE unidade_geografica_id_sus IN 
-        (
-            '150140', -- Belém/PA
-            '230190', -- Barbalha/CE
-            '230440', -- Fortaleza/CE (para Impulsolandia)
-            '231290', -- Sobral/CE
-            '261160', -- Recife/PE
-            '280030', -- Aracaju/SE
-            '292740', -- Salvador/BA
-            '315780', -- Santa Luzia/MG
-            '320500', -- Serra/ES
-            '320520', -- Vila Velha/ES  
-            -- '330490', -- São Gonçalo/RJ
-            -- '350950', -- Campinas/SP
-            '351640', -- Franco da Rocha/SP
-            '352590', -- Jundiaí/SP
-            -- '410480', -- Cascavel/PR
-            '410690', -- Curitiba/PR
-            '431440', -- Pelotas/RS
-            '431490', -- Porto Alegre/RS   
-            '520140',  -- Aparecida de Goiânia/GO 
+    FROM {{ source("sihsus", "aih_rd_disseminacao") }}    
+),
 
-        -- MUNICIPIOS BNDES
-            -- '260120', -- Arcoverde/PE
-            -- '210005', -- Açailândia/MA
-            -- '150170', -- Bragança/PA
-            -- '230280', -- Canindé/CE
-            -- '280290', -- Itabaiana/SE
-            '280350', -- Lagarto/SE
-            -- '160030', -- Macapá/AP
-            '280480', -- Nossa Senhora do Socorro/SE
-            -- '230970', -- Pacatuba/CE
-            '231130', -- Quixadá/CE
-            '231140', -- Quixeramobim/CE
-            '150680' -- Santarém/PA
-            -- '261390', -- Serra Talhada/PE
+{{ selecionar_municipios_ativos(
+	relacao="aih_rd_disseminacao",
+	cte_resultado="municipios_selecionados"
+) }},
 
-        )
-)
-SELECT * FROM aih_rd_disseminacao
+{{ limitar_quantidade_meses(
+	relacao="municipios_selecionados",
+    coluna_data="periodo_data_inicio",
+	cte_resultado="final"
+) }}
+
+SELECT * FROM final

@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 WITH
 sisab_producao_municipios_por_tipo_equipe_por_tipo_producao AS (
-    SELECT * FROM {{ source('sisab', 'sisab_producao_municipios_por_tipo_equipe_por_tipo_producao') }}
+    SELECT * FROM {{ ref("sisab_por_tipo_equipe_tipo_producao_municipios_selecionados") }} 
 ),
 periodos AS (
     SELECT * FROM {{ source('codigos', 'periodos') }}
