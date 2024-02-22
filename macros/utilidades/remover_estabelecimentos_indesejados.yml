@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+macros:
+  - name: remover_estabelecimentos_indesejados
+    description: >
+      Macro para remover estabelecimentos que o município indicou não desejar ver no painel 
+      no momento do preenchimento do formulário de personalização.
+    docs:
+      show: true
+    arguments:
+      - name: relacao
+        type: Relation | str
+        description: >
+          Objeto [Relation][] ou nome de uma
+          [*Common Table Expression* (CTE)][CTE] cujas competências se deseja
+          filtrar.
+
+          [Relation]: https://docs.getdbt.com/reference/dbt-classes#relation
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression      
+      - name: coluna_estabelecimento_id
+        type: str
+        description: >
+          Nome da coluna que contém um identificador único do estabelecimento
+          de saúde, que deve estar presente também na tabela
+          [`listas_de_codigos.estabelecimentos`](https://impulsogov.github.io/saude-mental-indicadores/#!/source/source.impulso_saude_mental.codigos.estabelecimentos)
+          . Por padrão, assume o valor `estabelecimento_id_scnes`.
+      - name: cte_resultado
+        type: str
+        description: >
+          Nome a ser dado à [CTE][] que contém os resultados, para ser
+          referenciada em passos posteriores da definição de uma consulta.
+          [CTE]: https://pt.wikipedia.org/wiki/Common_table_expression
