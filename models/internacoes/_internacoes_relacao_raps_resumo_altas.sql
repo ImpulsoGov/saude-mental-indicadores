@@ -39,8 +39,7 @@ contagem_antes_apos AS (
             WHERE
             NOT atendimento_raps_6m_antes
             AND atendimento_raps_1m_apos
-        ) AS altas_atendimento_raps_antes_nao_apos_sim,
-		max(atualizacao_data) AS atualizacao_data
+        ) AS altas_atendimento_raps_antes_nao_apos_sim
 	FROM internacoes internacao
 	-- Apenas as internações que tiveram alta
 	WHERE internacao.desfecho_motivo_id_sihsus IN (
@@ -84,20 +83,43 @@ subtotais_antes_apos AS (
 		) AS altas_total
 	FROM contagem_antes_apos
 ),
+
+{{  revelar_combinacoes_implicitas(
+    relacao="subtotais_antes_apos",
+    agrupar_por=[
+
+    ],
+    colunas_a_completar=[
+        ["periodo_data_inicio"],
+        ["unidade_geografica_id", "unidade_geografica_id_sus"]
+    ],
+    cte_resultado="contagem_antes_apos_com_combinacoes"
+) }},
+
 resumo_com_percentuais AS (
-	SELECT
-		*,
+	SELECT		
+		periodo_data_inicio,
+		unidade_geografica_id,
+		unidade_geografica_id_sus,
+		coalesce(altas_atendimento_raps_antes_nao_apos_nao, 0) AS altas_atendimento_raps_antes_nao_apos_nao,
+		coalesce(altas_atendimento_raps_antes_sim_apos_nao, 0) AS altas_atendimento_raps_antes_sim_apos_nao,
+		coalesce(altas_atendimento_raps_antes_sim_apos_sim, 0) AS altas_atendimento_raps_antes_sim_apos_sim,
+		coalesce(altas_atendimento_raps_antes_nao_apos_sim, 0) AS altas_atendimento_raps_antes_nao_apos_sim,
+		now() AS atualizacao_data,
+		coalesce(altas_atendimento_raps_6m_antes, 0) AS altas_atendimento_raps_6m_antes,
+		coalesce(altas_atendimento_raps_1m_apos, 0) AS altas_atendimento_raps_1m_apos,
+		coalesce(altas_total, 0) AS altas_total,
 		round(
-			100 * altas_atendimento_raps_6m_antes::numeric
+			100 * coalesce(altas_atendimento_raps_6m_antes, 0)::numeric
 			/ nullif(altas_total, 0),
 			1
 		) AS perc_altas_atendimento_raps_6m_antes,
 		round(
-			100 * altas_atendimento_raps_1m_apos::numeric
+			100 * coalesce(altas_atendimento_raps_1m_apos, 0)::numeric
 			/ nullif(altas_total, 0),
 			1
 		) AS perc_altas_atendimento_raps_1m_apos
-	FROM subtotais_antes_apos
+	FROM contagem_antes_apos_com_combinacoes
 ),
 final AS (
 	SELECT
