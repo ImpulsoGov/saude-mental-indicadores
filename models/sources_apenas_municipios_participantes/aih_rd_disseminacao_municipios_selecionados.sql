@@ -134,8 +134,13 @@ aih_rd_disseminacao AS (
 	cte_resultado="municipios_selecionados"
 ) }},
 
-{{ limitar_quantidade_meses(
+{{ remover_estabelecimentos_indesejados(
 	relacao="municipios_selecionados",
+	cte_resultado="municipios_selecionados_filtrados"
+) }},
+
+{{ limitar_quantidade_meses(
+	relacao="municipios_selecionados_filtrados",
     coluna_data="periodo_data_inicio",
 	cte_resultado="final"
 ) }}
