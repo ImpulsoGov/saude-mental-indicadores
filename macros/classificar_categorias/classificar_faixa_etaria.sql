@@ -16,9 +16,11 @@ SPDX-License-Identifier: MIT
         cte_resultado="com_faixa_etaria"
     )
 -%}
+
 {%- set idade -%}
 AGE(t.{{ coluna_data_referencia }}, t.{{ coluna_nascimento_data }})
 {%- endset -%}
+{% set idade_int = idade | int %}
 {%- set
     partes_data = {
         "Minutos": "MINUTE",
@@ -53,6 +55,14 @@ faixas_etarias_agrupamentos AS (
     AND faixa_etaria.idade_tipo = '{{ idade_tipo }}'
     LEFT JOIN faixas_etarias_agrupamentos faixa_etaria_agrupamento
     ON faixa_etaria.agrupamento_id = faixa_etaria_agrupamento.id
-    WHERE faixa_etaria_agrupamento.descricao = '{{ faixa_etaria_agrupamento }}'
+        WHERE 
+            CASE 
+                WHEN (EXTRACT('{{ partes_data[idade_tipo] }}' FROM {{ idade }})) < 5 THEN '5 em 5 anos'
+                WHEN (EXTRACT('{{ partes_data[idade_tipo] }}' FROM {{ idade }})) >= 5 
+                    AND (EXTRACT('{{ partes_data[idade_tipo] }}' FROM {{ idade }})) < 30 THEN 'Intervalo variado'
+            ELSE '{{ faixa_etaria_agrupamento }}'
+        END = faixa_etaria_agrupamento.descricao
 )
 {%- endmacro -%}
+
+
