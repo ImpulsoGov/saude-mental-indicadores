@@ -108,7 +108,7 @@ ausentes_atendimentos_individuais AS (
 	WHERE ref.estabelecimento_id_scnes IS NULL AND ref.periodo_id IS NULL 
 ), 
 
-ausentes_adesao AS (	
+ausentes_adesao_mensal AS (	
 	SELECT 
         hr.*,
         'caps_adesao_usuarios_perfil_cid' AS tabela_referencia
@@ -119,6 +119,27 @@ ausentes_adesao AS (
             estabelecimento_id_scnes, 
             periodo_id
         FROM {{ ref("_caps_adesao_usuarios_perfil_cid") }}
+    ) ref	
+	USING (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
+	WHERE ref.estabelecimento_id_scnes IS NULL 
+        AND ref.periodo_id IS NULL 
+        AND hr.periodo_data_inicio < (
+            SELECT DATE_TRUNC('month', MAX(periodo_data_inicio)) - INTERVAL '3 months'
+            FROM habilitacoes_caps_com_registros
+    )
+), 
+
+ausentes_adesao_acumulada AS (	
+	SELECT 
+        hr.*,
+        'caps_adesao_evasao_coortes_resumo' AS tabela_referencia
+	FROM habilitacoes_caps_com_registros hr
+	LEFT JOIN (
+        SELECT DISTINCT ON (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
+            unidade_geografica_id_sus, 
+            estabelecimento_id_scnes, 
+            periodo_id
+        FROM {{ ref("_caps_adesao_evasao_coortes_resumo") }}
     ) ref	
 	USING (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
 	WHERE ref.estabelecimento_id_scnes IS NULL 
@@ -184,7 +205,9 @@ ausentes_todos AS (
     UNION ALL
     SELECT * FROM ausentes_atendimentos_individuais
     UNION ALL
-    SELECT * FROM ausentes_adesao
+    SELECT * FROM ausentes_adesao_mensal
+    UNION ALL
+    SELECT * FROM ausentes_adesao_acumulada
     UNION ALL
     SELECT * FROM ausentes_proced_por_usuario
     UNION ALL

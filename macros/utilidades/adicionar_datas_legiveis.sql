@@ -45,8 +45,12 @@ EXTRACT ( MONTH FROM {{ coluna_periodo_data }} )
             WHERE tabela_referencia = 'caps_usuarios_atendimentos_individuais_perfil_cid'
     {%- endif -%}
 
-    {%- if tags is defined and 'adesao' in tags %}
+    {%- if tags is defined and 'adesao_mensal' in tags %}
             WHERE tabela_referencia = 'caps_adesao_usuarios_perfil_cid'
+    {%- endif -%}
+
+    {%- if tags is defined and 'adesao_acumulada' in tags %}
+            WHERE tabela_referencia = 'caps_adesao_evasao_coortes_resumo'
     {%- endif -%}
 
     {%- if tags is defined and 'procedimentos_por_usuario' in tags %}
@@ -132,7 +136,7 @@ EXTRACT ( MONTH FROM {{ coluna_periodo_data }} )
         ) AS {{ prefixo_colunas -}}periodo_ordem
     FROM {{ relacao }} t
     LEFT JOIN {{ coluna_periodo_data -}}_ultimas_competencias uc
-{% if tags is defined and ('usuarios_ativos' in tags or 'usuarios_novos' in tags or 'atendimentos_individuais' in tags or 'adesao' in tags or 'procedimentos_por_usuario' in tags or 'procedimentos_por_hora' in tags or 'procedimentos_por_tipo' in tags) -%}
+{% if tags is defined and ('usuarios_ativos' in tags or 'usuarios_novos' in tags or 'atendimentos_individuais' in tags or 'adesao_mensal' in tags or 'adesao_acumulada' in tags or 'procedimentos_por_usuario' in tags or 'procedimentos_por_hora' in tags or 'procedimentos_por_tipo' in tags) -%}
     ON t.unidade_geografica_id = uc.unidade_geografica_id AND t.estabelecimento = uc.estabelecimento 
 {% else -%}
     USING (unidade_geografica_id)

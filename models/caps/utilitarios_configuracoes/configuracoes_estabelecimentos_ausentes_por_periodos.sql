@@ -83,6 +83,7 @@ com_datas_legiveis AS (
         (
             CASE 
                 WHEN tabela_referencia = 'caps_adesao_usuarios_perfil_cid' THEN rup.periodo_adesao
+                WHEN tabela_referencia = 'caps_adesao_evasao_coortes_resumo' THEN rup.periodo_adesao
                 ELSE rup.periodo
             END
         ) AS periodo,
