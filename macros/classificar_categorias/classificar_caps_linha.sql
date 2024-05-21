@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
     coluna_linha_idade="estabelecimento_linha_idade",
     coluna_estabelecimento_id="estabelecimento_id_scnes",
     todos_estabelecimentos_id="0000000",
-    todas_linhas_valor="Todas",
+    todas_linhas_valor="Todos",
     cte_resultado="com_linhas_cuidado"
 ) %}
 {%- set re = modules.re -%}

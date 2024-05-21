@@ -46,7 +46,7 @@ EXTRACT ( MONTH FROM {{ coluna_periodo_data }} )
     {%- endif -%}
 
     {%- if tags is defined and 'adesao_mensal' in tags %}
-            WHERE tabela_referencia = 'caps_adesao_usuarios_perfil_cid'
+            WHERE tabela_referencia = 'caps_adesao_usuarios_perfil_cid' 
     {%- endif -%}
 
     {%- if tags is defined and 'adesao_acumulada' in tags %}

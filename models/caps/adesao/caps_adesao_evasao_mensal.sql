@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 -- depends_on: {{ ref('_caps_adesao_evasao_mensal') }}
 -- depends_on: {{ ref('configuracoes_estabelecimentos_ausentes_por_periodos') }}
-{%- set tags = ['caps_uso_externo', 'adesao'] %}
+{%- set tags = ['caps_uso_externo', 'adesao_mensal'] %}
 
 WITH
 {{ preparar_uso_externo(
