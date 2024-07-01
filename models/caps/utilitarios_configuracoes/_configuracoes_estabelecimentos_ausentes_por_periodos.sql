@@ -60,7 +60,7 @@ habilitacoes_caps_com_registros AS (
     SELECT * FROM habilitacoes_estabelecimento_apenas_todos
 ),
 
-ausentes_ativos AS (	
+ausentes_ativos_perfil AS (	
 	SELECT 
         hr.*,
         'caps_usuarios_ativos_perfil_condicao_semsubtotais' AS tabela_referencia
@@ -71,6 +71,22 @@ ausentes_ativos AS (
             estabelecimento_id_scnes, 
             periodo_id
         FROM {{ ref("_caps_usuarios_ativos_perfil_condicao_semsubtotais") }}
+    ) ref	
+	USING (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
+	WHERE ref.estabelecimento_id_scnes IS NULL AND ref.periodo_id IS NULL 
+), 
+
+ausentes_ativos_resumo AS (	
+	SELECT 
+        hr.*,
+        'caps_usuarios_ativos_por_estabelecimento_resumo' AS tabela_referencia
+	FROM habilitacoes_caps_com_registros hr
+	LEFT JOIN (
+        SELECT DISTINCT ON (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
+            unidade_geografica_id_sus, 
+            estabelecimento_id_scnes, 
+            periodo_id
+        FROM {{ ref("_caps_usuarios_ativos_por_estabelecimento_resumo") }}
     ) ref	
 	USING (unidade_geografica_id_sus, estabelecimento_id_scnes, periodo_id) 
 	WHERE ref.estabelecimento_id_scnes IS NULL AND ref.periodo_id IS NULL 
@@ -199,7 +215,9 @@ ausentes_procedimentos_tipo AS (
 ), 
 
 ausentes_todos AS (
-    SELECT * FROM ausentes_ativos
+    SELECT * FROM ausentes_ativos_perfil
+    UNION ALL
+    SELECT * FROM ausentes_ativos_resumo
     UNION ALL
     SELECT * FROM ausentes_novos
     UNION ALL

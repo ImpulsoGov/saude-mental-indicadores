@@ -46,7 +46,7 @@ estabelecimentos_habilitacoes AS (
         id,
         CAST(periodo_id AS UUID) AS periodo_id,
         CAST(unidade_geografica_id AS UUID) AS unidade_geografica_id
-    FROM {{ source("scnes", "estabelecimentos_habilitacoes") }}    
+    FROM {{ source("scnes", "estabelecimentos_habilitacoes") }} 
 ),
 
 {{ selecionar_municipios_ativos(
@@ -66,3 +66,5 @@ estabelecimentos_habilitacoes AS (
 ) }}
 
 SELECT * FROM final
+-- trecho necessário para evitar bugs na tabela de configuracoes_estabelecimentos_ausentes_por_periodos
+WHERE periodo_data_inicio <= (SELECT max (periodo_data_inicio) AS max_periodo_data_inicio FROM {{ ref("raas_psicossocial_disseminacao_ultima_competencia") }})
