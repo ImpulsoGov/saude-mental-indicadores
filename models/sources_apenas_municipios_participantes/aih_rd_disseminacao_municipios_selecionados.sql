@@ -129,18 +129,8 @@ aih_rd_disseminacao AS (
     FROM {{ source("sihsus", "aih_rd_disseminacao") }}    
 ),
 
-{{ selecionar_municipios_ativos(
-	relacao="aih_rd_disseminacao",
-	cte_resultado="municipios_selecionados"
-) }},
-
-{{ remover_estabelecimentos_indesejados(
-	relacao="municipios_selecionados",
-	cte_resultado="municipios_selecionados_filtrados"
-) }},
-
 {{ limitar_quantidade_meses(
-	relacao="municipios_selecionados_filtrados",
+	relacao="aih_rd_disseminacao",
     coluna_data="periodo_data_inicio",
 	cte_resultado="final"
 ) }}

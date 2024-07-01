@@ -17,7 +17,8 @@ SPDX-License-Identifier: MIT
         "_nome",
         "_descricao"
     ],
-    cte_resultado="final"
+    cte_resultado="final",
+    tags=[]
 ) %}
 {%- set re = modules.re -%}
 {%- set colunas = [] -%}
@@ -134,7 +135,8 @@ SPDX-License-Identifier: MIT
 	relacao=ctes|last,
     coluna_periodo_data=coluna,
     prefixo_colunas=coluna_prefixo,
-	cte_resultado=cte
+	cte_resultado=cte,
+    tags=tags
 ) }},
 {%- set _ = colunas.append(coluna_prefixo + "periodo") -%}
 {%- set _ = colunas.append(coluna_prefixo + "nome_mes") -%}
