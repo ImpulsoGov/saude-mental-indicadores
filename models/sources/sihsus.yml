@@ -22,7 +22,7 @@ sources:
     tables:
 
       - name: aih_rd_disseminacao
-        identifier: _sihsus_aih_reduzida_disseminacao
+        identifier: sm_sihsus_aih_reduzida_disseminacao
         description: >
           Arquivos de disseminação das Autorizações de Internação Hospitalar
           Reduzidas (AIH-RD), conforme disponibilizadas no FTP público do
