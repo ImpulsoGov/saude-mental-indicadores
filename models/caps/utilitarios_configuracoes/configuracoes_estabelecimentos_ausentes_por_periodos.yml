@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2022 Impulso Gov <contato@impulsogov.org>
+#
+# SPDX-License-Identifier: MIT
+
+
+version: 2
+
+models:
+  - name: configuracoes_estabelecimentos_ausentes_por_periodos
+    description: >
+      Assim como o modelo '_configuracoes_estabelecimentos_ausentes_por_periodos',
+      identifica quais são as competências que não possuem registros 
+      para cada combinação de município e estabelecimento. Acrescido
+      de lógica para identificar qual o real último período de envio de
+      dados do estado, serve como Tabela Referência para listagem de 
+      períodos faltantes que deverão ser adicionados via front/back end 
+      da plataforma, sendo assim possível mostrar todas as competências 
+      no painel, mesmo quando zeradas.
+    config:
+      grants:
+        select: ['saude_mental_analistas', 'saude_mental_integracao']
+      alias: configuracoes_estabelecimentos_ausentes_por_periodos
+      enabled: true
+      indexes:
+        - columns:
+          - "id"
+          unique: true
+        - columns:
+          - "unidade_geografica_id_sus"
+          - "periodo"
+          - "estabelecimento"
+      materialized: table
+      persist_docs:
+        relation: true
+      tags:
+        - "saude_mental"

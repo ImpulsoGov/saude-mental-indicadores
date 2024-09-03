@@ -26,9 +26,15 @@ sources:
         description: Informações dos estabelecimentos de saúde identificados.
 
       - name: vinculos_profissionais
-        identifier: scnes_vinculos_disseminacao
+        identifier: sm_scnes_vinculos_disseminacao
         description: >
           Arquivo de disseminação com dados de vínculos entre
           profissionais/prestadores de serviços e estabelecimentos de saúde
           registrados no Sistema do Cadastro Nacional de Estabelecimentos de
           Saúde (SCNES).
+
+      - name: estabelecimentos_habilitacoes
+        identifier: sm_scnes_habilitacoes_disseminacao
+        description: >
+          Arquivo de disseminação com dados de habilitação dos estabelecimentos 
+          de saúde registrados no Cadastro Nacional de Estabelecimentos de Saúde (CNES).

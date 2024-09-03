@@ -5,10 +5,13 @@ SPDX-License-Identifier: MIT
 #}
 
 -- depends_on: {{ ref('_caps_adesao_usuarios_perfil_cid') }}
+-- depends_on: {{ ref('configuracoes_estabelecimentos_ausentes_por_periodos') }}
+{%- set tags = ['caps_uso_externo', 'adesao_mensal'] %}
 
 WITH
 {{ preparar_uso_externo(
 	relacao="_caps_adesao_usuarios_perfil_cid",
-	cte_resultado="final"
+	cte_resultado="final",
+	tags=tags 
 ) }}
 SELECT * FROM final

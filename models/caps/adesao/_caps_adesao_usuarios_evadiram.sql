@@ -155,7 +155,7 @@ final AS (
         ]) }} AS id,
         *,
         now() AS atualizacao_data
-    FROM exceto_perfil_ambulatorial
+    FROM exceto_encaminhamentos_ambulatorio
 )
 
 SELECT * FROM final
