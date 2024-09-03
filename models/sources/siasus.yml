@@ -23,21 +23,21 @@ sources:
     tables:
 
       - name: bpa_i_disseminacao
-        identifier: siasus_bpa_i_disseminacao_sm_complemento
+        identifier: sm_siasus_bpa_i_disseminacao
         description: >
           Arquivo de disseminação dos Boletins de Produção Ambulatorial 
           individualizados (BPA-i) do Sistema de Informações Ambulatoriais do
           SUS (SIASUS).
 
       - name: procedimentos_disseminacao
-        identifier: siasus_procedimentos_ambulatoriais_sm_complemento
+        identifier: sm_siasus_procedimentos_ambulatoriais
         description: >
           Arquivo de disseminação dos procedimentos do Sistema de Informações
           Ambulatoriais do SUS (SIASUS), incluindo informações resumidas de
           diversos documentos (BPA-i, BPA-c, RAAS-PS, RAAS-AD, APAC-P, APAC-S).
 
       - name: raas_psicossocial_disseminacao
-        identifier: _siasus_raas_psicossocial_disseminacao
+        identifier: sm_siasus_raas_psicossocial_disseminacao
         description: >
           Arquivo de disseminação dos Registros das Ações Ambulatorias de Saúde
           - Psicossociais (RAAS-PS) do Sistema de Informações Ambulatoriais do
