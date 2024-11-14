@@ -21,14 +21,14 @@ sources:
 
     tables:
 
-      - name: sisab_producao_municipios_por_tipo_equipe_por_tipo_producao
-        identifier: sisab_producao_municipios_por_tipo_equipe_por_tipo_producao
+      - name: sisab_producao_tipo_equipe_por_tipo_producao
+        identifier: sm_sisab_tipo_equipe_por_tipo_producao
         description: >
           Relatório de produção do Sistema de Informações em Saúde para a Atenção Básica 
           que relaciona os tipos de equipe ao tipo (e ao tamanho) da produção realizada 
           mensalmente em cada município.
       - name: sisab_producao_conduta_problema_condicao
-        identifier: sisab_producao_municipios_por_conduta_por_problema_condicao_ava
+        identifier: sm_sisab_resolutividade_por_condicao
         description: >
           Quantidade de atendimentos individuais realizados por equipes da Atenção Primária 
           à Saúde, por município, mês, categoria de problema/condição avaliada e desfecho 

@@ -8,7 +8,16 @@ SPDX-License-Identifier: MIT
 
 WITH
 sisab_producao_conduta_problema_condicao AS (
-	SELECT * FROM {{ source("sisab", "sisab_producao_conduta_problema_condicao") }}
+	SELECT
+		conduta,
+		problema_condicao_avaliada,
+		id,
+		periodo_id,
+		unidade_geografica_id,
+		tipo_producao,
+		quantidade_registrada,
+		atualizacao_data
+	FROM {{ source("sisab", "sisab_producao_conduta_problema_condicao") }}
 ),
 
 {{ selecionar_municipios_ativos(

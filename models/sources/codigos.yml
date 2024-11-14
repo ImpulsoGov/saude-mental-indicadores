@@ -96,7 +96,7 @@ sources:
           entre códigos e descrição de Sigtap.
 
   - name: utilidades
-    schema: saude_mental
+    schema: _saude_mental_configuracoes
     quoting:
       database: false
       schema: false
@@ -105,7 +105,7 @@ sources:
     tables:
 
       - name: municipios_painel_sm
-        identifier: __municipios_painel_sm
+        identifier: sm_municipios_painel
         description: >
           Lista de municípios ativos e inativos no painel de saúde mental,
           contendo ID do banco, ID do SUS, nome do município e status.

@@ -8,7 +8,15 @@ SPDX-License-Identifier: MIT
 
 WITH
 sisab_por_tipo_equipe_tipo_producao AS (
-	SELECT * FROM {{ source("sisab", "sisab_producao_municipios_por_tipo_equipe_por_tipo_producao") }}
+	SELECT 
+		tipo_equipe,
+		id,
+		periodo_id,
+		unidade_geografica_id,
+		tipo_producao,
+		quantidade_registrada,
+		atualizacao_data
+	FROM {{ source("sisab", "sisab_producao_tipo_equipe_por_tipo_producao") }}
 ),
 
 {{ selecionar_municipios_ativos(

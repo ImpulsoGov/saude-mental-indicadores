@@ -135,12 +135,17 @@ A imagem fornecida suporta os comandos [`dbt seed`][], [`dbt run`][] e
 com o comando `docker run`:
 
 ```sh
-$ docker run \
+$ docker run -it\
 > --env-file=".env" \
 > --mount type=bind,source="$(pwd)/logs",destination="/usr/app/dbt/logs" \
 > --mount type=bind,source="$(pwd)/target",destination="/usr/app/dbt/target" \
-> impulsogov/saude-mental-indicadores:latest dbt run -t analitico
+> impulsogov/saude-mental-indicadores:latest dbt run \
+> --target analitico
 ```
+Obs: 
+- O alvo target aceita os valores 'analitico' ou 'producao'
+- Ao atualizar completamente a base, também faz-se uso de --full-refresh após a indicação do target.
+
 
 No caso da utilização com GitHub Actions, a execução desses comandos é
 automatizada com os fluxos de trabalho existentes, mas você também pode
